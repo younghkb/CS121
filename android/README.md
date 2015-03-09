@@ -1,0 +1,1 @@
+This directory contains Android projects created in Android Studio.

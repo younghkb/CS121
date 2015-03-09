@@ -1,0 +1,1 @@
+This directory contains pictures and logos for our app.
