@@ -40,6 +40,7 @@ gen/
 .gradle/
 build/
 /*/build/
+gradle/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -49,6 +50,11 @@ proguard/
 
 # Log Files
 *.log
+
+#Misc
+*.DS_store
+*.idea
+# (See http://stackoverflow.com/questions/26336709/android-studio-should-the-entire-idea-directory-be-in-git-ignore)
 
 
 # ==========================
