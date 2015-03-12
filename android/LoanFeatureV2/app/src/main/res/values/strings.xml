@@ -1,0 +1,26 @@
+<resources>
+
+    <!--Strings needed for entire app-->
+    <string name="app_name">Loan Example</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Choose offer or request-->
+    <string name="create_header">Create the loan!</string>
+    <string name="choose_offer">Offer</string>
+    <string name="choose_request">Request</string>
+
+    <!--Book name strings-->
+    <string name="book_info">Book name OR ISBN OR Author</string>
+
+    <!--What type of loan?-->
+    <string name="time_frame_title">What is the time frame?</string>
+    <string name="one_week">1 week</string>
+    <string name="one_month">1 month</string>
+    <string name="one_semester">1 semester</string>
+
+    <string name="feedback_body">Add a description to your loan</string>
+
+
+
+    <string name = "feedback_button">Create loan!</string>
+</resources>
