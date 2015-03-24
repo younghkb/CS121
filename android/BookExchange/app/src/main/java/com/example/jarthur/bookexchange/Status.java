@@ -1,44 +1,28 @@
 package com.example.jarthur.bookexchange;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 
-public class HomeScreen extends ActionBarActivity {
+public class Status extends ActionBarActivity {
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
+        setContentView(R.layout.activity_status);
 
         // Make logo show up in action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
     }
 
-    public void openCreateLoan(View view) {
-        // Go to the Loan page
-        Intent intent = new Intent(this, CreateLoan.class);
-        startActivity(intent);
-    }
-
-    public void openStatus(View view) {
-        // Go to the Status page
-        Intent intent = new Intent(this, Status.class);
-        startActivity(intent);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_status, menu);
         return true;
     }
 

@@ -1,11 +1,12 @@
 <resources>
+    <!--Overall App Strings-->
     <string name="app_name">Book Exchange</string>
     <string name="action_settings">Settings</string>
+    <string name="logoDescript">The App\'s Logo</string>
 
+    <!--Home Screen Strings -->
     <string name="create">Create</string>
     <string name="logout">Logout</string>
-
-    <string name="logoDescript">The App\'s Logo</string>
 
     <string name="request">Request: Harry Potter #1</string>
     <string name="borrowing">Borrowing: Harry Potter #2</string>
@@ -19,15 +20,12 @@
     <string name="bookEx3"> Harry Potter #6 </string>
     <string name="title_activity_create_loan">CreateLoan</string>
 
-    <!--Choose offer or request-->
+    <!--Loan Strings-->
     <string name="create_header">Create the loan!</string>
     <string name="choose_offer">Offer</string>
     <string name="choose_request">Request</string>
-
-    <!--Book name strings-->
     <string name="book_info">Book name OR ISBN OR Author</string>
 
-    <!--What type of loan?-->
     <string name="time_frame_title">What is the time frame?</string>
     <string name="one_week">1 week</string>
     <string name="one_month">1 month</string>
@@ -35,4 +33,8 @@
 
     <string name="feedback_body">Add a description to your loan</string>
     <string name = "feedback_button">Create loan!</string>
+    <string name="title_activity_status">Status</string>
+
+    <!-- Status -->
+    <string name="acceptedOrNot">Has your request been accepted by someone?</string>
 </resources>

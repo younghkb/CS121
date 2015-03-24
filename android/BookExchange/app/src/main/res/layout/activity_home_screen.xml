@@ -16,6 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" >
 
+<!-- This is a good example of getting an image to show up, but not actually necessary
+            Just here in case I want the reference code to use
+
             <TableRow
                 android:id="@+id/tableRow0"
                 android:layout_width="wrap_content"
@@ -30,6 +33,7 @@
                     android:layout_gravity="top" />
 
             </TableRow>
+-->
 
             <TableRow
                 android:id="@+id/tableRow1"
@@ -42,7 +46,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="20"
-                    android:text="@string/create"/>
+                    android:text="@string/create"
+                    android:onClick="openCreateLoan"/>
 
 
                 <Button
@@ -83,7 +88,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="fill_horizontal"
-                    android:text="@string/request" />
+                    android:text="@string/request"
+                    android:onClick="openStatus"/>
 
             </TableRow>
 
@@ -98,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="fill_horizontal"
-                    android:text="@string/borrowing" />
+                    android:text="@string/borrowing"
+                    android:onClick="openStatus"/>
             </TableRow>
 
             <TableRow
@@ -112,7 +119,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="fill_horizontal"
-                    android:text="@string/loaning" />
+                    android:text="@string/loaning"
+                    android:onClick="openStatus"/>
             </TableRow>
 
 

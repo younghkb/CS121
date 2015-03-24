@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -19,7 +19,23 @@
         <activity
             android:name=".CreateLoan"
             android:label="@string/title_activity_create_loan" >
+            <intent-filter>
+                <action android:name="in.wptrafficanalyzer.CreateLoan" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
+
+        <activity
+            android:name=".Status"
+            android:label="@string/title_activity_status">
+            <intent-filter>
+                <action android:name="in.wptrafficanalyzer.Status" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Options for user to choose time frame-->
     <string-array name="feedback_type_list">
         <item>@string/one_week</item>
         <item>@string/one_month</item>
