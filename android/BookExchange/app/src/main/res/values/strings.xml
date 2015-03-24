@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Book Exchange</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="create">Create</string>
+    <string name="logout">Logout</string>
+
+    <string name="logoDescript">The App\'s Logo</string>
+
+    <string name="request">Request: Harry Potter #1</string>
+    <string name="borrowing">Borrowing: Harry Potter #2</string>
+    <string name="loaning">Loaning: Harry Potter #3</string>
+
+    <string name="exchanges">My Current Exchanges</string>
+    <string name="browse">Browse Available Books</string>
+
+    <string name="bookEx1"> Harry Potter #4 </string>
+    <string name="bookEx2"> Harry Potter #5 </string>
+    <string name="bookEx3"> Harry Potter #6 </string>
+    <string name="title_activity_create_loan">CreateLoan</string>
+
+    <!--Choose offer or request-->
+    <string name="create_header">Create the loan!</string>
+    <string name="choose_offer">Offer</string>
+    <string name="choose_request">Request</string>
+
+    <!--Book name strings-->
+    <string name="book_info">Book name OR ISBN OR Author</string>
+
+    <!--What type of loan?-->
+    <string name="time_frame_title">What is the time frame?</string>
+    <string name="one_week">1 week</string>
+    <string name="one_month">1 month</string>
+    <string name="one_semester">1 semester</string>
+
+    <string name="feedback_body">Add a description to your loan</string>
+    <string name = "feedback_button">Create loan!</string>
+</resources>
