@@ -68,3 +68,9 @@ proguard/
 # ============
 
 java/workspace/.*
+
+# ===========
+# OUTPUT DATA
+# ===========
+
+out.xml
