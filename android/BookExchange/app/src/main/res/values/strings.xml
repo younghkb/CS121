@@ -8,6 +8,7 @@
     <string name="create">Create</string>
     <string name="logout">Logout</string>
 
+    <!--Hard Coded examples that will be removed -->
     <string name="request">Request: Harry Potter #1</string>
     <string name="borrowing">Borrowing: Harry Potter #2</string>
     <string name="loaning">Loaning: Harry Potter #3</string>
@@ -15,9 +16,11 @@
     <string name="exchanges">My Current Exchanges</string>
     <string name="browse">Browse Available Books</string>
 
+    <!--Hard Coded examples that will be removed -->
     <string name="bookEx1"> Harry Potter #4 </string>
     <string name="bookEx2"> Harry Potter #5 </string>
     <string name="bookEx3"> Harry Potter #6 </string>
+
     <string name="title_activity_create_loan">CreateLoan</string>
 
     <!--Loan Strings-->
@@ -36,5 +39,14 @@
     <string name="title_activity_status">Status</string>
 
     <!-- Status -->
-    <string name="acceptedOrNot">Has your request been accepted by someone?</string>
+    <string name="book_title">Book: </string>
+    <string name="exchange_partner"> Exchange Partner: </string>
+    <string name="contact_info"> How to contact: </string>
+    <string name="due_date"> Due Date: </string>
+    <string name="finish_button"> Mark as complete! </string>
+
+    <!--Status alert dialog-->
+    <string name="alert_message">Are you sure you wish to finish this exchange?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
