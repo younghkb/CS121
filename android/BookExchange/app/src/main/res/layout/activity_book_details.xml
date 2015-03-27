@@ -4,7 +4,10 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.jarthur.bookexchange.Status">
+    tools:context="com.example.jarthur.bookexchange.BookDetails">
+
+
+
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -12,42 +15,67 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/book"
+            android:id="@+id/bookTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/book_title"
+            android:text="@string/bookEx1"
+            android:layout_gravity="center"
+            android:textSize="16pt">
+        </TextView>
+
+        <!--This will be replaced by code that can take in an image from the internet-->
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/logo"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/author"
             android:textSize="10pt">
         </TextView>
 
         <TextView
-            android:id="@+id/otherPerson"
+            android:id="@+id/ISBN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exchange_partner"
+            android:text="@string/isbn"
             android:textSize="10pt">
         </TextView>
 
         <TextView
-            android:id="@+id/contactInfo"
+            android:id="@+id/pubYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_info"
+            android:text="@string/pub_year"
             android:textSize="10pt">
         </TextView>
 
         <TextView
-            android:id="@+id/dueDate"
+            android:id="@+id/owner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/due_date"
+            android:text="@string/owner"
+            android:textSize="10pt">
+        </TextView>
+
+        <TextView
+            android:id="@+id/loanPeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loan_period"
             android:textSize="10pt">
         </TextView>
 
         <Button
-            android:id="@+id/finishButton"
+            android:id="@+id/requestButton"
             android:layout_height="wrap_content"
-            android:text="@string/finish_button"
-            android:onClick="showWarning"
+            android:text="@string/make_request"
+            android:onClick="sendFeedback"
             android:layout_width="fill_parent">
         </Button>
 

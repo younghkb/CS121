@@ -25,17 +25,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Status"
-            android:label="@string/title_activity_status">
+            android:label="@string/title_activity_status" >
             <intent-filter>
                 <action android:name="in.wptrafficanalyzer.Status" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".BookDetails"
+            android:label="@string/title_activity_book_details" >
+        </activity>
     </application>
 
 </manifest>

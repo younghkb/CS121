@@ -48,14 +48,15 @@ public class Status extends ActionBarActivity {
 
             // Shows everything
             case LOAN:
-                break;
-
-            // Shows everything
             default:
                 break;
         }
 
 
+    }
+
+    //TODO figure out how to really write this show warning function
+    public void showWarning() {
         DialogFragment dialog = new YesNoDialog();
         Bundle args = new Bundle();
         args.putString("title", "T");
@@ -63,9 +64,7 @@ public class Status extends ActionBarActivity {
         dialog.setArguments(args);
         //dialog.setTargetFragment(this, YES_NO_CALL);
         dialog.show(getFragmentManager(), "tag");
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

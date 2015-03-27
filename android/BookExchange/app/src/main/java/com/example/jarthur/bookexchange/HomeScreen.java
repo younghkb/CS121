@@ -23,6 +23,8 @@ public class HomeScreen extends ActionBarActivity {
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
     }
 
+    // code from: http://blogs.technicise.com/
+    // how-to-open-a-new-android-activity-from-another-activity-on-clicking-a-button/
     public void openCreateLoan(View view) {
         // Go to the Loan page
         Intent intent = new Intent(this, CreateLoan.class);
@@ -32,6 +34,12 @@ public class HomeScreen extends ActionBarActivity {
     public void openStatus(View view) {
         // Go to the Status page
         Intent intent = new Intent(this, Status.class);
+        startActivity(intent);
+    }
+
+    public void openBookDetails(View view) {
+        // Go to the Status page
+        Intent intent = new Intent(this, BookDetails.class);
         startActivity(intent);
     }
 
