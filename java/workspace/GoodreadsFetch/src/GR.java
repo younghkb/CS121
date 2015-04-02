@@ -23,7 +23,7 @@ public class GR {
 		scan.close();
 		
 		// "https://www.goodreads.com/search.xml?key=YOUR_KEY&q=Ender%27s+Game"
-		url = new URL("https://www.goodreads.com/search/index.xml?key=" + key + "&q=Ender%27s+Game");
+		url = new URL("https://www.goodreads.com/search/index.xml?key=" + key + "&q=0544272994");
 		is = url.openStream(); // throws an IOException
 		br = new BufferedReader(new InputStreamReader(is));
 

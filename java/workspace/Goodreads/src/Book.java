@@ -12,5 +12,12 @@ public class Book {
 	
 	public String imageUrl;
 	public String smallImageUrl;
+	
+	// Insert a new row into the books table of the database. 
+	public String insertIntoDB() {
+		
+		// Return the result of inserting a new row in the db. 
+		return null;
+	}
 		
 }

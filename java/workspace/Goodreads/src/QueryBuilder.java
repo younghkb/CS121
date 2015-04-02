@@ -1,7 +1,7 @@
 import java.io.File;
 import java.util.Scanner;
 
-public class GRQuery {
+public class QueryBuilder {
 	static String key = "";
 
 	public static void main(String[] args) throws Exception {
