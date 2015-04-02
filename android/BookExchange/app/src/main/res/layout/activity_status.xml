@@ -47,7 +47,7 @@
             android:id="@+id/finishButton"
             android:layout_height="wrap_content"
             android:text="@string/finish_button"
-            android:onClick="showWarning"
+            android:onClick="confirmAlert"
             android:layout_width="fill_parent">
         </Button>
 

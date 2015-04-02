@@ -12,8 +12,8 @@ import java.net.URL;
 
 
 public class BookDetails extends ActionBarActivity {
-    // controls whether we see request, borrow, or loan
-    int type = 0;
+    // controls whether we see a book currently in an exchange or that is just available
+    int type = 1;
     final int AVAILABLE = 0;
     final int CURRENT = 1;
 
@@ -29,11 +29,16 @@ public class BookDetails extends ActionBarActivity {
         // hides the request button from the details of a book currently
         // involved in an exchange
         switch (type) {
-            // Does not show request button
-            // TODO fix because this is going to the wrong case (not sure why it is calling available)
+            // Does not show request button, owner or possible loan period
             case CURRENT:
                 View b = findViewById(R.id.requestButton);
                 b.setVisibility(View.GONE);
+
+                View c = findViewById(R.id.loanPeriod);
+                c.setVisibility(View.GONE);
+
+                View d = findViewById(R.id.owner);
+                d.setVisibility(View.GONE);
                 break;
 
             // Shows everything
@@ -73,6 +78,7 @@ public class BookDetails extends ActionBarActivity {
     public static Drawable imageFromUrl(String url) {
         try {
             InputStream is = (InputStream) new URL(url).getContent();
+            //is.
             Drawable d = Drawable.createFromStream(is, "src name");
             return d;
         } catch (Exception e) {

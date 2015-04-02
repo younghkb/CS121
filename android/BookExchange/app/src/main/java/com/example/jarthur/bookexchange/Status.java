@@ -1,6 +1,7 @@
 package com.example.jarthur.bookexchange;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 
 public class Status extends ActionBarActivity {
@@ -52,18 +54,37 @@ public class Status extends ActionBarActivity {
                 break;
         }
 
-
     }
 
-    //TODO figure out how to really write this show warning function
-    public void showWarning() {
-        DialogFragment dialog = new YesNoDialog();
-        Bundle args = new Bundle();
-        args.putString("title", "T");
-        args.putString("message", "M");
-        dialog.setArguments(args);
-        //dialog.setTargetFragment(this, YES_NO_CALL);
-        dialog.show(getFragmentManager(), "tag");
+
+
+    public static class AlertDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.alert_message)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
+                            // want to do this
+                            // TODO connect to database
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            // TODO connect to database
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+
+    public void confirmAlert(View view) {
+        DialogFragment newFragment = new AlertDialogFragment();
+        newFragment.show(getFragmentManager(), "alert");
     }
 
     @Override

@@ -75,7 +75,7 @@
             android:id="@+id/requestButton"
             android:layout_height="wrap_content"
             android:text="@string/make_request"
-            android:onClick="sendFeedback"
+            android:onClick="i"
             android:layout_width="fill_parent">
         </Button>
 
