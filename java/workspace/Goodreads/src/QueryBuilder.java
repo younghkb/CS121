@@ -14,7 +14,12 @@ public class QueryBuilder {
 		System.out.println(makeURLfromISBN("123"));
 	}
 
-	public static String makeURLfromISBN(String isbn) {
+	public static String makeURLfromISBN(String isbn) throws Exception {
+		
+		// get key from ignored file
+		Scanner scan = new Scanner(new File("data.private"));
+		key += scan.nextLine();
+		scan.close();
 		return "https://www.goodreads.com/search/index.xml?key=" + key + "&q=" + isbn;
 	}
 }

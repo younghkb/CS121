@@ -31,46 +31,64 @@ public class BookParser {
 		// to parse multiple results.
 		NodeList nodeList = document.getDocumentElement().getChildNodes();
 		
+		System.out.println(nodeList.getLength() + " child nodes");
+		
 		List<Book> bookList = new ArrayList<>();
-		Node node;
+		NodeList childNodes = null;
 		Node child;
 		Book book;
 		
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			node = nodeList.item(i);	
+		// Find the nodes we want in the xml
+		try {
 			
-			// If the node is a best_book node.
-			if (node instanceof Element && (((Element) node).getTagName() == "best_book")) {
+			Node search = findNode("search", nodeList);
+			Node result = findNode("results", search.getChildNodes());
+			Node work = findNode("work", result.getChildNodes());
+			Node bookNode = findNode("best_book", work.getChildNodes());
 				
-				book = new Book();
-								
-				NodeList childNodes = node.getChildNodes();
-				
-				// If we're really sure that the same child nodes will always appear in the same order, 
-				// we can iterate through the children without using if/else if statements.
-				for (int j = 0; j < childNodes.getLength(); j++) {
-					child = childNodes.item(j);
-					String name = child.getNodeName();
-					
-					if (name == "id") {
-						book.id = child.getNodeValue();
-					}
-					else if (name == "title") {
-						book.title = child.getNodeValue();
-					}
-					else if (name == "author") {
-						book.author = child.getLastChild().getNodeValue();
-					}
-					else if (name == "image_url") {
-						book.imageUrl = child.getNodeValue();
-					}
-					else if (name == "small_image_url") {
-						book.smallImageUrl = child.getNodeValue();
-					}
-				}
-				bookList.add(book);
+			childNodes = bookNode.getChildNodes();
+		}
+		catch (NullPointerException e) {
+			System.out.println("Node not found!");
+		}
+		
+		// Create a new book object
+		book = new Book();
+		
+		// Iterate through the children
+		for (int j = 0; j < childNodes.getLength(); j++) {
+			
+			child = childNodes.item(j);
+			if (child instanceof Text) {	// ignore whitespace
+				continue;
+			}
+
+			String name = child.getNodeName();
+			
+			System.out.println(j + ": " + name);
+			
+			if (name == "id") {
+				book.id = child.getTextContent();
+				System.out.println(child.getTextContent());
+
+			}
+			else if (name == "title") {
+				book.title = child.getTextContent();
+			}
+			else if (name == "author") {
+				Node authorName = findNode("name", child.getChildNodes());
+				book.author = authorName.getTextContent();
+			}
+			else if (name == "image_url") {
+				book.imageUrl = child.getTextContent();
+			}
+			else if (name == "small_image_url") {
+				book.smallImageUrl = child.getTextContent();
 			}
 		}
+		
+		bookList.add(book);
+
 		
 		// For logging and debugging purposes		
 		for (Book b : bookList) {
@@ -78,5 +96,20 @@ public class BookParser {
 		}
 		return bookList;
 	}
+	
+	private static Node findNode(String nodeName, NodeList nodeList) {
+		
+		Node node;
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			node = nodeList.item(i);
+			
+				// Element as opposed to Text
+			if ((node instanceof Element) && node.getNodeName() == nodeName) {
+				return node;
+			}
+		}
+		return null;
+	}
 
+	// TODO add parsing for book.show
 }

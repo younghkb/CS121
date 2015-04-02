@@ -19,21 +19,23 @@ public class BookParserTest {
 
 	@Test
 	public void testISBNQuery() {
-		String query = builder.makeURLfromISBN("0544272994");
 		
 		try {
-			List<Book> booksFound = parser.parseQuery(query);
+			String query = QueryBuilder.makeURLfromISBN("0544272994");
+			System.out.println(query);
+		
+			List<Book> booksFound = BookParser.parseQuery(query);
 			
-			assertEquals(booksFound.size(), 1);
+			assertEquals(1, booksFound.size());
 			
 			Book book = booksFound.get(0);
 			
 			//assertEquals(book.isbn, "0544272994");	Not implemented yet.
-			assertEquals(book.id, "21413662");
-			assertEquals(book.title, "What If?: Serious Scientific Answers to Absurd Hypothetical Questions");
-			assertEquals(book.author, "Randall Munroe"); 
-			assertEquals(book.imageUrl, "https://d.gr-assets.com/books/1394648139m/21413662.jpg");
-			assertEquals(book.smallImageUrl, "https://d.gr-assets.com/books/1394648139s/21413662.jpg");
+			assertEquals("21413662", book.id);
+			assertEquals("What If?: Serious Scientific Answers to Absurd Hypothetical Questions", book.title);
+			assertEquals("Randall Munroe", book.author); 
+			assertEquals("https://d.gr-assets.com/books/1394648139m/21413662.jpg", book.imageUrl);
+			assertEquals("https://d.gr-assets.com/books/1394648139s/21413662.jpg", book.smallImageUrl);
 			
 		} catch (Exception e) {
 			fail("Query failed with exception " + e.toString());
