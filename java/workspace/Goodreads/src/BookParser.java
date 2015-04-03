@@ -31,7 +31,7 @@ public class BookParser {
 		// to parse multiple results.
 		NodeList nodeList = document.getDocumentElement().getChildNodes();
 		
-		System.out.println(nodeList.getLength() + " child nodes");
+		//System.out.println(nodeList.getLength() + " child nodes");
 		
 		List<Book> bookList = new ArrayList<>();
 		NodeList childNodes = null;
@@ -65,6 +65,7 @@ public class BookParser {
 
 			String name = child.getNodeName();
 			
+			// For debugging
 			System.out.println(j + ": " + name);
 			
 			if (name == "id") {
