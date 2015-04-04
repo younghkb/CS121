@@ -8,6 +8,7 @@ public abstract class SQLB { //TODO Sanitize
 		return "select * from exchanges where exchange_id = " + exchangeId;
 	}
 	
+	
 	static String getPublicExchanges() {
 		return "select * from exchanges where status = 'INITIAL' or status = 'RESPONSE';";
 	}
@@ -25,8 +26,16 @@ public abstract class SQLB { //TODO Sanitize
 		String command = "insert into exchanges (borrower_id, book_id, book_title, create_date, status) values (%d, %d, '%s', datetime('now'), 'INITIAL');";
 		return String.format(command, borrowId, bookId, title);
 	}
-
-	static String updateBookStatus(Status newStatus, Integer id) {
+	
+	static String addLoaner(Integer id, Integer loanerId) {
+		return "update exchanges set loaner_id = '" + loanerId + "' where exchange_id = " + id + ";";
+	}
+	
+	static String addBorrower(Integer id, Integer borrowerId) {
+		return "update exchanges set borrower_id = '" + borrowerId + "' where exchange_id = " + id + ";";
+	}
+	
+	static String updateExchangeStatus(Integer id, Status newStatus) {
 		return "update exchanges set status = '" + newStatus + "' where exchange_id = " + id + ";";
 	}
 	
@@ -43,13 +52,28 @@ public abstract class SQLB { //TODO Sanitize
 	
 	static String findBookFromISBN(String isbn) {
 		return "select book_id from books where isbn = " + isbn;
-	}
-	
-	static String isBookActive(Integer bookId) {
-		return "select * from exchanges where book_id = " + bookId + " and status != 'COMPLETED';";
 	}	
 	
 	static String deleteBook(Integer bookId) {
-		return "delete * from books where book_id = bookId;";
+		return "delete from books where book_id = " + bookId + ";";
+	}
+	
+	// Can be used to determine if a book is active or find exchanges for a specific book (i.e., user search)
+	static String getExchangeForBook(Integer bookId) {
+		return "select * from exchanges where book_id = " + bookId + " and status != 'COMPLETED';";
+	}
+	
+	/* Commands used to empty the tables. */
+	
+	static String deleteAllBooks() {
+		return "delete from books;";
+	}
+	
+	static String deleteAllExchanges() {
+		return "delete from exchanges;";
+	}
+	
+	static String deleteAllUsers() {
+		return "delete from users;";
 	}
 }
