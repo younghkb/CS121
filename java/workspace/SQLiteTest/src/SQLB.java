@@ -17,12 +17,12 @@ public abstract class SQLB { //TODO Sanitize
 		return "select * from exchanges where loaner_id = " + userId + " or borrower_id = " + userId + ";";
 	}
 	
-	static String createExchangeLoan(Integer loanerId, Integer bookId, String title) {
+	static String createExchangeLoan(Integer loanerId, String bookId, String title) {
 		String command = "insert into exchanges (loaner_id, book_id, book_title, create_date, status) values (%d, %d, '%s', datetime('now'), 'INITIAL');";
 		return String.format(command, loanerId, bookId, title);
 	}
 	
-	static String createExchangeBorrow(Integer borrowId, Integer bookId, String title) {
+	static String createExchangeBorrow(Integer borrowId, String bookId, String title) {
 		String command = "insert into exchanges (borrower_id, book_id, book_title, create_date, status) values (%d, %d, '%s', datetime('now'), 'INITIAL');";
 		return String.format(command, borrowId, bookId, title);
 	}
@@ -39,7 +39,7 @@ public abstract class SQLB { //TODO Sanitize
 		return "update exchanges set status = '" + newStatus + "' where exchange_id = " + id + ";";
 	}
 	
-	static String insertBook(Integer bookId, String title, String author, String isbn, Integer pubYear, Integer origPubYear,
+	static String insertBook(String bookId, String title, String author, String isbn, Integer pubYear, Integer origPubYear,
 								String imageUrl, String smallImageUrl) {
 		return "insert into books values ("
 				+ bookId + ",'" + title + "','" + author + "','" + isbn + "'," + pubYear + "," + 
@@ -52,14 +52,18 @@ public abstract class SQLB { //TODO Sanitize
 	
 	static String findBookFromISBN(String isbn) {
 		return "select book_id from books where isbn = " + isbn;
-	}	
+	}
 	
-	static String deleteBook(Integer bookId) {
+	static String getBook(String bookId) {
+		return "select * from books where book_id = " + bookId + ";";
+	}
+	
+	static String deleteBook(String bookId) {
 		return "delete from books where book_id = " + bookId + ";";
 	}
 	
 	// Can be used to determine if a book is active or find exchanges for a specific book (i.e., user search)
-	static String getExchangeForBook(Integer bookId) {
+	static String getExchangeForBook(String bookId) {
 		return "select * from exchanges where book_id = " + bookId + " and status != 'COMPLETED';";
 	}
 	

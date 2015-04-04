@@ -1,18 +1,25 @@
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.Scanner;
 
 public class QueryBuilder {
 	static String key = "";
-	static String urlPrefix = "https://www.goodreads.com/search/index.xml?key=";
+	static String scheme = "https";
+	static String host = "www.goodreads.com";
+	static String path = "/search/index.xml";
 
-	public static String makeURL(String query) throws Exception {
+	public static URL makeURL(String query) throws Exception {
 		
 		// get key from ignored file
 		Scanner scan = new Scanner(new File("data.private"));
 		key = scan.nextLine();
 		scan.close();
 		
-		return urlPrefix + key + "&q=" + query;
+		// See https://docs.oracle.com/javase/8/docs/api/java/net/URI.html
+		URI uri = new URI(scheme, null, host, -1, path, "key=" + key + "&q=" + query, null); 
+		
+		return uri.toURL();
 	}
 	
 }

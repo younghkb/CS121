@@ -42,10 +42,10 @@ public class SQLiteDriverTest {
 		try {
 			
 			// Create two exchanges.
-			String comm = SQLB.createExchangeLoan(100, 200, "This is a book");			
+			String comm = SQLB.createExchangeLoan(100, "200", "This is a book");			
 			SQLiteDriver.update(comm);
 			
-			comm = SQLB.createExchangeBorrow(300, 400, "This is another book");
+			comm = SQLB.createExchangeBorrow(300, "400", "This is another book");
 			SQLiteDriver.update(comm);
 			
 			// Get those exchanges
@@ -58,7 +58,7 @@ public class SQLiteDriverTest {
 			comm = SQLB.getPublicExchanges();
 			SQLiteDriver.update(comm);
 			
-			comm = SQLB.getExchangeForBook(200);
+			comm = SQLB.getExchangeForBook("200");
 			SQLiteDriver.update(comm);
 			
 			// Update those exchanges
@@ -89,7 +89,7 @@ public class SQLiteDriverTest {
 	public void testBooks() {
 		
 		try {
-			String comm = SQLB.insertBook(21413662, "What If?", "Randall Munroe", "0544272994", 2014, 2014,
+			String comm = SQLB.insertBook("21413662", "What If?", "Randall Munroe", "0544272994", 2014, 2014,
 					"https://d.gr-assets.com/books/1394648139m/21413662.jpg", "https://d.gr-assets.com/books/1394648139m/21413662.jpg");			
 			SQLiteDriver.update(comm);
 			
@@ -102,7 +102,7 @@ public class SQLiteDriverTest {
 			comm = SQLB.getOldestBook();
 			SQLiteDriver.update(comm);
 
-			comm = SQLB.deleteBook(21413662);
+			comm = SQLB.deleteBook("21413662");
 			SQLiteDriver.update(comm);
 			
 		} catch (Exception e) {

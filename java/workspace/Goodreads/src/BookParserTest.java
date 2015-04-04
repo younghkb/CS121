@@ -1,6 +1,8 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import java.util.List;
+import java.net.URL;
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,10 +23,10 @@ public class BookParserTest {
 	public void testISBNQuery() {
 		
 		try {
-			String query = QueryBuilder.makeURL("0544272994");
+			URL query = QueryBuilder.makeURL("0544272994");
 			System.out.println(query);
 		
-			List<Book> booksFound = BookParser.parseQuery(query);
+			ArrayList<Book> booksFound = BookParser.parseQuery(query);
 			
 			assertEquals(1, booksFound.size());
 			
@@ -45,12 +47,22 @@ public class BookParserTest {
 	
 	@Test
 	public void testTitleQuery() {
-		
+				
 		try {
-			String query = QueryBuilder.makeURL("The Great Gatsby");
+			URL query = QueryBuilder.makeURL("The Great Gatsby");
 			System.out.println(query);
 			
-			//assertEquals(book.isbn, "0544272994");	Not implemented yet.
+			//assertEquals(book.isbn, "");	Not implemented yet.
+			
+			ArrayList<Book> booksFound = BookParser.parseQuery(query);
+			
+			Book book = booksFound.get(0); 
+			
+			assertEquals("4671", book.id);
+			assertEquals("The Great Gatsby", book.title);
+			assertEquals("F. Scott Fitzgerald", book.author);
+			assertEquals("https://d.gr-assets.com/books/1361191055m/4671.jpg", book.imageUrl);
+			assertEquals("https://d.gr-assets.com/books/1361191055s/4671.jpg", book.smallImageUrl);
 
 		} catch (Exception e) {
 			fail("Query failed with exception " + e.toString());

@@ -1,5 +1,6 @@
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -14,12 +15,12 @@ import org.w3c.dom.*;
 public class BookParser {
 	
 	/* Parses the XML returned from the Goodreads query and returns the list of books found. */
-	public static ArrayList<Book> parseQuery(String queryURL) throws Exception {
+	public static ArrayList<Book> parseQuery(URL queryURL) throws Exception {
 		
-		URL url = new URL(queryURL);
+		System.out.println(queryURL);
 		InputStream inputStream;
 
-		inputStream = url.openStream(); // throws an IOException
+		inputStream = queryURL.openStream(); // throws an IOException
 		
 		// Create the DOM builder and document from the input
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -49,6 +50,9 @@ public class BookParser {
 				
 				Node bookNode = findNode("best_book", work.getChildNodes());
 				book = parseBookNode(bookNode);
+				
+				bookList.add(book);
+				System.out.println(book.title + " by " + book.author + ", id = " + book.id);
 			}
 						
 			// todo edit book object with info from book.show
@@ -57,14 +61,7 @@ public class BookParser {
 		catch (NullPointerException e) {
 			System.out.println("Node not found!");
 		}
-		
-		bookList.add(book);
 
-		
-		// For logging and debugging purposes		
-		for (Book b : bookList) {
-			System.out.println(b.title + " by " + b.author + ", id = " + b.id);
-		}
 		return bookList;
 	}
 	
@@ -99,9 +96,6 @@ public class BookParser {
 			}
 
 			String name = child.getNodeName();
-			
-			// For debugging
-			System.out.println(i + ": " + name);
 			
 			if (name == "id") {
 				book.id = child.getTextContent();
