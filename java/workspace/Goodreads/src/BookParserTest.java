@@ -1,5 +1,4 @@
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class BookParserTest {
 	public void testISBNQuery() {
 		
 		try {
-			URL query = QueryBuilder.makeURL("0544272994");
+			URL query = QueryBuilder.makeSearchURL("0544272994");
 			System.out.println(query);
 		
 			ArrayList<Book> booksFound = BookParser.parseQuery(query);
@@ -32,7 +31,7 @@ public class BookParserTest {
 			
 			Book book = booksFound.get(0);
 			
-			//assertEquals(book.isbn, "0544272994");	Not implemented yet.
+			assertEquals(book.isbn, "0544272994");
 			assertEquals("21413662", book.id);
 			assertEquals("What If?: Serious Scientific Answers to Absurd Hypothetical Questions", book.title);
 			assertEquals("Randall Munroe", book.author); 
@@ -49,16 +48,17 @@ public class BookParserTest {
 	public void testTitleQuery() {
 				
 		try {
-			URL query = QueryBuilder.makeURL("The Great Gatsby");
+			URL query = QueryBuilder.makeSearchURL("The Great Gatsby");
 			System.out.println(query);
 			
-			//assertEquals(book.isbn, "");	Not implemented yet.
 			
 			ArrayList<Book> booksFound = BookParser.parseQuery(query);
 			
+			assertTrue(booksFound.size() > 1);
 			Book book = booksFound.get(0); 
 			
 			assertEquals("4671", book.id);
+			assertEquals("0743273567", book.isbn);	
 			assertEquals("The Great Gatsby", book.title);
 			assertEquals("F. Scott Fitzgerald", book.author);
 			assertEquals("https://d.gr-assets.com/books/1361191055m/4671.jpg", book.imageUrl);

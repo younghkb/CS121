@@ -7,8 +7,8 @@ public class Book {
 	public String id; 		// Goodreads id, primary key in our books table
 	
 	
-	public Integer originalPubYear;
-	public Integer pubYear;
+	public String originalPubYear;
+	public String pubYear;
 	
 	public String imageUrl;
 	public String smallImageUrl;

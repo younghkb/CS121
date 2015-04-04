@@ -1,12 +1,15 @@
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 
 /* DOM parser for the Goodreads XML book data. 
@@ -17,7 +20,6 @@ public class BookParser {
 	/* Parses the XML returned from the Goodreads query and returns the list of books found. */
 	public static ArrayList<Book> parseQuery(URL queryURL) throws Exception {
 		
-		System.out.println(queryURL);
 		InputStream inputStream;
 
 		inputStream = queryURL.openStream(); // throws an IOException
@@ -51,11 +53,11 @@ public class BookParser {
 				Node bookNode = findNode("best_book", work.getChildNodes());
 				book = parseBookNode(bookNode);
 				
+				book = getBookDetails(book);
+				
 				bookList.add(book);
 				System.out.println(book.title + " by " + book.author + ", id = " + book.id);
 			}
-						
-			// todo edit book object with info from book.show
 				
 		}
 		catch (NullPointerException e) {
@@ -65,6 +67,7 @@ public class BookParser {
 		return bookList;
 	}
 	
+	/* Helper method. */
 	private static Node findNode(String nodeName, NodeList nodeList) {
 		
 		Node node;
@@ -99,8 +102,6 @@ public class BookParser {
 			
 			if (name == "id") {
 				book.id = child.getTextContent();
-				System.out.println(child.getTextContent());
-
 			}
 			else if (name == "title") {
 				book.title = child.getTextContent();
@@ -121,5 +122,49 @@ public class BookParser {
 	}
 	
 
-	// TODO add parsing for book.show
+	private static Book getBookDetails(Book book) throws Exception {
+		
+		URL url = QueryBuilder.makeBookDetailsURL(book.id);
+		
+		InputStream inputStream;	// different input stream than the one for the search query 
+		inputStream = url.openStream(); // throws an IOException
+		
+		// Create the DOM builder and document from the input
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		Document document = builder.parse(inputStream);
+				
+		NodeList nodeList = document.getDocumentElement().getChildNodes();
+		Node child;
+		
+		Node bookNode = findNode("book", nodeList);
+		
+		NodeList childNodes = bookNode.getChildNodes();
+		
+		// Iterate through the children to find the information we want
+		for (int i = 0; i < childNodes.getLength(); i++) {
+			
+			child = childNodes.item(i);
+			if (child instanceof Text) {	// ignore whitespace
+				continue;
+			}
+
+			String name = child.getNodeName();
+			
+			if (name == "isbn") {		// Can also get isbn13 if we want
+				book.isbn = child.getTextContent();
+			}
+			else if (name == "publication_year") {
+				book.pubYear = child.getTextContent();
+			}
+			else if (name == "work") {
+				child = findNode("original_publication_year", child.getChildNodes());
+				book.originalPubYear = child.getTextContent();
+			}
+		}
+		
+		
+		// book -> isbn, isbn13,
+		// -> work ->, orig pub year
+		return book;
+	}
 }
