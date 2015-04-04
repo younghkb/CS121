@@ -19,7 +19,7 @@
 hs_err_pid*
 
 #SQLite stuff
-.db-journal
+*.db-journal
 
 # =================
 # ANDROID GITIGNORE
