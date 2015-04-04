@@ -28,7 +28,6 @@ public class BookParser {
 		NodeList nodeList = document.getDocumentElement().getChildNodes();
 				
 		ArrayList<Book> bookList = new ArrayList<>();
-		NodeList childNodes = null;
 		Node work;
 		Book book = new Book();
 		
