@@ -3,23 +3,16 @@ import java.util.Scanner;
 
 public class QueryBuilder {
 	static String key = "";
+	static String urlPrefix = "https://www.goodreads.com/search/index.xml?key=";
 
-	public static void main(String[] args) throws Exception {
+	public static String makeURL(String query) throws Exception {
 		
 		// get key from ignored file
 		Scanner scan = new Scanner(new File("data.private"));
-		key += scan.nextLine();
+		key = scan.nextLine();
 		scan.close();
 		
-		System.out.println(makeURLfromISBN("123"));
+		return urlPrefix + key + "&q=" + query;
 	}
-
-	public static String makeURLfromISBN(String isbn) throws Exception {
-		
-		// get key from ignored file
-		Scanner scan = new Scanner(new File("data.private"));
-		key += scan.nextLine();
-		scan.close();
-		return "https://www.goodreads.com/search/index.xml?key=" + key + "&q=" + isbn;
-	}
+	
 }

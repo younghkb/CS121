@@ -14,10 +14,8 @@ import org.w3c.dom.*;
 public class BookParser {
 	
 	/* Parses the XML returned from the Goodreads query and returns the list of books found. */
-	public static List<Book> parseQuery(String queryURL) throws Exception {
+	public static ArrayList<Book> parseQuery(String queryURL) throws Exception {
 		
-		// "https://www.goodreads.com/search.xml?key=YOUR_KEY&q=Ender%27s+Game"
-		//url = new URL("https://www.goodreads.com/search/index.xml?key=" + key + "&q=Ender%27s+Game");
 		URL url = new URL(queryURL);
 		InputStream inputStream;
 
@@ -27,65 +25,38 @@ public class BookParser {
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = builder.parse(inputStream);
 				
-		// When searching by ISBN, there should only be one node, but we'll put the code in place
-		// to parse multiple results.
 		NodeList nodeList = document.getDocumentElement().getChildNodes();
-		
-		//System.out.println(nodeList.getLength() + " child nodes");
-		
-		List<Book> bookList = new ArrayList<>();
+				
+		ArrayList<Book> bookList = new ArrayList<>();
 		NodeList childNodes = null;
-		Node child;
-		Book book;
+		Node work;
+		Book book = new Book();
 		
 		// Find the nodes we want in the xml
 		try {
 			
 			Node search = findNode("search", nodeList);
 			Node result = findNode("results", search.getChildNodes());
-			Node work = findNode("work", result.getChildNodes());
-			Node bookNode = findNode("best_book", work.getChildNodes());
+			NodeList works = result.getChildNodes();
+			
+			// TODO might want to limit to first n results??
+			for (int i = 0; i < works.getLength(); i++) {
 				
-			childNodes = bookNode.getChildNodes();
+				work = works.item(i);
+				
+				if (work instanceof Text) {
+					continue;
+				}
+				
+				Node bookNode = findNode("best_book", work.getChildNodes());
+				book = parseBookNode(bookNode);
+			}
+						
+			// todo edit book object with info from book.show
+				
 		}
 		catch (NullPointerException e) {
 			System.out.println("Node not found!");
-		}
-		
-		// Create a new book object
-		book = new Book();
-		
-		// Iterate through the children
-		for (int j = 0; j < childNodes.getLength(); j++) {
-			
-			child = childNodes.item(j);
-			if (child instanceof Text) {	// ignore whitespace
-				continue;
-			}
-
-			String name = child.getNodeName();
-			
-			// For debugging
-			System.out.println(j + ": " + name);
-			
-			if (name == "id") {
-				book.id = child.getTextContent();
-				System.out.println(child.getTextContent());
-
-			}
-			else if (name == "title") {
-				book.title = child.getTextContent();
-			}
-			else if (name == "author") {
-				Node authorName = findNode("name", child.getChildNodes());
-				book.author = authorName.getTextContent();
-			}
-			else if (name == "image_url") {
-				book.imageUrl = child.getTextContent();
-			}
-			else if (name == "small_image_url") {
-				book.smallImageUrl = child.getTextContent();
-			}
 		}
 		
 		bookList.add(book);
@@ -111,6 +82,51 @@ public class BookParser {
 		}
 		return null;
 	}
+	
+	/* Returns a book created from parsing a best_book node. */
+	private static Book parseBookNode(Node bookNode) {
+		
+		Book book = new Book();
+		Node child;
+		
+		NodeList childNodes = bookNode.getChildNodes();
+		
+		// Iterate through the children
+		for (int i = 0; i < childNodes.getLength(); i++) {
+			
+			child = childNodes.item(i);
+			if (child instanceof Text) {	// ignore whitespace
+				continue;
+			}
+
+			String name = child.getNodeName();
+			
+			// For debugging
+			System.out.println(i + ": " + name);
+			
+			if (name == "id") {
+				book.id = child.getTextContent();
+				System.out.println(child.getTextContent());
+
+			}
+			else if (name == "title") {
+				book.title = child.getTextContent();
+			}
+			else if (name == "author") {
+				Node authorName = findNode("name", child.getChildNodes());
+				book.author = authorName.getTextContent();
+			}
+			else if (name == "image_url") {
+				book.imageUrl = child.getTextContent();
+			}
+			else if (name == "small_image_url") {
+				book.smallImageUrl = child.getTextContent();
+			}
+		}
+		
+		return book;
+	}
+	
 
 	// TODO add parsing for book.show
 }

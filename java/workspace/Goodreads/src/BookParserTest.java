@@ -21,7 +21,7 @@ public class BookParserTest {
 	public void testISBNQuery() {
 		
 		try {
-			String query = QueryBuilder.makeURLfromISBN("0544272994");
+			String query = QueryBuilder.makeURL("0544272994");
 			System.out.println(query);
 		
 			List<Book> booksFound = BookParser.parseQuery(query);
@@ -41,6 +41,22 @@ public class BookParserTest {
 			fail("Query failed with exception " + e.toString());
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void testTitleQuery() {
+		
+		try {
+			String query = QueryBuilder.makeURL("The Great Gatsby");
+			System.out.println(query);
+			
+			//assertEquals(book.isbn, "0544272994");	Not implemented yet.
+
+		} catch (Exception e) {
+			fail("Query failed with exception " + e.toString());
+			e.printStackTrace();
+		}
+		
 	}
 
 }
