@@ -1,5 +1,7 @@
 import static org.junit.Assert.fail;
 
+import java.sql.ResultSet;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,16 +52,16 @@ public class SQLiteDriverTest {
 			
 			// Get those exchanges
 			comm = SQLB.getPrivateExchanges(100);
-			SQLiteDriver.update(comm);
+			SQLiteDriver.query(comm);
 
 			comm = SQLB.getPrivateExchanges(300);			
-			SQLiteDriver.update(comm);
+			SQLiteDriver.query(comm);
 			
 			comm = SQLB.getPublicExchanges();
-			SQLiteDriver.update(comm);
+			SQLiteDriver.query(comm);
 			
 			comm = SQLB.getExchangeForBook(200);
-			SQLiteDriver.update(comm);
+			SQLiteDriver.query(comm);
 			
 			// Update those exchanges
 			// TODO uncomment once we have a way of getting an exchangeId from the query. 
@@ -96,11 +98,11 @@ public class SQLiteDriverTest {
 			// TODO insert another example book
 			
 			comm = SQLB.findBookFromISBN("0544272994");
-			SQLiteDriver.update(comm);
+			SQLiteDriver.query(comm);
 			
 			// TODO verify that this is indeed the oldest book
 			comm = SQLB.getOldestBook();
-			SQLiteDriver.update(comm);
+			SQLiteDriver.query(comm);
 
 			comm = SQLB.deleteBook(21413662);
 			SQLiteDriver.update(comm);

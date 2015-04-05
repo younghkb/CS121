@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 
 // modified from tutorial found at
@@ -22,18 +23,36 @@ public class SQLiteDriver {
 		
 		c = DriverManager.getConnection("jdbc:sqlite:db.db");
 		c.setAutoCommit(false);
-		System.out.println("Opened database successfully");
+		//System.out.println("Opened database successfully");
+		
+		System.out.println(sql);
 
 		stmt = c.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		
-		System.out.println(rs);
-		
+		printResultSet(rs);
+		System.out.println();
+	        
 		rs.close();
 		stmt.close();
 		c.close();
-
-		System.out.println("Query Operation done successfully");
+		
+		//System.out.println("Query Operation done successfully");
+		
+		//return rs;
+	}
+	
+	public static void printResultSet(ResultSet rs) throws Exception {
+		ResultSetMetaData rsmd = rs.getMetaData();
+	    int columnsNumber = rsmd.getColumnCount();
+	    while (rs.next()) {
+	    	for (int i = 1; i <= columnsNumber; i++) {
+	    		if (i > 1) System.out.print(",  ");
+	    		String columnValue = rs.getString(i);
+	    		System.out.print(columnValue + " " + rsmd.getColumnName(i));
+	    	}
+	    	System.out.println("");
+	    }
 	}
 
 	public static void update(String sql) throws Exception {
@@ -42,7 +61,10 @@ public class SQLiteDriver {
 		
 		c = DriverManager.getConnection("jdbc:sqlite:db.db");
 		c.setAutoCommit(false);
-		System.out.println("Opened database successfully");
+		//System.out.println("Opened database successfully");
+		
+		System.out.println(sql);
+		System.out.println();
 
 		stmt = c.createStatement();
 		stmt.executeUpdate(sql);
@@ -50,7 +72,7 @@ public class SQLiteDriver {
 
 		stmt.close();
 		c.close();
-		System.out.println("Update Operation done successfully");
+		//System.out.println("Update Operation done successfully");
 	}
 
 	
