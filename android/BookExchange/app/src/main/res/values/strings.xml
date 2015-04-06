@@ -29,14 +29,17 @@
     <string name="choose_request">Request</string>
     <string name="book_info">Book name OR ISBN OR Author</string>
 
-    <string name="time_frame_title">What is the time frame?</string>
-    <string name="one_week">1 week</string>
+    <string name="choose_loan_type">Is this an offer or a request?</string>
+<!--    <string name="one_week">1 week</string>
     <string name="one_month">1 month</string>
-    <string name="one_semester">1 semester</string>
+    <string name="one_semester">1 semester</string> -->
+
+    <string name="set_date"> Choose the ending date for your loan</string>
 
     <string name="feedback_body">Add a description to your loan</string>
     <string name = "feedback_button">Create loan!</string>
     <string name="title_activity_status">Status</string>
+    <string name="confirm_dialog">Are you sure you wish to make this loan?</string>
 
     <!-- Status -->
     <string name="book_title">Book: </string>

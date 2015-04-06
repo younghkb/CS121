@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class BookDetails extends ActionBarActivity {
     // controls whether we see a book currently in an exchange or that is just available
-    int type = 1;
+    int type = 0;
     final int AVAILABLE = 0;
     final int CURRENT = 1;
 
