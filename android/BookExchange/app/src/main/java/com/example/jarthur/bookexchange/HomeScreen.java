@@ -32,13 +32,13 @@ public class HomeScreen extends ActionBarActivity {
     }
 
     public void openStatus(View view) {
-        // Go to the Status page
+        // Go to the ViewExchangeActivity page that displays the state of a particular exchange
         Intent intent = new Intent(this, Status.class);
         startActivity(intent);
     }
 
     public void openBookDetails(View view) {
-        // Go to the Status page
+        // Go to the Book Details page
         Intent intent = new Intent(this, BookDetails.class);
         startActivity(intent);
     }

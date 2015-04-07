@@ -13,14 +13,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 
-public class Status extends ActionBarActivity {
+public class ViewExchangeActivity extends ActionBarActivity {
 
-    // controls whether we see request, borrow, or loan
-    int type = 0;
-    final int REQUEST = 0;
-    final int BORROW = 1;
-    final int LOAN = 2;
+    // Initial, Request, etc.
+    int exchangeStatus;
 
+    // true if the current user is the owner of this particular book
+    boolean isOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,32 +30,53 @@ public class Status extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        // TODO Call database and set type
+        // TODO Call database and get exchange details
+        // Need to know if user is person owning book.
 
-        // Sets visibilities correctly based on type
-        // Pages can show book, otherPerson, contactInfo, dueDate, finishButton
-        switch(type){
-            // Does not show dueDate
-            case REQUEST:
-                View b = findViewById(R.id.dueDate);
-                b.setVisibility(View.GONE);
+        // Sets visibilities correctly based on type and status
+        // Pages can show book (always), otherPerson, contactInfo, dueDate, finishButton
+
+        View otherPerson = findViewById(R.id.otherPerson);
+        View contactInfo = findViewById(R.id.contactInfo);
+        View dueDate = findViewById(R.id.dueDate);
+        View finishButton = findViewById(R.id.finishButton);
+        // View cancelButton = findViewById(R.id.cancelButton);
+
+        switch(exchangeStatus){
+
+            case ExchangeStatus.INITIAL:
+                otherPerson.setVisibility(View.GONE);
+                contactInfo.setVisibility(View.GONE);
+                if (!isOwner) {     // Borrow request
+                    dueDate.setVisibility(View.GONE);
+                }
+                finishButton.setVisibility(View.GONE);
                 break;
 
-            // Does not show finishButton
-            case BORROW:
-                View c = findViewById(R.id.finishButton);
-                c.setVisibility(View.GONE);
+            case ExchangeStatus.RESPONSE:   // Same as Initial
+                otherPerson.setVisibility(View.GONE);
+                contactInfo.setVisibility(View.GONE);
+                if (!isOwner) {     // Borrow request
+                    dueDate.setVisibility(View.GONE);
+                }
+                finishButton.setVisibility(View.GONE);
                 break;
 
-            // Shows everything
-            case LOAN:
+            case ExchangeStatus.ACCEPTED:
+                if (!isOwner) {     // only person owning book can end exchange
+                    finishButton.setVisibility(View.GONE);
+                }
+                break;
+
+            case ExchangeStatus.COMPLETED:
+                finishButton.setVisibility(View.GONE);  // already finished
+                break;
+
             default:
                 break;
         }
 
     }
-
-
 
     public static class AlertDialogFragment extends DialogFragment {
         @Override

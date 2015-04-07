@@ -41,14 +41,14 @@
     <string name="title_activity_status">Status</string>
     <string name="confirm_dialog">Are you sure you wish to make this loan?</string>
 
-    <!-- Status -->
+    <!-- ViewExchangeActivity -->
     <string name="book_title">Book: </string>
     <string name="exchange_partner"> Exchange Partner: </string>
     <string name="contact_info"> How to contact: </string>
     <string name="due_date"> Due Date: </string>
     <string name="finish_button"> Mark as complete! </string>
 
-    <!--Status alert dialog-->
+    <!--ViewExchangeActivity alert dialog-->
     <string name="alert_message">Are you sure you wish to finish this exchange?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
