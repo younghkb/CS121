@@ -2,8 +2,6 @@ package com.example.jarthur.bookexchange;
 
 import java.util.Date;
 
-// Ask Andrew about order of creating an exchange
-
 public class Exchange {
 
     public Integer exchange_id;

@@ -7,7 +7,7 @@ import java.util.List;
 
 // TODO implement methods
 
-// Ask Andrew—should this be static or a singleton?
+// TODO make static
 public class RequestManager {
 
 

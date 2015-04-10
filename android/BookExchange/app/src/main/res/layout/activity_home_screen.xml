@@ -47,7 +47,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/create"
-                    android:onClick="openCreateLoan"/>
+                    android:onClick="openCreateExchangeActivity"/>
 
 
                 <Button
@@ -86,7 +86,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/request"
-                    android:onClick="openExchangeActivity"/>
+                    android:onClick="openViewExchangeActivity"/>
 
          <!--   </TableRow>
 
@@ -100,7 +100,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/borrowing"
-                    android:onClick="openExchangeActivity"/>
+                    android:onClick="openViewExchangeActivity"/>
          <!--   </TableRow>
 
             <TableRow
@@ -113,7 +113,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/loaning"
-                    android:onClick="openExchangeActivity"/>
+                    android:onClick="openViewExchangeActivity"/>
           <!--  </TableRow>
 
 

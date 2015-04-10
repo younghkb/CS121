@@ -23,21 +23,23 @@ public class HomeScreen extends ActionBarActivity {
 
     // code from: http://blogs.technicise.com/
     // how-to-open-a-new-android-activity-from-another-activity-on-clicking-a-button/
-    public void openCreateLoan(View view) {
+    public void openCreateExchangeActivity(View view) {
         // Go to the Loan page
         Intent intent = new Intent(this, CreateExchangeActivity.class);
         startActivity(intent);
     }
 
-    public void openExchangeActivity(View view) {
+    public void openViewExchangeActivity(View view) {
         // TODO make sure ViewExchangeActivity gets the Exchange
         // Go to the ViewExchangeActivity page that displays the state of a particular exchange
+        // TODO send Exchange details with Intent
         Intent intent = new Intent(this, ViewExchangeActivity.class);
         startActivity(intent);
     }
 
     public void openBookDetailsActivity(View view) {
         // Go to the Book Details page
+        // TODO send Book details with Intent
         Intent intent = new Intent(this, BookDetailsActivity.class);
         startActivity(intent);
     }

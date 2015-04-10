@@ -17,7 +17,10 @@ import java.util.Calendar;
 
 public class CreateExchangeActivity extends ActionBarActivity {
 
-    Exchange newExchange;
+    // Gives the servers the parameters for a new exchange, then queries to get it
+
+    // FIXME This will be static (created in main activity)
+    RequestManager requestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +59,15 @@ public class CreateExchangeActivity extends ActionBarActivity {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            // TODO change message
             builder.setMessage(R.string.confirm_dialog)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
                             // want to do this
                             // TODO connect to database
+
+
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
