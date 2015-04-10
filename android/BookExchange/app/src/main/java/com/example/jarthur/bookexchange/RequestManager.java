@@ -8,7 +8,14 @@ import java.util.List;
 // TODO implement methods
 
 // TODO make static
+
+// TODO open socket every time we make request
+
 public class RequestManager {
+
+    public boolean sendUser(Integer userId) {
+        return false;
+    }
 
 
      /* Returns a list of books from Goodreads. */
@@ -42,7 +49,7 @@ public class RequestManager {
     }
 
     /* Update exchange status. */
-    public boolean updateExchange() {
+    public boolean updateExchange(Exchange newExchange) {
 
         return false;
 

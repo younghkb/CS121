@@ -1,5 +1,7 @@
 package com.example.jarthur.bookexchange;
 
+// Note: this is an inner class of Exchange in the server code. May refactor to follow this
+// structure later.
 public enum ExchangeStatus {
     INITIAL,
     RESPONSE,
@@ -8,6 +10,6 @@ public enum ExchangeStatus {
 }
 
 /* public enum ExchangeType {
-    LOAN(0),
-    BORROW(1);
+    LOAN,
+    BORROW;
 } */
