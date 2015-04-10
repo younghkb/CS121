@@ -73,6 +73,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // User cancelled the dialog
+                            // TODO return to previous activity
                         }
                     });
             // Create the AlertDialog object and return it
@@ -103,7 +104,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
 
-            // TODO ??
+            // TODO ?? make date object
         }
     }
 

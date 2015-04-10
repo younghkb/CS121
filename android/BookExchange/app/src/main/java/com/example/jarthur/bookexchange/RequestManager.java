@@ -13,10 +13,6 @@ import java.util.List;
 
 public class RequestManager {
 
-    public boolean sendUser(Integer userId) {
-        return false;
-    }
-
 
      /* Returns a list of books from Goodreads. */
     public List<Book> findBooks(String query) {
