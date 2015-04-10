@@ -5,8 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,18 +15,19 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 
 
-public class CreateLoan extends ActionBarActivity {
+public class CreateExchangeActivity extends ActionBarActivity {
+
+    Exchange newExchange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_loan);
+        setContentView(R.layout.activity_create_exchange);
 
         // Make logo show up in action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,7 +67,6 @@ public class CreateLoan extends ActionBarActivity {
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // User cancelled the dialog
-                            // TODO connect to database
                         }
                     });
             // Create the AlertDialog object and return it
@@ -96,6 +96,8 @@ public class CreateLoan extends ActionBarActivity {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
+
+            // TODO ??
         }
     }
 

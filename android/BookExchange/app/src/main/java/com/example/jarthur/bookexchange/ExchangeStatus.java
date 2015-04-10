@@ -1,9 +1,10 @@
+package com.example.jarthur.bookexchange;
 
 public enum ExchangeStatus {
-    INITIAL(0),
-    RESPONSE(1),
-    ACCEPTED(2),
-    COMPLETED(3);
+    INITIAL,
+    RESPONSE,
+    ACCEPTED,
+    COMPLETED;
 }
 
 /* public enum ExchangeType {

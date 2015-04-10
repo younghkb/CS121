@@ -1,13 +1,11 @@
 package com.example.jarthur.bookexchange;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 
 public class HomeScreen extends ActionBarActivity {
@@ -27,19 +25,20 @@ public class HomeScreen extends ActionBarActivity {
     // how-to-open-a-new-android-activity-from-another-activity-on-clicking-a-button/
     public void openCreateLoan(View view) {
         // Go to the Loan page
-        Intent intent = new Intent(this, CreateLoan.class);
+        Intent intent = new Intent(this, CreateExchangeActivity.class);
         startActivity(intent);
     }
 
-    public void openStatus(View view) {
+    public void openExchangeActivity(View view) {
+        // TODO make sure ViewExchangeActivity gets the Exchange
         // Go to the ViewExchangeActivity page that displays the state of a particular exchange
-        Intent intent = new Intent(this, Status.class);
+        Intent intent = new Intent(this, ViewExchangeActivity.class);
         startActivity(intent);
     }
 
-    public void openBookDetails(View view) {
+    public void openBookDetailsActivity(View view) {
         // Go to the Book Details page
-        Intent intent = new Intent(this, BookDetails.class);
+        Intent intent = new Intent(this, BookDetailsActivity.class);
         startActivity(intent);
     }
 

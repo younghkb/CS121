@@ -1,8 +1,8 @@
 package com.example.jarthur.bookexchange;
 
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,12 +10,17 @@ import android.view.View;
 import java.io.InputStream;
 import java.net.URL;
 
+// TODO get image from url
 
-public class BookDetails extends ActionBarActivity {
-    // controls whether we see a book currently in an exchange or that is just available
-    int type = 0;
-    final int AVAILABLE = 0;
-    final int CURRENT = 1;
+public class BookDetailsActivity extends ActionBarActivity {
+
+    // TODO get book id from parent activities
+
+    // FIXME This may be static or a singleton??
+    RequestManager requestManager;
+
+    // Goodreads id of the book (stored in the Exchange data)
+    String bookId;
 
 
     @Override
@@ -23,29 +28,26 @@ public class BookDetails extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        // TODO Call database and set type
+        Book myBook = requestManager.findBook(bookId);
+
+        // Initial, Request, etc.
+        ExchangeStatus exchangeStatus = myBook.status;
 
         // Sets visibilities correctly based on type
-        // hides the request button from the details of a book currently
-        // involved in an exchange
-        switch (type) {
+        // hides the request button from the details of a book involved in an exchange
+        if (exchangeStatus == ExchangeStatus.ACCEPTED || exchangeStatus == ExchangeStatus.COMPLETED) {
+
             // Does not show request button, owner or possible loan period
-            case CURRENT:
-                View b = findViewById(R.id.requestButton);
-                b.setVisibility(View.GONE);
+            View b = findViewById(R.id.requestButton);
+            b.setVisibility(View.GONE);
 
-                View c = findViewById(R.id.loanPeriod);
-                c.setVisibility(View.GONE);
+            View c = findViewById(R.id.loanPeriod);
+            c.setVisibility(View.GONE);
 
-                View d = findViewById(R.id.owner);
-                d.setVisibility(View.GONE);
-                break;
-
-            // Shows everything
-            case AVAILABLE:
-            default:
-                break;
+            View d = findViewById(R.id.owner);
+            d.setVisibility(View.GONE);
         }
+        // Otherwise show everything
     }
 
 
@@ -79,7 +81,7 @@ public class BookDetails extends ActionBarActivity {
         try {
             InputStream is = (InputStream) new URL(url).getContent();
             //is.
-            Drawable d = Drawable.createFromStream(is, "src name");
+            Drawable d = Drawable.createFromStream(is, "Goodreads Image URL");
             return d;
         } catch (Exception e) {
             return null;

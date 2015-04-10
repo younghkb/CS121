@@ -4,19 +4,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
-
+// Originally 'Status'
 public class ViewExchangeActivity extends ActionBarActivity {
 
     // Initial, Request, etc.
-    int exchangeStatus;
+    ExchangeStatus exchangeStatus;
 
     // true if the current user is the owner of this particular book
     boolean isOwner;
@@ -24,14 +22,14 @@ public class ViewExchangeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_status);
+        setContentView(R.layout.activity_view_exchange);
 
         // Make logo show up in action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        // TODO Call database and get exchange details
-        // Need to know if user is person owning book.
+        // TODO Get Exchange from parent activity (HomeScreen)
+
 
         // Sets visibilities correctly based on type and status
         // Pages can show book (always), otherPerson, contactInfo, dueDate, finishButton
@@ -44,7 +42,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
         switch(exchangeStatus){
 
-            case ExchangeStatus.INITIAL:
+            case INITIAL:
                 otherPerson.setVisibility(View.GONE);
                 contactInfo.setVisibility(View.GONE);
                 if (!isOwner) {     // Borrow request
@@ -53,7 +51,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
                 finishButton.setVisibility(View.GONE);
                 break;
 
-            case ExchangeStatus.RESPONSE:   // Same as Initial
+            case RESPONSE:   // Same as Initial
                 otherPerson.setVisibility(View.GONE);
                 contactInfo.setVisibility(View.GONE);
                 if (!isOwner) {     // Borrow request
@@ -62,13 +60,13 @@ public class ViewExchangeActivity extends ActionBarActivity {
                 finishButton.setVisibility(View.GONE);
                 break;
 
-            case ExchangeStatus.ACCEPTED:
+            case ACCEPTED:
                 if (!isOwner) {     // only person owning book can end exchange
                     finishButton.setVisibility(View.GONE);
                 }
                 break;
 
-            case ExchangeStatus.COMPLETED:
+            case COMPLETED:
                 finishButton.setVisibility(View.GONE);  // already finished
                 break;
 
@@ -78,6 +76,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
     }
 
+    /* Confirmation for completion or cancellation of an exchange. */
     public static class AlertDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
