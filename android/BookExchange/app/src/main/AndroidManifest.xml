@@ -17,19 +17,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateLoan"
-            android:label="@string/title_activity_create_loan" >
+            android:name=".CreateExchangeActivity"
+            android:label="Create Exchange" >
             <intent-filter>
-                <action android:name="in.wptrafficanalyzer.CreateLoan" />
+                <action android:name="in.wptrafficanalyzer.CREATEEXCHANGE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".Status"
-            android:label="@string/title_activity_status" >
+            android:name=".ViewExchangeActivity"
+            android:label="View Exchange" >
             <intent-filter>
-                <action android:name="in.wptrafficanalyzer.Status" />
+                <action android:name="in.wptrafficanalyzer.VIEWEXCHANGE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

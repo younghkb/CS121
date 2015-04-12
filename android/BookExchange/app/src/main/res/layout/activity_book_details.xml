@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="@string/bookEx1"
             android:layout_gravity="center"
-            android:textSize="16pt">
+            android:textSize="18sp">
         </TextView>
 
         <!--This will be replaced by code that can take in an image from the internet-->
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/author"
-            android:textSize="10pt">
+            android:textSize="18sp">
         </TextView>
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/isbn"
-            android:textSize="10pt">
+            android:textSize="18sp">
         </TextView>
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pub_year"
-            android:textSize="10pt">
+            android:textSize="18sp">
         </TextView>
 
         <TextView
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/owner"
-            android:textSize="10pt">
+            android:textSize="18sp">
         </TextView>
 
         <TextView
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/loan_period"
-            android:textSize="10pt">
+            android:textSize="18sp">
         </TextView>
 
         <Button

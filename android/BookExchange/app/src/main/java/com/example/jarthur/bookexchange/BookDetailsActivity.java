@@ -28,7 +28,10 @@ public class BookDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        Book myBook = requestManager.findBook(bookId);
+        //Book myBook = requestManager.findBook(bookId);
+
+        Book myBook = new Book();
+        myBook.status = ExchangeStatus.INITIAL;
 
         // Initial, Request, etc.
         ExchangeStatus exchangeStatus = myBook.status;
@@ -79,7 +82,7 @@ public class BookDetailsActivity extends ActionBarActivity {
     //TODO make this work gosh darn it
     public static Drawable imageFromUrl(String url) {
         try {
-            InputStream is = (InputStream) new URL(url).getContent();
+            InputStream is = (InputStream) new URL("https://d.gr-assets.com/books/1372847500m/5907.jpg").getContent();
             //is.
             Drawable d = Drawable.createFromStream(is, "Goodreads Image URL");
             return d;

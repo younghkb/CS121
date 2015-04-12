@@ -30,6 +30,8 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
         // TODO Get Exchange from parent activity (HomeScreen)
 
+        exchangeStatus = ExchangeStatus.INITIAL;        // TODO 
+
 
         // Sets visibilities correctly based on type and status
         // Pages can show book (always), otherPerson, contactInfo, dueDate, finishButton
@@ -93,7 +95,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // User cancelled the dialog
-                            // TODO return to previous activity
+                            // TODO return to previous activity?
                         }
                     });
             // Create the AlertDialog object and return it
