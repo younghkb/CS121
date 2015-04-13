@@ -1,7 +1,8 @@
-package server;
+package server.grrecycle;
 
 import java.util.Date;
 
+import server.grfetch.GRFetch;
 import logging.Log;
 // import xmlparse.GRE;
 import database.SQLE;
@@ -30,7 +31,7 @@ public class GRRecycle extends Thread {
 					nextRecycle = null; // need to do this so updateRecycle() will update
 					updateRecycle(); // TODO sleep so we don't over query
 				}
-				Thread.sleep(1000); //TODO have signals wake this up
+				Thread.sleep(60000); //TODO have signals wake this up
 			}
 		} catch(Exception e) {
 			System.err.println();

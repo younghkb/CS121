@@ -92,6 +92,10 @@ public abstract class SQLB { //TODO Sanitize
 		return ""; //TODO throw exception
 	}
 	
+	public static String createExchange(Exchange exchange) {
+		return createExchange((exchange.exchange_type == Exchange.Type.BORROW ? exchange.borrower_id : exchange.loaner_id), exchange.exchange_type, exchange.book_id, exchange.book_title);
+	}
+	
 	private static String createExchangeBorrow(int borrow_id, Exchange.Type exchange_type, int book_id, String book_title) { //TODO exchange type
 		String command = "insert into exchanges (borrower_id, exchange_type, book_id, book_title, create_date, status) values (%d, '%s', %d, '%s', datetime('now'), 'INITIAL');";
 		return String.format(command, borrow_id, exchange_type, book_id, book_title);

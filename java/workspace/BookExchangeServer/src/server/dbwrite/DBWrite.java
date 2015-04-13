@@ -1,4 +1,4 @@
-package server;
+package server.dbwrite;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -64,7 +64,7 @@ public class DBWrite extends Thread {
 //		}
 //	}
 	
-	public static void write(String sql) { //TODO could write ordering causing problems?
+	public static void queue(String sql) { //TODO could write ordering causing problems?
 		Log.log("DBWrite", "Queue", sql);
 		DBWriteQueue.add(sql);
 	}

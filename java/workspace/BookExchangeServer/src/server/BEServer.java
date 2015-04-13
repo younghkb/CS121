@@ -2,6 +2,11 @@ package server;
 
 import java.net.ServerSocket;
 
+import logging.Log;
+import server.dbwrite.DBWrite;
+import server.grrecycle.GRRecycle;
+import server.user.UserSession;
+
 //import java.time.Clock; // only for JDK8 -- this class seems much nicer than Date
 
 public class BEServer {
@@ -15,8 +20,10 @@ public class BEServer {
 	static boolean keepRunning = true;
 
 	// TODO make this handle Exceptions correctly
-	static void main(String[] args) throws Exception {
-	
+	public static void main(String[] args) throws Exception {
+		
+		Log.log("BEServer", "Server Start", "");
+		
 		// start background threads
 		new DBWrite().start();
 		//new GRFetch().start();
@@ -25,7 +32,7 @@ public class BEServer {
 		ServerSocket connectSocket = new ServerSocket(PORT);
 		
 		while (keepRunning) {
-			new User(connectSocket.accept()).start();
+			new UserSession(connectSocket.accept()).start();
 		}
 		
 		connectSocket.close();

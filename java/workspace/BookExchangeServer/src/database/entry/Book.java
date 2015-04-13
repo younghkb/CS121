@@ -22,7 +22,7 @@ public class Book implements Serializable {
 	public Book() {}
 	
 	public String toString() {
-		String str = String.format("book_id: %d\nbook_title: %s\nauthor: %s\nisbn: %s\npub_year: %s\norig_pub_year: %s\nimage_url: %s\nsmall_image_url: %s\nadd_date: %s\n",
+		String str = String.format("book_id: %d, book_title: %s, author: %s, isbn: %s, pub_year: %s, orig_pub_year: %s, image_url: %s, small_image_url: %s, add_date: %s",
 				book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url, add_date);
 		return str; 
 	}

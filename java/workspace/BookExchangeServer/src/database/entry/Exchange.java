@@ -9,8 +9,8 @@ public class Exchange implements Serializable {
 	public Type exchange_type;
 	
 	// id data
-	public int loaner_id;
 	public int borrower_id;
+	public int loaner_id;
 	public int book_id;
 	
 	public String book_title;
@@ -24,8 +24,8 @@ public class Exchange implements Serializable {
 	public Exchange() {}
 	
 	public String toString() {
-		return String.format("%d\n%s\n%d\n%d\n%d\n%s\n%s\n%s\n%s\n%s\n",
-				exchange_id, exchange_type, loaner_id, borrower_id, book_id, book_title, create_date, start_date, end_date, status);
+		return String.format("exchange_id: %d, exchange_type: %s, borrower_id: %d, loaner_id: %d, book_id: %d, book_title: %s, create_date: %s, start_date: %s, end_date: %s, status: %s",
+				exchange_id, exchange_type, borrower_id, loaner_id, book_id, book_title, create_date, start_date, end_date, status);
 	}
 	
 	public static enum Status {

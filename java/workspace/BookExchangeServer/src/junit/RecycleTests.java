@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import server.GRRecycle;
+import server.grrecycle.GRRecycle;
 import database.SQLE;
 
 public class RecycleTests {

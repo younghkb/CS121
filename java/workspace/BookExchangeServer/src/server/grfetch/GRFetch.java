@@ -1,4 +1,4 @@
-package server;
+package server.grfetch;
 
 import java.io.File;
 import java.io.InputStream;
@@ -25,12 +25,16 @@ public class GRFetch {
 	private final static String HOST = "www.goodreads.com";
 	private final static String SEARCHPATH = "/search/index.xml";
 	
-	public static void main(String[] args) throws Exception {
-		System.out.println(query("Hop on Pop"));
-	}
+//	public static void main(String[] args) throws Exception {
+//		System.out.println(query("Hop on Pop"));
+//	}
 	
 	public static Book query(String query) throws Exception {	
 		return queryBooks(query, Integer.MAX_VALUE).get(0);
+	}
+	
+	public static List<Book> queryBooks(String query) throws Exception {
+		return queryBooks(query, Integer.MAX_VALUE);
 	}
 	
 	public static List<Book> queryBooks(String query, int maxLength) throws Exception {	
