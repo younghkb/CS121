@@ -46,7 +46,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        //noinspection SimplifiableIfStatement  //?? -HR
         if (id == R.id.action_settings) {
             return true;
         }
@@ -73,7 +73,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // User cancelled the dialog
-                            // TODO return to previous activity
+                            // TODO return to previous activity?
                         }
                     });
             // Create the AlertDialog object and return it
