@@ -14,24 +14,14 @@ import java.net.URL;
 
 public class BookDetailsActivity extends ActionBarActivity {
 
-    // TODO get book id from parent activities
-
-    // FIXME This may be static or a singleton??
-    RequestManager requestManager;
-
-    // Goodreads id of the book (stored in the Exchange data)
-    String bookId;
-
+   Book myBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        //Book myBook = requestManager.findBook(bookId);
-
-        Book myBook = new Book();
-        myBook.status = ExchangeStatus.INITIAL;
+        myBook = (Book) savedInstanceState.getSerializable("book");
 
         // Initial, Request, etc.
         ExchangeStatus exchangeStatus = myBook.status;

@@ -13,6 +13,12 @@ import java.util.List;
 
 public class RequestManager {
 
+    private static RequestManager me;
+
+    public RequestManager getRequestManager() {
+        return me;
+    }
+
 
      /* Returns a list of books from Goodreads. */
     public List<Book> findBooks(String query) {
@@ -50,5 +56,7 @@ public class RequestManager {
         return false;
 
     }
+
+    // TODO add method to get all available books?
 
 }

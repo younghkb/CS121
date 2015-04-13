@@ -13,6 +13,8 @@ import android.view.View;
 // Originally 'Status'
 public class ViewExchangeActivity extends ActionBarActivity {
 
+    Exchange myExchange;
+
     // Initial, Request, etc.
     ExchangeStatus exchangeStatus;
 
@@ -28,9 +30,10 @@ public class ViewExchangeActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        // TODO Get Exchange from parent activity (HomeScreen)
+        // Get Exchange from parent activity (HomeScreen)
+        myExchange = (Exchange) savedInstanceState.getSerializable("exchange");
 
-        exchangeStatus = ExchangeStatus.INITIAL;        // TODO 
+        exchangeStatus = ExchangeStatus.INITIAL;        // TODO
 
 
         // Sets visibilities correctly based on type and status

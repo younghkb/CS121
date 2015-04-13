@@ -13,14 +13,15 @@ import android.view.View;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
+import java.util.Date;
 
+// Currently using java.util.Date, NOT java.sql.Date
 
 public class CreateExchangeActivity extends ActionBarActivity {
 
     // Gives the servers the parameters for a new exchange, then queries to get it
 
-    // FIXME This will be static (created in main activity)
-    RequestManager requestManager;
+    // TODO where the heck is the Book title input???
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,12 @@ public class CreateExchangeActivity extends ActionBarActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
                             // want to do this
-                            // TODO connect to database
+
+                            Exchange newExchange = new Exchange();
+                            newExchange.bookTitle = "TODO";
+                            newExchange.startDate = new Date();    // TODO
+
+                            //requestManager.createExchange(newExchange);
 
 
                         }

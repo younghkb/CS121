@@ -18,6 +18,9 @@ public class HomeScreen extends ActionBarActivity {
         // Make logo show up in action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        // TODO load exchanges and books
+        // TODO create a list of views with the book list
     }
 
     // code from: http://blogs.technicise.com/
@@ -28,19 +31,25 @@ public class HomeScreen extends ActionBarActivity {
         startActivity(intent);
     }
 
+    // Go to the ViewExchangeActivity page that displays the state of a particular exchange
     public void openViewExchangeActivity(View view) {
-        // TODO make sure ViewExchangeActivity gets the Exchange
-        // Go to the ViewExchangeActivity page that displays the state of a particular exchange
-        // TODO send Exchange details with Intent
+        // TODO get exchange corresponding to view
+
+        Exchange myExchange = new Exchange();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("exchange", myExchange);
         Intent intent = new Intent(this, ViewExchangeActivity.class);
-        startActivity(intent);
+        startActivity(intent.putExtras(bundle));
     }
 
     public void openBookDetailsActivity(View view) {
         // Go to the Book Details page
-        // TODO send Book details with Intent
+        // TODO get book corresponding to the view
+        Book myBook = new Book();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("book", myBook);
         Intent intent = new Intent(this, BookDetailsActivity.class);
-        startActivity(intent);
+        startActivity(intent.putExtras(bundle));
     }
 
     @Override
@@ -61,7 +70,6 @@ public class HomeScreen extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
