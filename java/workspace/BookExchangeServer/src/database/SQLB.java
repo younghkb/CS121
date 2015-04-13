@@ -1,85 +1,142 @@
 package database;
 
-import database.entry.Status;
+import database.entry.Book;
+import database.entry.Exchange;
 
 // SQL Builder
 public abstract class SQLB { //TODO Sanitize
 
-	// Does not guarantee that user is allowed to view the exchange.
-	static String getExchange(Integer exchangeId) {
-		return "select * from exchanges where exchange_id = " + exchangeId;
+	// ===================
+	// create/delete books
+	// ===================
+	
+	public static String createBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) {
+		String command = "insert into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));";
+		return String.format(command, book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url);
 	}
 	
-	
-	static String getPublicExchanges() {
-		return "select * from exchanges where status = 'INITIAL' or status = 'RESPONSE';";
+	public static String createBook(Book book) {
+		String command = "insert into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));";
+		return String.format(command, book.book_id, book.book_title, book.author, book.isbn, book.pub_year, book.orig_pub_year, book.image_url, book.small_image_url);
 	}
 	
-	static String getPrivateExchanges(Integer userId) {
-		return "select * from exchanges where loaner_id = " + userId + " or borrower_id = " + userId + ";";
+	public static String updateBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) {
+		String command = "update books set book_id = %d, book_title = '%s', author = '%s', isbn = '%s', pub_year = '%s', orig_pub_year = '%s', image_url = '%s', small_image_url = '%s', add_date = datetime('now') where book_id = %d;";
+		return String.format(command, book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url, book_id);
 	}
 	
-	static String createExchangeLoan(Integer loanerId, String bookId, String title) {
-		String command = "insert into exchanges (loaner_id, book_id, book_title, create_date, status) values (%d, %s, '%s', datetime('now'), 'INITIAL');";
-		return String.format(command, loanerId, bookId, title);
+	public static String updateBook(Book book) {
+		String command = "update books set book_id = %d, book_title = '%s', author = '%s', isbn = '%s', pub_year = '%s', orig_pub_year = '%s', image_url = '%s', small_image_url = '%s', add_date = datetime('now') where book_id = %d;";
+		return String.format(command, book.book_id, book.book_title, book.author, book.isbn, book.pub_year, book.orig_pub_year, book.image_url, book.small_image_url, book.book_id);
 	}
 	
-	static String createExchangeBorrow(Integer borrowId, String bookId, String title) {
-		String command = "insert into exchanges (borrower_id, book_id, book_title, create_date, status) values (%d, %s, '%s', datetime('now'), 'INITIAL');";
-		return String.format(command, borrowId, bookId, title);
+	public static String deleteBook(int book_id) {
+		String command = "delete from books where book_id = %d;";
+		return String.format(command, book_id);
 	}
 	
-	static String addLoaner(Integer id, Integer loanerId) {
-		return "update exchanges set loaner_id = '" + loanerId + "' where exchange_id = " + id + ";";
+	// =========
+	// get books
+	// =========
+	
+	public static String getBook(int book_id) {
+		String command = "select * from books where book_id = %d;";
+		return String.format(command, book_id);
 	}
 	
-	static String addBorrower(Integer id, Integer borrowerId) {
-		return "update exchanges set borrower_id = '" + borrowerId + "' where exchange_id = " + id + ";";
+	public static String getBookFromISBN(String isbn) {
+		String command = "select * from books where isbn = %s;";
+		return String.format(command, isbn); // changed to *
 	}
 	
-	static String updateExchangeStatus(Integer id, Status newStatus) {
-		return "update exchanges set status = '" + newStatus + "' where exchange_id = " + id + ";";
-	}
-	
-	static String insertBook(String bookId, String title, String author, String isbn, Integer pubYear, Integer origPubYear,
-								String imageUrl, String smallImageUrl) {
-		return "insert into books values ("
-				+ bookId + ",'" + title + "','" + author + "','" + isbn + "'," + pubYear + "," + 
-				origPubYear + ",'" + imageUrl + "','" + smallImageUrl + "'," + " datetime('now'));";
-	}
-		
-	static String getOldestBook() {
+	public static String getOldestBook() {
 		return "select * from books where add_date = (select min(add_date) from books);"; // changed to *
 	}
 	
-	static String findBookFromISBN(String isbn) {
-		return "select * from books where isbn = " + isbn; // changed to *
-	}
-	
-	static String getBook(String bookId) {
-		return "select * from books where book_id = " + bookId + ";";
-	}
-	
-	static String deleteBook(String bookId) {
-		return "delete from books where book_id = " + bookId + ";";
-	}
-	
 	// Can be used to determine if a book is active or find exchanges for a specific book (i.e., user search)
-	static String getExchangeForBook(String bookId) {
-		return "select * from exchanges where book_id = " + bookId + " and status != 'COMPLETED';";
+	public static String getExchangeForBook(int book_id) {
+		String command = "select * from exchanges where book_id = %i and status != 'COMPLETED';";
+		return String.format(command, book_id);
 	}
 	
-	/* Commands used to empty the tables. */
+	// ============
+	// empty tables
+	// ============
 	
-	static String deleteAllBooks() {
+	public static String deleteAllBooks() {
 		return "delete from books;";
 	}
 	
-	static String deleteAllExchanges() {
+	public static String deleteAllExchanges() {
 		return "delete from exchanges;";
 	}
 	
-	static String deleteAllUsers() {
+	public static String deleteAllUsers() {
 		return "delete from users;";
+	}
+	
+	// ====================================================================================================
+	// ====================================================================================================
+	
+	// ================
+	// create exchanges
+	// ================
+	
+	public static String createExchange(int initUser_id, Exchange.Type exchange_type, int book_id, String book_title) {
+		switch (exchange_type) {
+		case BORROW:
+			return createExchangeBorrow(initUser_id, Exchange.Type.BORROW, book_id, book_title);
+		case LOAN:
+			return createExchangeLoan(initUser_id, Exchange.Type.LOAN, book_id, book_title);
+		}
+		return ""; //TODO throw exception
+	}
+	
+	private static String createExchangeBorrow(int borrow_id, Exchange.Type exchange_type, int book_id, String book_title) { //TODO exchange type
+		String command = "insert into exchanges (borrower_id, exchange_type, book_id, book_title, create_date, status) values (%d, '%s', %d, '%s', datetime('now'), 'INITIAL');";
+		return String.format(command, borrow_id, exchange_type, book_id, book_title);
+	}
+	
+	private static String createExchangeLoan(int loaner_id, Exchange.Type exchange_type, int book_id, String book_title) { //TODO exchange type
+		String command = "insert into exchanges (loaner_id, exchange_type, book_id, book_title, create_date, status) values (%d, '%s', %d, '%s', datetime('now'), 'INITIAL');";
+		return String.format(command, loaner_id, exchange_type, book_id, book_title);
+	}
+	
+	// =============
+	// get exchanges
+	// =============
+	
+	public static String getExchange(int exchange_id) { // Does not guarantee that user is allowed to view the exchange.
+		String command = "select * from exchanges where exchange_id = %s;";
+		return String.format(command, exchange_id);
+	}
+	
+	public static String getPublicExchanges() {
+		// "select * from exchanges where status = 'INITIAL' or status = 'RESPONSE';";
+		return "select * from exchanges where status = 'INITIAL';";
+	}
+	
+	public static String getPrivateExchanges(int user_id) {
+		String command = "select * from exchanges where loaner_id = %s or borrower_id = %s;";
+		return String.format(command, user_id, user_id);
+	}	
+	
+	// ================
+	// modify exchanges
+	// ================
+	
+	public static String updateBorrower(int exchange_id, int borrower_id) {
+		String command = "update exchanges set borrower_id = %d where exchange_id = %d;";
+		return String.format(command, borrower_id, exchange_id);
+	}
+	
+	public static String updateLoaner(int exchange_id, int loaner_id) {
+		String command = "update exchanges set loaner_id = %d where exchange_id = %d;";
+		return String.format(command, loaner_id, exchange_id);
+	}
+	
+	public static String updateExchangeStatus(int exchange_id, Exchange.Status status) {
+		String command = "update exchanges set status = '%s' where exchange_id = %d;";
+		return String.format(command, status, exchange_id);
 	}
 }

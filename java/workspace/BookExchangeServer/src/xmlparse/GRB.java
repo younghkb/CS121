@@ -10,12 +10,12 @@ public class GRB {
 	static String scheme = "https";
 	static String host = "www.goodreads.com";
 	static String searchPath = "/search/index.xml";
-
+	
 	public static URL makeSearchURL(String query) throws Exception {
 		
 		// get key from ignored file
 		Scanner scan = new Scanner(new File("data.private"));
-		key = scan.nextLine();
+		key = scan.nextLine(); // TODO do this once
 		scan.close();
 		
 		// See https://docs.oracle.com/javase/8/docs/api/java/net/URI.html
@@ -24,7 +24,7 @@ public class GRB {
 		return uri.toURL();
 	}
 	
-	public static URL makeBookDetailsURL(String bookId) throws Exception {
+	public static URL makeBookDetailsURL(int bookId) throws Exception {
 		
 		// get key from ignored file
 		Scanner scan = new Scanner(new File("data.private"));

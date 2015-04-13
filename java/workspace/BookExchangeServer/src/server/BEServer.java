@@ -2,9 +2,9 @@ package server;
 
 import java.net.ServerSocket;
 
-import server.dbwrite.DBWriteThread;
-import server.grfetch.GRFetchThread;
-import server.grrecycle.GRRecycleThread;
+import server.dbwrite.DBWrite;
+import server.grfetch.GRFetch;
+import server.grrecycle.GRRecycle;
 //import java.time.Clock; // only for JDK8 -- this class seems much nicer than Date
 import server.user.UserThread;
 
@@ -22,9 +22,9 @@ public class BEServer {
 	static void main(String[] args) throws Exception {
 	
 		// start background threads
-		new DBWriteThread().start();
-		new GRFetchThread().start();
-		new GRRecycleThread().start();
+		new DBWrite().start();
+		new GRFetch().start();
+		new GRRecycle().start();
 
 		ServerSocket connectSocket = new ServerSocket(PORT);
 		

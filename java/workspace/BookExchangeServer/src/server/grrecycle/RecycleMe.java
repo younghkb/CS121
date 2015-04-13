@@ -3,6 +3,6 @@ package server.grrecycle;
 /**
  * Implementation class for GRRecycleQueue
  */
-public class RecycleMe extends GRRecycle {
+public class RecycleMe extends GRRecycleElement {
 	
 }
