@@ -1,9 +1,9 @@
-package server.grrecycle;
+package server;
 
 import java.util.Date;
 
 import logging.Log;
-import xmlparse.GRE;
+// import xmlparse.GRE;
 import database.SQLE;
 import database.entry.Book;
 
@@ -56,6 +56,7 @@ public class GRRecycle extends Thread {
 	
 	private void recycle(Book book) throws Exception { // TODO check if book is still needed
 		Log.log("GRRecycle", "Recycling", "book_id = " + book.book_id);
-		SQLE.updateBook(GRE.queryBook("" + book.isbn).get(0));
+		SQLE.updateBook(GRFetch.query("" + book.isbn));
+		//SQLE.updateBook(GRE.queryBook("" + book.isbn).get(0));
 	}
 } // end of GRRecycleThread

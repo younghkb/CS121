@@ -1,18 +1,12 @@
 package junit;
 
-import static org.junit.Assert.*;
-
-import java.util.Collections;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import database.SQLB;
 import database.SQLE;
-import database.entry.Exchange;
 
 public class SQLETest {
 

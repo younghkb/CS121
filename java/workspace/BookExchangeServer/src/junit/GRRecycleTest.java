@@ -8,11 +8,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import server.dbwrite.DBWrite;
-import server.grrecycle.GRRecycle;
-import xmlparse.GRE;
-import database.SQLB;
+import server.DBWrite;
+import server.GRRecycle;
 import database.SQLE;
+//import xmlparse.GRE;
 
 public class GRRecycleTest {
 
@@ -25,13 +24,13 @@ public class GRRecycleTest {
 			SQLE.deleteAllUsers();
 			
 			
-			DBWrite.queue(SQLB.createBook(GRE.queryBook("Hop On Pop").get(0)));
+			//DBWrite.queue(SQLB.createBook(GRE.queryBook("Hop On Pop").get(0)));
 			Thread.sleep(100);
-			DBWrite.queue(SQLB.createBook(GRE.queryBook("Catch 22").get(0)));
+			//DBWrite.queue(SQLB.createBook(GRE.queryBook("Catch 22").get(0)));
 			Thread.sleep(100);
-			DBWrite.queue(SQLB.createBook(GRE.queryBook("Bakemonogatari").get(0)));
+			//DBWrite.queue(SQLB.createBook(GRE.queryBook("Bakemonogatari").get(0)));
 			Thread.sleep(100);
-			DBWrite.queue(SQLB.createBook(GRE.queryBook("The Hobbit").get(0)));
+			//DBWrite.queue(SQLB.createBook(GRE.queryBook("The Hobbit").get(0)));
 			Thread.sleep(100);
 			
 			new DBWrite().start();

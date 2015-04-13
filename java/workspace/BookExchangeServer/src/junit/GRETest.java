@@ -1,15 +1,10 @@
 package junit;
 
-import java.util.List;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import xmlparse.GRE;
-import database.entry.Book;
 
 public class GRETest {
 
@@ -33,7 +28,7 @@ public class GRETest {
 
 	@Test
 	public void test() throws Exception {
-		List<Book> books = GRE.queryBook("Hop on Pop");
-		System.out.println(books.get(0));
+		//List<Book> books = GRE.queryBook("Hop on Pop");
+		//System.out.println(books.get(0));
 	}
 }
