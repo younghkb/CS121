@@ -1,4 +1,4 @@
-package com.example.jarthur.bookexchange;
+package hmc.cs121.jarthur.bookexchange;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

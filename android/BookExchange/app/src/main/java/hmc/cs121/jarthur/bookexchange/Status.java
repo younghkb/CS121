@@ -1,16 +1,14 @@
-package com.example.jarthur.bookexchange;
+package hmc.cs121.jarthur.bookexchange;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 
 public class Status extends ActionBarActivity {

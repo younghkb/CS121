@@ -1,9 +1,10 @@
-package com.example.jarthur.bookexchange;
+package hmc.cs121.jarthur.bookexchange;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -96,6 +98,14 @@ public class CreateLoan extends ActionBarActivity {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
+          //  Context context = getApplicationContext();
+          //  CharSequence text = "Hello toast!";
+          //  int duration = Toast.LENGTH_SHORT;
+
+           // Toast toast = Toast.makeText(context, text, duration);
+           // toast.show();
+
+
         }
     }
 

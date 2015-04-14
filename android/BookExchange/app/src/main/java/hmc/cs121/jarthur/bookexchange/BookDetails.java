@@ -1,5 +1,6 @@
-package com.example.jarthur.bookexchange;
+package hmc.cs121.jarthur.bookexchange;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -84,5 +85,11 @@ public class BookDetails extends ActionBarActivity {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public void openHomeScreen(View view) {
+        // Go to the home page
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
     }
 }
