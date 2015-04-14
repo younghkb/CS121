@@ -7,8 +7,6 @@
     tools:context="com.example.jarthur.bookexchange.BookDetailsActivity">
 
 
-
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="vertical"

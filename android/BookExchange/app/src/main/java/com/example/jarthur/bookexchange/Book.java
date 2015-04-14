@@ -1,45 +1,31 @@
 package com.example.jarthur.bookexchange;
 
-import java.io.IOException;
+import java.io.Serializable;
+
 import java.io.Serializable;
 import java.util.Date;
 
-// IMPORTANT! We don't want to change the fields in this class because it might mess up
-// Serializable. Be careful!
 
-/* Object representing a book in the database. */
-public class Book implements Serializable{
+public class Book implements Serializable {
+    public int book_id;		// Goodreads ID, primary key in DB
 
+    public String book_title;
+    public String author;
     public String isbn;
 
-    public String bookTitle;
-    public String author;
-    public String bookId;		// Goodreads ID, primary key in DB
+    public String pub_year;
+    public String orig_pub_year;
 
-    public String origPubYear;
-    public String pubYear;
+    public String image_url;
+    public String small_image_url;
 
-    public String imageUrl;
-    public String smallImageUrl;
-
-    public ExchangeStatus status;
-    public Date addDate;
+    public Date add_date;
 
     public Book() {}
 
     public String toString() {
-        String str = String.format("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n",
-                isbn, bookTitle, author, bookId, pubYear, origPubYear, imageUrl, smallImageUrl, status, addDate);
+        String str = String.format("book_id: %d, book_title: %s, author: %s, isbn: %s, pub_year: %s, orig_pub_year: %s, image_url: %s, small_image_url: %s, add_date: %s",
+                book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url, add_date);
         return str;
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(this.toString());
-    }
-
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        // TODO populate the fields of 'this' from the data in 'in'...
-        // Use regexes to extract data
     }
 }

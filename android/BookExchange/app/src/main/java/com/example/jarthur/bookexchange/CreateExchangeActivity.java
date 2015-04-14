@@ -68,8 +68,8 @@ public class CreateExchangeActivity extends ActionBarActivity {
                             // want to do this
 
                             Exchange newExchange = new Exchange();
-                            newExchange.bookTitle = "TODO";
-                            newExchange.startDate = new Date();    // TODO
+                            newExchange.book_title = "TODO";
+                            newExchange.start_date = new Date();    // TODO
 
                             //requestManager.createExchange(newExchange);
 

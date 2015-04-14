@@ -15,20 +15,22 @@ import java.net.URL;
 public class BookDetailsActivity extends ActionBarActivity {
 
    Book myBook;
+   Exchange myExchange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        myBook = (Book) savedInstanceState.getSerializable("book");
+        myExchange = (Exchange) savedInstanceState.getSerializable("exchange");
+
 
         // Initial, Request, etc.
-        ExchangeStatus exchangeStatus = myBook.status;
+        Exchange.Status exchangeStatus = myExchange.status;
 
         // Sets visibilities correctly based on type
         // hides the request button from the details of a book involved in an exchange
-        if (exchangeStatus == ExchangeStatus.ACCEPTED || exchangeStatus == ExchangeStatus.COMPLETED) {
+        if (exchangeStatus == Exchange.Status.ACCEPTED || exchangeStatus == Exchange.Status.COMPLETED) {
 
             // Does not show request button, owner or possible loan period
             View b = findViewById(R.id.requestButton);

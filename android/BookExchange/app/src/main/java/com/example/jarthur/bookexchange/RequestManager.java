@@ -3,6 +3,7 @@ package com.example.jarthur.bookexchange;
 
 // handles requests to and from the server
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO implement methods
@@ -12,12 +13,6 @@ import java.util.List;
 // TODO open socket every time we make request
 
 public class RequestManager {
-
-    private static RequestManager me;
-
-    public RequestManager getRequestManager() {
-        return me;
-    }
 
 
      /* Returns a list of books from Goodreads. */
@@ -57,6 +52,18 @@ public class RequestManager {
 
     }
 
-    // TODO add method to get all available books?
+    // Dummy method for testing right now
+    public List<Book> getAvailableBooks() {
+
+        List<Book> bookList = new ArrayList<Book>();
+
+        Book b = new Book();
+        b.book_title = "The Hobbit";
+
+        bookList.add(b);
+
+        return bookList;
+
+    }
 
 }

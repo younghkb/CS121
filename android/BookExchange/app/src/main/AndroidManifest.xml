@@ -3,11 +3,11 @@
     package="com.example.jarthur.bookexchange" >
 
     <application
-        android:name="com.example.jarthur.bookexchange.BookExchange"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <uses-permission android:name="android.permission.INTERNET" />
         <activity
             android:name=".HomeScreen"
             android:label="@string/app_name" >

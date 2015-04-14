@@ -1,42 +1,66 @@
 package com.example.jarthur.bookexchange;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
-// IMPORTANT! We don't want to change the fields in this class because it might mess up
-// Serializable. Be careful!
-
 public class Exchange implements Serializable {
+    // exchange data
+    public int exchange_id;
+    public Type exchange_type;
 
-    public Integer exchangeId;
-    public Integer loanerId;
-    public Integer borrowerId;
+    // id data
+    public int borrower_id;
+    public int loaner_id;
+    public int book_id;
 
-    public String bookId;
-    public String bookTitle;
+    public String book_title;
 
-    public Date createDate;
-    public Date startDate;
-    public Date endDate;
+    public Date create_date;
+    public Date start_date;
+    public Date end_date;
 
-    public ExchangeStatus status;
+    public Status status;
 
     public Exchange() {}
 
     public String toString() {
-        return String.format("%d\n%d\n%d\n%s\n%s\n%s\n%s\n%s\n%s\n",
-                exchangeId, loanerId, borrowerId, bookId, bookTitle,
-                createDate.toString(), startDate.toString(), endDate.toString(), status);
+        return String.format("exchange_id: %d, exchange_type: %s, borrower_id: %d, loaner_id: %d, book_id: %d, book_title: %s, create_date: %s, start_date: %s, end_date: %s, status: %s",
+                exchange_id, exchange_type, borrower_id, loaner_id, book_id, book_title, create_date, start_date, end_date, status);
     }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(this.toString());
+    public static enum Status {
+        INITIAL,
+        RESPONSE,
+        ACCEPTED,
+        COMPLETED;
+
+        public static Status parse(String str) {
+            switch (str) {
+                case "INITIAL":
+                    return INITIAL;
+                case "RESPONSE":
+                    return RESPONSE;
+                case "ACCEPTED":
+                    return ACCEPTED;
+                case "COMPLETED":
+                    return COMPLETED;
+            }
+            return null; // throw exception
+        }
     }
 
+    public static enum Type {
+        BORROW,
+        LOAN;
 
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        // TODO populate the fields of 'this' from the data in 'in'...
-        // Use regexes to extract data
+        public static Type parse(String str) {
+            switch (str) {
+                case "BORROW":
+                    return BORROW;
+                case "LOAN":
+                    return LOAN;
+            }
+            return null; // throw exception
+        }
     }
 }

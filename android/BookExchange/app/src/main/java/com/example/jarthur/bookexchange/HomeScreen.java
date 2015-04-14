@@ -6,6 +6,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeScreen extends ActionBarActivity {
@@ -19,22 +24,35 @@ public class HomeScreen extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
+
+        //List<Exchange> userExchanges = Client.getPrivateExchanges()
+
         // TODO load exchanges and books
-        // TODO create a list of views with the book list
+
+        List<Exchange> availableBooks = new ArrayList<Exchange>();
+
+        try {
+            availableBooks = Client.getPublicExchanges();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ExchangeListAdapter bookAdapter = new ExchangeListAdapter(getApplicationContext(), availableBooks);
+
+        ListView bookList = (ListView) findViewById(R.id.bookList);
+        bookList.setAdapter(bookAdapter);
     }
 
-    // code from: http://blogs.technicise.com/
-    // how-to-open-a-new-android-activity-from-another-activity-on-clicking-a-button/
+    // Go createExchangeActivity page where the user can make a new loan or offer
     public void openCreateExchangeActivity(View view) {
-        // Go to the Loan page
         Intent intent = new Intent(this, CreateExchangeActivity.class);
         startActivity(intent);
     }
 
     // Go to the ViewExchangeActivity page that displays the state of a particular exchange
     public void openViewExchangeActivity(View view) {
-        // TODO get exchange corresponding to view
-
+        //Exchange myExchange = view.getExchange(); TODO
         Exchange myExchange = new Exchange();
         Bundle bundle = new Bundle();
         bundle.putSerializable("exchange", myExchange);
@@ -42,10 +60,9 @@ public class HomeScreen extends ActionBarActivity {
         startActivity(intent.putExtras(bundle));
     }
 
-    public void openBookDetailsActivity(View view) {
-        // Go to the Book Details page
-        // TODO get book corresponding to the view
-        Book myBook = new Book();
+    // Go to the Book Details page
+    public void openBookDetailsActivity(BookView view) {
+        Book myBook = view.getBook();
         Bundle bundle = new Bundle();
         bundle.putSerializable("book", myBook);
         Intent intent = new Intent(this, BookDetailsActivity.class);
