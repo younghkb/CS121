@@ -6,7 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -24,11 +24,21 @@ public class HomeScreen extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
+        // List of exchanges user is participating in
+        List<Exchange> userExchanges = new ArrayList<Exchange>();
+        int userId = 1111;      // FIXME get global static userId
+        try {
+            userExchanges = Client.getPrivateExchanges(userId);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        //List<Exchange> userExchanges = Client.getPrivateExchanges()
+        ExchangeListAdapter exchangeAdapter = new ExchangeListAdapter(getApplicationContext(), userExchanges);
+        ListView userExchangeList = (ListView) findViewById(R.id.userExchangeList);
+        userExchangeList.setAdapter(exchangeAdapter);
 
-        // TODO load exchanges and books
-
+        // List of Available Books
         List<Exchange> availableBooks = new ArrayList<Exchange>();
 
         try {
@@ -42,6 +52,15 @@ public class HomeScreen extends ActionBarActivity {
 
         ListView bookList = (ListView) findViewById(R.id.bookList);
         bookList.setAdapter(bookAdapter);
+
+        // TODO set what happens on click of item (ExchangeView) in list
+        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("ExchangeView clicked!");
+                openBookDetailsActivity(view);
+            }
+        });
     }
 
     // Go createExchangeActivity page where the user can make a new loan or offer
@@ -61,8 +80,17 @@ public class HomeScreen extends ActionBarActivity {
     }
 
     // Go to the Book Details page
-    public void openBookDetailsActivity(BookView view) {
-        Book myBook = view.getBook();
+    public void openBookDetailsActivity(View view) {
+        Book myBook = new Book();
+        try {
+            ExchangeView myExchange = (ExchangeView) view;
+
+            myBook = Client.getBook(myExchange.getExchange().book_id);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Bundle bundle = new Bundle();
         bundle.putSerializable("book", myBook);
         Intent intent = new Intent(this, BookDetailsActivity.class);

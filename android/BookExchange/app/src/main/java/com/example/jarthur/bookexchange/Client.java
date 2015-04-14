@@ -63,16 +63,22 @@ public class Client {
         return (ArrayList<Book>) r.reply;
     }
 
+    // FIXME test
     public static Book getBook(int book_id) throws Exception {
-        Request r = new Request(Request.Type.GET_BOOK);
+
+        Book b = new Book();
+        b.book_title = "The Hobbit";
+        b.author = "J. R. R. Tolkien";
+        return b;
+      /*  Request r = new Request(Request.Type.GET_BOOK);
         r.params.put("book_id", book_id);
         r = send(r);
-        return (Book) r.reply;
+        return (Book) r.reply;*/
     }
 
     // FIXME test
     public static List<Exchange> getPublicExchanges() throws Exception {
-/*        Exchange e = new Exchange();
+        Exchange e = new Exchange();
         e.book_title = "The Hobbit";
         Exchange ee = new Exchange();
         ee.book_title = "Hop on Pop";
@@ -80,18 +86,29 @@ public class Client {
 
         list.add(e);
         list.add(ee);
-        return list;*/
+        return list;
 
-        Request r = new Request(Request.Type.GET_PUBLIC_EXCHANGES);
+        /*Request r = new Request(Request.Type.GET_PUBLIC_EXCHANGES);
         r = send(r);
-        return (ArrayList<Exchange>) r.reply;
+        return (ArrayList<Exchange>) r.reply;*/
     }
 
+    // FIXME test
     public static List<Exchange> getPrivateExchanges(int user_id) throws Exception {
-        Request r = new Request(Request.Type.GET_PRIVATE_EXCHANGES);
+
+        List<Exchange> myExchanges = new ArrayList<Exchange>();
+        Exchange e = new Exchange();
+        e.book_title = "Harry Potter";
+        e.exchange_type = Exchange.Type.BORROW;
+
+        myExchanges.add(e);
+
+        return myExchanges;
+
+/*      Request r = new Request(Request.Type.GET_PRIVATE_EXCHANGES);
         r.params.put("user_id", user_id);
         r = send(r);
-        return (ArrayList<Exchange>) r.reply;
+        return (ArrayList<Exchange>) r.reply;*/
     }
 
     public static void createExchange(Exchange exchange) throws Exception {

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/* Adapts a list of Exchanges to display on the Home Screen */
 //https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
 public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
 
