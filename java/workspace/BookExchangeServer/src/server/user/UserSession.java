@@ -19,6 +19,8 @@ import database.entry.Exchange;
 public class UserSession extends Thread {
 	Socket s;
 	
+	// TODO hangup gracefully if data is not expected type
+	
 	public void run() {
 		try {
 			Log.log("UserSession", "New Connection", "");

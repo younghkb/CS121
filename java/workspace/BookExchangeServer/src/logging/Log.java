@@ -11,6 +11,8 @@ public abstract class Log {
 	//private final static PrintWriter pw;
 
 	//TODO look into java.util.logging?
+	//TODO pipe logging
+	//TODO ignore list
 	
 	private final static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -49,7 +51,7 @@ public abstract class Log {
 		String msg = df.format(new Date()) + " | " + String.format("%-16s | ", calling) + String.format("%-16s | ", entry) + details;
 		switch (MODE) {
 		case STDOUT:
-			System.out.println(msg);
+			stdout(msg);
 		case FILE:
 			//TODO implement
 		case BOTH:
@@ -57,9 +59,22 @@ public abstract class Log {
 		}
 	}
 	
+	private static void stdout(String msg) {
+		System.out.println(msg);
+	}
+	
+	private static void file(String msg) {
+		// TODO implement
+	}
+	
+	private static void stream(String msg) {
+		// TODO implement
+	}
+	
 	private static enum Mode {
 		STDOUT,
 		FILE,
-		BOTH;
+		BOTH, // TODO better name
+		STREAM;
 	}
 }

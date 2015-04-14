@@ -12,9 +12,10 @@ import logging.Log;
 import database.entry.Book;
 import database.entry.Exchange;
 
-public class Client {
+public abstract class Client {
 	
 	final static String HOST = "localhost";
+	//final static String HOST = "knuth.cs.hmc.edu";
 	final static int PORT = 6789;
 	
 	public static void main(String[] arg) throws Exception {
@@ -24,11 +25,16 @@ public class Client {
 //			r.params.put("query", "The Hobbit");
 //			Request reply = send(r);
 //			System.out.println(reply);
-			System.out.println(searchBook("Bakemonogatari"));
+			//System.out.println(getBook(206962));
+			System.out.println(getPublicExchanges());
 		} catch (Exception e) {
 			System.err.println(e);
 		}
 	}
+	
+	// TODO add book (selectBook) which takes ISBN and adds to DB
+	// TODO searchBook with size
+	// TODO rename reply as response
 	
 	private static Request send(Request r) throws Exception {
 		Socket s = new Socket(HOST, PORT);
@@ -62,7 +68,7 @@ public class Client {
 		Request r = new Request(Request.Type.SEARCH_BOOK);
 		r.params.put("query", query);
 		r = send(r);
-		return (ArrayList<Book>) r.reply;
+		return (List<Book>) r.reply;
 	}
 
 	public static Book getBook(int book_id) throws Exception {
@@ -75,14 +81,14 @@ public class Client {
 	public static List<Exchange> getPublicExchanges() throws Exception {
 		Request r = new Request(Request.Type.GET_PUBLIC_EXCHANGES);
 		r = send(r);
-		return (ArrayList<Exchange>) r.reply;
+		return (List<Exchange>) r.reply;
 	}
 	
 	public static List<Exchange> getPrivateExchanges(int user_id) throws Exception {
 		Request r = new Request(Request.Type.GET_PRIVATE_EXCHANGES);
 		r.params.put("user_id", user_id);
 		r = send(r);
-		return (ArrayList<Exchange>) r.reply;
+		return (List<Exchange>) r.reply;
 	}
 
 	public static void createExchange(Exchange exchange) throws Exception {

@@ -9,7 +9,7 @@ import server.user.UserSession;
 
 //import java.time.Clock; // only for JDK8 -- this class seems much nicer than Date
 
-public class BEServer {
+public abstract class BEServer {
 	
 	final static int PORT = 6789;
 	
