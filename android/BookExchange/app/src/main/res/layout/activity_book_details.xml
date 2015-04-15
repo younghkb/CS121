@@ -16,17 +16,14 @@
             android:id="@+id/bookTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bookEx1"
             android:layout_gravity="center"
             android:textSize="18sp">
         </TextView>
 
-        <!--This will be replaced by code that can take in an image from the internet-->
         <ImageView
-            android:id="@+id/logo"
+            android:id="@+id/cover"
             android:layout_width="wrap_content"
             android:layout_height="200sp"
-            android:src="@drawable/hpfour"
             android:layout_gravity="center"/>
 
         <TextView

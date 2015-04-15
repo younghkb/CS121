@@ -1,5 +1,7 @@
 package com.example.jarthur.bookexchange;
 
+import android.os.StrictMode;
+
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,6 +14,8 @@ public class Client {
 
     final static String HOST = "cs.knuth.hmc.edu";
     final static int PORT = 6789;
+
+    private static boolean debug = true;
 
     // Example!
 /*    public static void main(String[] arg) throws Exception {
@@ -29,6 +33,10 @@ public class Client {
     }*/
 
     private static Request send(Request r) throws Exception {
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         Socket s = new Socket(HOST, PORT);
 
         OutputStream os = s.getOutputStream();
@@ -66,49 +74,58 @@ public class Client {
     // FIXME test
     public static Book getBook(int book_id) throws Exception {
 
-        Book b = new Book();
-        b.book_title = "The Hobbit";
-        b.author = "J. R. R. Tolkien";
-        return b;
-      /*  Request r = new Request(Request.Type.GET_BOOK);
+        if (debug) {
+            Book b = new Book();
+            b.book_title = "The Hobbit";
+            b.author = "J. R. R. Tolkien";
+            b.image_url = "https://d.gr-assets.com/books/1372847500m/5907.jpg";
+            return b;
+        }
+
+        Request r = new Request(Request.Type.GET_BOOK);
         r.params.put("book_id", book_id);
         r = send(r);
-        return (Book) r.reply;*/
+        return (Book) r.reply;
     }
 
     // FIXME test
     public static List<Exchange> getPublicExchanges() throws Exception {
-        Exchange e = new Exchange();
-        e.book_title = "The Hobbit";
-        Exchange ee = new Exchange();
-        ee.book_title = "Hop on Pop";
-        List<Exchange> list = new ArrayList<Exchange>();
 
-        list.add(e);
-        list.add(ee);
-        return list;
+        if (debug) {
+            Exchange e = new Exchange();
+            e.book_title = "The Hobbit";
+            Exchange ee = new Exchange();
+            ee.book_title = "Hop on Pop";
+            List<Exchange> list = new ArrayList<Exchange>();
 
-        /*Request r = new Request(Request.Type.GET_PUBLIC_EXCHANGES);
+            list.add(e);
+            list.add(ee);
+            return list;
+        }
+
+        Request r = new Request(Request.Type.GET_PUBLIC_EXCHANGES);
         r = send(r);
-        return (ArrayList<Exchange>) r.reply;*/
+        return (ArrayList<Exchange>) r.reply;
     }
 
     // FIXME test
     public static List<Exchange> getPrivateExchanges(int user_id) throws Exception {
 
-        List<Exchange> myExchanges = new ArrayList<Exchange>();
-        Exchange e = new Exchange();
-        e.book_title = "Harry Potter";
-        e.exchange_type = Exchange.Type.BORROW;
+       if (debug) {
+           List<Exchange> myExchanges = new ArrayList<Exchange>();
+           Exchange e = new Exchange();
+           e.book_title = "Harry Potter";
+           e.exchange_type = Exchange.Type.BORROW;
 
-        myExchanges.add(e);
+           myExchanges.add(e);
 
-        return myExchanges;
+           return myExchanges;
+       }
 
-/*      Request r = new Request(Request.Type.GET_PRIVATE_EXCHANGES);
+      Request r = new Request(Request.Type.GET_PRIVATE_EXCHANGES);
         r.params.put("user_id", user_id);
         r = send(r);
-        return (ArrayList<Exchange>) r.reply;*/
+        return (ArrayList<Exchange>) r.reply;
     }
 
     public static void createExchange(Exchange exchange) throws Exception {

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -14,26 +15,26 @@ import android.view.View;
 public class ViewExchangeActivity extends ActionBarActivity {
 
     Exchange myExchange;
-
-    // Initial, Request, etc.
-    ExchangeStatus exchangeStatus;
-
-    // true if the current user is the owner of this particular book
-    boolean isOwner;
+    Book myBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_exchange);
 
+        Intent i = getIntent();
+        myExchange = (Exchange) i.getSerializableExtra("exchange");
+        myBook = (Book) i.getSerializableExtra("book");
+
         // Make logo show up in action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        // Get Exchange from parent activity (HomeScreen)
-        myExchange = (Exchange) savedInstanceState.getSerializable("exchange");
+        Exchange.Status exchangeStatus = myExchange.status;
 
-        exchangeStatus = ExchangeStatus.INITIAL;        // TODO
+        // true if the current user is the owner of this particular book
+        // TODO boolean isOwner = (userId == myExchange.loaner_id);
+        boolean isOwner = false;
 
 
         // Sets visibilities correctly based on type and status

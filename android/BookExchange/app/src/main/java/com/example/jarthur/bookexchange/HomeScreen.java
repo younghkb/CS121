@@ -3,6 +3,7 @@ package com.example.jarthur.bookexchange;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,10 +11,19 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomeScreen extends ActionBarActivity {
+
+    private Log logger;
+    private String TAG = "HomeScreen";
+
+    private AdapterView.OnItemClickListener exchangeListener;
+    private AdapterView.OnItemClickListener bookListener;
+
+    private ArrayList<Exchange> availableExchanges;
+    private ArrayList<Exchange> userExchanges;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +35,10 @@ public class HomeScreen extends ActionBarActivity {
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         // List of exchanges user is participating in
-        List<Exchange> userExchanges = new ArrayList<Exchange>();
+        userExchanges = new ArrayList<Exchange>();
         int userId = 1111;      // FIXME get global static userId
         try {
-            userExchanges = Client.getPrivateExchanges(userId);
+            userExchanges = (ArrayList<Exchange>) Client.getPrivateExchanges(userId);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -38,29 +48,41 @@ public class HomeScreen extends ActionBarActivity {
         ListView userExchangeList = (ListView) findViewById(R.id.userExchangeList);
         userExchangeList.setAdapter(exchangeAdapter);
 
-        // List of Available Books
-        List<Exchange> availableBooks = new ArrayList<Exchange>();
+        exchangeListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                logger.i(TAG, "ExchangeView clicked!");
+                openViewExchangeActivity(view, position);
+            }
+        };
+
+        userExchangeList.setOnItemClickListener(bookListener);
+
+
+        // List of Available books
+        availableExchanges = new ArrayList<Exchange>();
 
         try {
-            availableBooks = Client.getPublicExchanges();
+            availableExchanges = (ArrayList<Exchange>) Client.getPublicExchanges();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
-        ExchangeListAdapter bookAdapter = new ExchangeListAdapter(getApplicationContext(), availableBooks);
+        ExchangeListAdapter bookAdapter = new ExchangeListAdapter(getApplicationContext(), availableExchanges);
 
         ListView bookList = (ListView) findViewById(R.id.bookList);
         bookList.setAdapter(bookAdapter);
 
-        // TODO set what happens on click of item (ExchangeView) in list
-        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        bookListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("ExchangeView clicked!");
-                openBookDetailsActivity(view);
+                logger.i(TAG, "ExchangeView clicked!");
+                openBookDetailsActivity(view, position);
             }
-        });
+        };
+
+        bookList.setOnItemClickListener(bookListener);
     }
 
     // Go createExchangeActivity page where the user can make a new loan or offer
@@ -70,31 +92,44 @@ public class HomeScreen extends ActionBarActivity {
     }
 
     // Go to the ViewExchangeActivity page that displays the state of a particular exchange
-    public void openViewExchangeActivity(View view) {
-        //Exchange myExchange = view.getExchange(); TODO
-        Exchange myExchange = new Exchange();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("exchange", myExchange);
-        Intent intent = new Intent(this, ViewExchangeActivity.class);
-        startActivity(intent.putExtras(bundle));
+    public void openViewExchangeActivity(View view, int position) {
+
+        try {
+            Exchange myExchange = userExchanges.get(position);
+
+            Book myBook = Client.getBook(myExchange.book_id);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("book", myBook);
+            bundle.putSerializable("exchange", myExchange);
+
+            Intent intent = new Intent(this, ViewExchangeActivity.class);
+            startActivity(intent.putExtras(bundle));
+        }
+        catch (Exception e) {
+            logger.e(TAG, "exception", e);
+        }
     }
 
     // Go to the Book Details page
-    public void openBookDetailsActivity(View view) {
-        Book myBook = new Book();
-        try {
-            ExchangeView myExchange = (ExchangeView) view;
+    public void openBookDetailsActivity(View view, int position) {
 
-            myBook = Client.getBook(myExchange.getExchange().book_id);
+        try {
+            Exchange myExchange = availableExchanges.get(position);
+
+            Book myBook = Client.getBook(myExchange.book_id);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("book", myBook);
+            bundle.putSerializable("exchange", myExchange);
+
+            Intent intent = new Intent(this, BookDetailsActivity.class);
+            startActivity(intent.putExtras(bundle));
         }
         catch (Exception e) {
-            e.printStackTrace();
+            logger.e(TAG, "exception", e);
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("book", myBook);
-        Intent intent = new Intent(this, BookDetailsActivity.class);
-        startActivity(intent.putExtras(bundle));
     }
 
     @Override
