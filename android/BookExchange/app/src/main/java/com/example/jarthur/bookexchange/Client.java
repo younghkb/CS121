@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Client {
 
-    final static String HOST = "cs.knuth.hmc.edu";
+    final static String HOST = "knuth.cs.hmc.edu";
     final static int PORT = 6789;
 
     private static boolean debug = true;

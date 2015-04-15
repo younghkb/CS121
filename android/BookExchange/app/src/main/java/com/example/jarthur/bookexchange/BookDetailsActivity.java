@@ -2,6 +2,7 @@ package com.example.jarthur.bookexchange;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class BookDetailsActivity extends ActionBarActivity {
@@ -57,8 +59,17 @@ public class BookDetailsActivity extends ActionBarActivity {
         TextView author = (TextView) findViewById(R.id.author);
         author.setText("Author: " + myBook.author);
 
+        // TODO resize actual image (not just padding)
         ImageView cover = (ImageView) findViewById(R.id.cover);
-        cover.setImageDrawable(imageFromUrl(myBook.image_url));
+        try {
+            GetImageTask task = new GetImageTask();
+            task.execute(new URL(myBook.image_url));
+            Drawable coverImage = task.get(5, TimeUnit.SECONDS); // Wait no more than 5 seconds
+            cover.setImageDrawable(coverImage);
+        }
+        catch (Exception e) {
+            logger.e("BookDetails", "exception", e);
+        }
 
         TextView isbn = (TextView) findViewById(R.id.ISBN);
         isbn.setText("ISBN: " + myBook.isbn);
@@ -97,22 +108,22 @@ public class BookDetailsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // from: http://stackoverflow.com/questions/6407324/how-to-get-image-from-url-in-android
-    // theoretically, this will help in getting the image from the goodreads data
-    // i have my doubts
-    //TODO make this work gosh darn it
-    // Getting an android.os.NetworkOnMainThreadException because the main thread is trying to access the internet
-    public static Drawable imageFromUrl(String url) {
+    /* Private task to get the cover image from the Goodreads url. */
+    private class GetImageTask extends AsyncTask<URL, Integer, Drawable> {
 
-        try {
-            logger.i("BookDetails", "Called imageFromUrl");
-            InputStream is = (InputStream) new URL("https://d.gr-assets.com/books/1372847500m/5907.jpg").getContent();
-            //is.
-            Drawable d = Drawable.createFromStream(is, "Goodreads Image URL");
-            return d;
-        } catch (Exception e) {
-            logger.e("BookDetails", "exception", e);
-            return null;
+        Drawable bookImage;
+
+        protected Drawable doInBackground(URL... url) {
+            try {
+                logger.i("GetImageTask", "Getting Image");
+                URL myURL = url[0];
+                InputStream is = (InputStream) myURL.getContent();
+                bookImage = Drawable.createFromStream(is, "Goodreads Image URL");
+                return bookImage;
+            } catch (Exception e) {
+                logger.e("GetImageTask", "exception", e);
+            }
+            return null;    // TODO better error handling
         }
     }
 }
