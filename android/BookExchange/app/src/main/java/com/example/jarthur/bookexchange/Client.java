@@ -116,6 +116,8 @@ public class Client {
            Exchange e = new Exchange();
            e.book_title = "Harry Potter";
            e.exchange_type = Exchange.Type.BORROW;
+           e.status = Exchange.Status.ACCEPTED;
+           e.loaner_id = 1111;
 
            myExchanges.add(e);
 

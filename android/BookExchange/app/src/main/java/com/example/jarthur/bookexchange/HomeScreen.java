@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 
 
@@ -21,8 +20,8 @@ public class HomeScreen extends ActionBarActivity {
     private AdapterView.OnItemClickListener exchangeListener;
     private AdapterView.OnItemClickListener bookListener;
 
-    private ArrayList<Exchange> availableExchanges;
-    private ArrayList<Exchange> userExchanges;
+    private ArrayList<Exchange> availableExchanges = new ArrayList<Exchange>();
+    private ArrayList<Exchange> userExchanges = new ArrayList<Exchange>();
 
 
     @Override
@@ -34,55 +33,8 @@ public class HomeScreen extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        // List of exchanges user is participating in
-        userExchanges = new ArrayList<Exchange>();
-        int userId = 1111;      // FIXME get global static userId
-        try {
-            userExchanges = (ArrayList<Exchange>) Client.getPrivateExchanges(userId);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        ExchangeListAdapter exchangeAdapter = new ExchangeListAdapter(getApplicationContext(), userExchanges);
-        ListView userExchangeList = (ListView) findViewById(R.id.userExchangeList);
-        userExchangeList.setAdapter(exchangeAdapter);
-
-        exchangeListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                logger.i(TAG, "ExchangeView clicked!");
-                openViewExchangeActivity(view, position);
-            }
-        };
-
-        userExchangeList.setOnItemClickListener(bookListener);
-
-
-        // List of Available books
-        availableExchanges = new ArrayList<Exchange>();
-
-        try {
-            availableExchanges = (ArrayList<Exchange>) Client.getPublicExchanges();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        ExchangeListAdapter bookAdapter = new ExchangeListAdapter(getApplicationContext(), availableExchanges);
-
-        ListView bookList = (ListView) findViewById(R.id.bookList);
-        bookList.setAdapter(bookAdapter);
-
-        bookListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                logger.i(TAG, "ExchangeView clicked!");
-                openBookDetailsActivity(view, position);
-            }
-        };
-
-        bookList.setOnItemClickListener(bookListener);
+        getUserExchanges();
+        getAvailableBooks();
     }
 
     // Go createExchangeActivity page where the user can make a new loan or offer
@@ -151,5 +103,56 @@ public class HomeScreen extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /** Collects a l ist of the exchanges the user is participating in. */
+    private void getUserExchanges() {
+        int userId = 1111;      // FIXME get global static userId
+        try {
+            userExchanges = (ArrayList<Exchange>) Client.getPrivateExchanges(userId);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ExchangeListAdapter exchangeAdapter = new ExchangeListAdapter(getApplicationContext(), userExchanges);
+        ListView userExchangeList = (ListView) findViewById(R.id.userExchangeList);
+        userExchangeList.setAdapter(exchangeAdapter);
+
+        exchangeListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                logger.i(TAG, "ExchangeView clicked!");
+                openViewExchangeActivity(view, position);
+            }
+        };
+
+        userExchangeList.setOnItemClickListener(exchangeListener);
+    }
+
+    private void getAvailableBooks() {
+
+        try {
+            availableExchanges = (ArrayList<Exchange>) Client.getPublicExchanges();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ExchangeListAdapter bookAdapter = new ExchangeListAdapter(getApplicationContext(), availableExchanges);
+
+        ListView bookList = (ListView) findViewById(R.id.bookList);
+        bookList.setAdapter(bookAdapter);
+
+        bookListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                logger.i(TAG, "ExchangeView clicked!");
+                openBookDetailsActivity(view, position);
+            }
+        };
+
+        bookList.setOnItemClickListener(bookListener);
     }
 }

@@ -7,15 +7,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.logging.Logger;
+
 // Originally 'Status'
 public class ViewExchangeActivity extends ActionBarActivity {
 
-    Exchange myExchange;
-    Book myBook;
+    private static Log logger;
+
+    // TODO okay to make these static?
+    private static Exchange myExchange;
+    private static Book myBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
         View finishButton = findViewById(R.id.finishButton);
         // View cancelButton = findViewById(R.id.cancelButton);
 
-        switch(exchangeStatus){
+        switch (exchangeStatus) {
 
             case INITIAL:
                 otherPerson.setVisibility(View.GONE);
@@ -94,6 +100,12 @@ public class ViewExchangeActivity extends ActionBarActivity {
                             // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
                             // want to do this
                             // TODO connect to database
+                            try {
+                                Client.updateExchangeLoaner(myExchange.exchange_id, 1111);  //TODO userId
+
+                            } catch (Exception e) {
+                                logger.e("ViewExchangeActivity", "exception", e);
+                            }
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

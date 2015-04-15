@@ -30,7 +30,6 @@
             android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/author"
             android:textSize="18sp">
         </TextView>
 
@@ -38,7 +37,6 @@
             android:id="@+id/ISBN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/isbn"
             android:textSize="18sp">
         </TextView>
 
@@ -46,7 +44,6 @@
             android:id="@+id/pubYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pub_year"
             android:textSize="18sp">
         </TextView>
 
@@ -54,7 +51,6 @@
             android:id="@+id/owner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/owner"
             android:textSize="18sp">
         </TextView>
 
@@ -62,7 +58,6 @@
             android:id="@+id/loanPeriod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loan_period"
             android:textSize="18sp">
         </TextView>
 
