@@ -1,4 +1,4 @@
-package com.example.jarthur.bookexchange;
+package client;
 
 import android.os.StrictMode;
 
@@ -15,22 +15,8 @@ public class Client {
     final static String HOST = "knuth.cs.hmc.edu";
     final static int PORT = 6789;
 
-    private static boolean debug = true;
-
-    // Example!
-/*    public static void main(String[] arg) throws Exception {
-        try {
-            //Log.log("Client", "Client Start", "");
-//			Request r = new Request(Request.Type.SEARCH_BOOK);
-//			r.params.put("query", "The Hobbit");
-//			Request reply = send(r);
-//			System.out.println(reply);
-            System.out.println(searchBook("Bakemonogatari"));
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-
-    }*/
+    /* Set this to true to debug without actually connecting to the server. */
+    private static boolean debug = false;
 
     private static Request send(Request r) throws Exception {
 
@@ -45,13 +31,8 @@ public class Client {
         InputStream is = s.getInputStream();
         ObjectInputStream ois = new ObjectInputStream(is);
 
-        //Log.log("Client", "Request Pending", r.toString());
-
         oos.writeObject(r);
         oos.flush();
-
-        //Log.log("Client", "Resquest Sent", r.toString());
-        //Log.log("Client", "Response Pending", "");
 
         Request response = (Request) ois.readObject();
 

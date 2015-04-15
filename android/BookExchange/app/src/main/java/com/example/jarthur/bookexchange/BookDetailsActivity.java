@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +15,9 @@ import android.widget.TextView;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+
+import client.Book;
+import client.Exchange;
 
 public class BookDetailsActivity extends ActionBarActivity {
 

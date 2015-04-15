@@ -11,6 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import java.util.ArrayList;
 
+import client.Book;
+import client.Client;
+import client.Exchange;
+
 
 public class HomeScreen extends ActionBarActivity {
 
@@ -33,7 +37,7 @@ public class HomeScreen extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        getUserExchanges();
+        //getUserExchanges();
         getAvailableBooks();
     }
 

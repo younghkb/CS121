@@ -12,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.logging.Logger;
+import client.Book;
+import client.Client;
+import client.Exchange;
 
 // Originally 'Status'
 public class ViewExchangeActivity extends ActionBarActivity {

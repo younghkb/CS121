@@ -1,4 +1,4 @@
-package com.example.jarthur.bookexchange;
+package client;
 
 import java.io.Serializable;
 import java.util.Date;

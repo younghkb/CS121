@@ -9,7 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
+
+import client.Exchange;
 
 /* Adapts a list of Exchanges to display on the Home Screen */
 //https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView

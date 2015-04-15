@@ -15,6 +15,8 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 import java.util.Date;
 
+import client.Exchange;
+
 // Currently using java.util.Date, NOT java.sql.Date
 
 public class CreateExchangeActivity extends ActionBarActivity {
