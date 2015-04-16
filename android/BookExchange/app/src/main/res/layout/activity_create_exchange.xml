@@ -8,13 +8,13 @@
     android:orientation="vertical"
     tools:context="com.example.jarthur.bookexchange.CreateLoan">
 
-        <TextView
+<!--        <TextView
             android:id="@+id/TextViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_header"
             android:textSize="10pt">
-        </TextView>
+        </TextView>-->
 
 
 
@@ -35,7 +35,7 @@
         </CheckBox> -->
 
    <EditText
-       android:id="@+id/EditTextBook"
+       android:id="@+id/bookQueryBox"
        android:layout_height="wrap_content"
        android:hint="@string/book_info"
        android:inputType="textNoSuggestions"
@@ -70,7 +70,7 @@
         </EditText>
 
         <Button
-            android:id="@+id/ButtonSendFeedback"
+            android:id="@+id/confirmAlertDialog"
             android:layout_height="wrap_content"
             android:text="@string/feedback_button"
             android:onClick="confirmAlert"

@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Client {
@@ -15,6 +16,10 @@ public class Client {
     final static String HOST = "knuth.cs.hmc.edu";
     final static int PORT = 6789;
 
+    // TODO set dynamically
+    public static int userId = 1111;  // id of the current user
+
+    // TODO don't include this stuff in production version
     /* Set this to true to debug without actually connecting to the server. */
     private static boolean debug = true;
 
@@ -36,8 +41,6 @@ public class Client {
 
         Request response = (Request) ois.readObject();
 
-        //Log.log("Client", "Response Recieved", response.toString());
-
         oos.close();
         os.close();
         s.close();
@@ -52,7 +55,6 @@ public class Client {
         return (ArrayList<Book>) r.reply;
     }
 
-    // FIXME test
     public static Book getBook(int book_id) throws Exception {
 
         if (debug) {
@@ -69,7 +71,6 @@ public class Client {
         return (Book) r.reply;
     }
 
-    // FIXME test
     public static List<Exchange> getPublicExchanges() throws Exception {
 
         if (debug) {
@@ -78,6 +79,14 @@ public class Client {
             Exchange ee = new Exchange();
             ee.book_title = "Hop on Pop";
             List<Exchange> list = new ArrayList<Exchange>();
+
+            Date d = new Date();
+            e.create_date = d;
+            e.start_date = d;
+            e.end_date = d;
+            ee.create_date = d;
+            ee.start_date = d;
+            ee.end_date = d;
 
             list.add(e);
             list.add(ee);
@@ -89,7 +98,6 @@ public class Client {
         return (ArrayList<Exchange>) r.reply;
     }
 
-    // FIXME test
     public static List<Exchange> getPrivateExchanges(int user_id) throws Exception {
 
        if (debug) {
@@ -98,7 +106,7 @@ public class Client {
            e.book_title = "Harry Potter";
            e.exchange_type = Exchange.Type.BORROW;
            e.status = Exchange.Status.ACCEPTED;
-           e.loaner_id = 1111;
+           e.loaner_id = userId;
 
            myExchanges.add(e);
 
@@ -119,6 +127,11 @@ public class Client {
     }
 
     public static void updateExchangeBorrower(int exchange_id, int borrower_id) throws Exception {
+
+        if (debug) {
+            return;
+        }
+
         Request r = new Request(Request.Type.UPDATE_EXCHANGE_BORROWER);
         r.params.put("exchange_id", exchange_id);
         r.params.put("borrower_id", borrower_id);

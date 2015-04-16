@@ -110,7 +110,7 @@ public class HomeScreen extends ActionBarActivity {
     }
 
 
-    /** Collects a l ist of the exchanges the user is participating in. */
+    /** Collects a list of the exchanges the user is participating in. */
     private void getUserExchanges() {
         int userId = 1111;      // FIXME get global static userId
         try {
