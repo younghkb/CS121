@@ -13,15 +13,14 @@
     tools:context="com.example.jarthur.bookexchange.HomeScreen">
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/createExchangeButton"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/create"
                     android:onClick="openCreateExchangeActivity"/>
 
-
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/logoutButton"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/logout" />
@@ -45,26 +44,6 @@
                     android:layout_height="wrap_content" >
                 </ListView>
 
-                <!--<Button
-                    android:id="@+id/button3"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/request"
-                    android:onClick="openViewExchangeActivity"/>
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/borrowing"
-                    android:onClick="openViewExchangeActivity"/>
-
-                <Button
-                    android:id="@+id/button5"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loaning"
-                    android:onClick="openViewExchangeActivity"/>-->
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -83,24 +62,5 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
                 </ListView>
-
-
-                <!--<Button
-                    android:id="@+id/button6"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bookEx1"
-                    android:onClick="openBookDetailsActivity"/>
-                <Button
-                    android:id="@+id/button8"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bookEx2" />
-
-                <Button
-                    android:id="@+id/button9"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bookEx3" />-->
 
     </LinearLayout>

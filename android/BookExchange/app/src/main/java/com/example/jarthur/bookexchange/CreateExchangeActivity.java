@@ -7,14 +7,25 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import client.Book;
+import client.Client;
 import client.Exchange;
 
 // Currently using java.util.Date, NOT java.sql.Date
@@ -23,7 +34,10 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
     // Gives the servers the parameters for a new exchange, then queries to get it
 
-    // TODO where the heck is the Book title input???
+    // hopefully okay to make this static
+    private static Exchange newExchange = new Exchange();
+
+    private static Log logger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +47,61 @@ public class CreateExchangeActivity extends ActionBarActivity {
         // Make logo show up in action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        EditText bookQuery = (EditText) findViewById(R.id.bookQueryBox);
+        bookQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    selectBook();
+                    return true;
+                }
+                return false;
+            }
+
+        });
+
+        Spinner pickExchangeType = (Spinner) findViewById(R.id.SpinnerOfferLoan);
+        pickExchangeType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                return;
+            }
+
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // OFFER 0
+                // REQUEST 1
+                Button setDate = (Button) findViewById(R.id.setDate);
+
+                if (position == 0) {
+                    newExchange.exchange_type = Exchange.Type.LOAN;
+                    setDate.setVisibility(View.VISIBLE);
+                } else if (position == 1) {
+                    newExchange.exchange_type = Exchange.Type.BORROW;
+                    setDate.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    private void selectBook() {
+
+        // Get the user input text with leading or ending whitespace removed
+        EditText bookQuery = (EditText) findViewById(R.id.bookQueryBox);
+        String queryText = bookQuery.getText().toString().trim();
+        if (queryText.isEmpty()) {
+            // TODO give visual feedback
+        }
+        else {
+            try {
+                List<Book> booksFound = Client.searchBook(queryText);
+            }
+            catch (Exception e) {
+                logger.e("SelectBook", "exception", e);
+            }
+        }
+
+        // We need to require that the user choose an exchange type
     }
 
     @Override
@@ -57,50 +126,54 @@ public class CreateExchangeActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     public static class AlertDialogFragment extends DialogFragment {
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            // TODO change message
             builder.setMessage(R.string.confirm_dialog)
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
-                            // want to do this
 
-                            Exchange newExchange = new Exchange();
-                            newExchange.book_title = "TODO";
-                            newExchange.start_date = new Date();    // TODO
+                            try {
+                                Client.createExchange(newExchange);
+                            } catch (Exception e) {
+                                logger.e("Confirm Dialog", "exception", e);
+                            }
 
-                            //requestManager.createExchange(newExchange);
-
+                            // TODO give visual confirmation
 
                         }
+
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // User cancelled the dialog
-                            // TODO return to previous activity?
+                            // Do we want to do anything here?
                         }
                     });
+
             // Create the AlertDialog object and return it
             return builder.create();
         }
     }
 
     public void confirmAlert(View view) {
-        DialogFragment newFragment = new AlertDialogFragment();
-        newFragment.show(getFragmentManager(), "confirm_dialog");
+        DialogFragment confirmDialog = new AlertDialogFragment();
+        confirmDialog.show(getFragmentManager(), "confirm_dialog");
     }
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
+        final Calendar c = Calendar.getInstance();
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
@@ -112,7 +185,10 @@ public class CreateExchangeActivity extends ActionBarActivity {
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
 
-            // TODO ?? make date object
+            Date date = c.getTime();        // hopefully returns the correct date (TEST ME!)
+            newExchange.end_date = date;
+
+           // TODO assert that date is after 'now'
         }
     }
 

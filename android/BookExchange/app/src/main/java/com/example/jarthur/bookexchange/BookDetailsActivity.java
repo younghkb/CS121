@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import client.Book;
+import client.Client;
 import client.Exchange;
 
 public class BookDetailsActivity extends ActionBarActivity {
@@ -83,7 +85,22 @@ public class BookDetailsActivity extends ActionBarActivity {
         //owner.setText("Owner: " + myExchange.loaner_id);
 
         TextView loanPeriod = (TextView) findViewById(R.id.loanPeriod);
-        //loanPeriod.setText("Loan Period: " + myExchange.start_date.toString() + " to " + myExchange.end_date.toString());
+        loanPeriod.setText("Loan Period: " + myExchange.start_date.toString()
+                + " to " + myExchange.end_date.toString());
+
+        final Button requestButton = (Button) findViewById(R.id.requestButton);
+        requestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Client.updateExchangeBorrower(myExchange.exchange_id, Client.userId);
+                    requestButton.setText("Requested!");
+                }
+                catch (Exception e) {
+                    logger.e("BookDetails", "exception", e);
+                }
+            }
+        });
     }
 
 

@@ -22,6 +22,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
     private static Log logger;
 
     // TODO okay to make these static?
+    // Might need to clear them in onFinish()
     private static Exchange myExchange;
     private static Book myBook;
 
@@ -41,9 +42,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
         Exchange.Status exchangeStatus = myExchange.status;
 
         // true if the current user is the owner of this particular book
-        // TODO boolean isOwner = (userId == myExchange.loaner_id);
-        boolean isOwner = false;
-
+        boolean isOwner = (Client.userId == myExchange.loaner_id);
 
         // Sets visibilities correctly based on type and status
         // Pages can show book (always), otherPerson, contactInfo, dueDate, finishButton
@@ -52,7 +51,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
         View contactInfo = findViewById(R.id.contactInfo);
         View dueDate = findViewById(R.id.dueDate);
         View finishButton = findViewById(R.id.finishButton);
-        // View cancelButton = findViewById(R.id.cancelButton);
+        //View cancelButton = findViewById(R.id.cancelButton);
 
         switch (exchangeStatus) {
 
@@ -101,9 +100,8 @@ public class ViewExchangeActivity extends ActionBarActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
                             // want to do this
-                            // TODO connect to database
                             try {
-                                Client.updateExchangeLoaner(myExchange.exchange_id, 1111);  //TODO userId
+                                Client.updateExchangeStatus(myExchange.exchange_id, Exchange.Status.COMPLETED);
 
                             } catch (Exception e) {
                                 logger.e("ViewExchangeActivity", "exception", e);
