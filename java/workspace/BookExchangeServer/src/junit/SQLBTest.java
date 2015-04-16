@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import client.Exchange;
 import database.SQLB;
-import database.entry.Exchange;
 
 public class SQLBTest {
 

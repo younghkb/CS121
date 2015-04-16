@@ -1,17 +1,20 @@
-package server.user;
+package server.threads;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.text.ParseException;
 
 import logging.Log;
-import server.dbwrite.DBWrite;
 import server.grfetch.GRFetch;
+import client.Exchange;
+import client.Request;
 import database.SQLB;
 import database.SQLE;
-import database.entry.Exchange;
 
 /**
  * Thread for accepted user connections
@@ -33,7 +36,12 @@ public class UserSession extends Thread {
 			
 			Log.log("UserSession", "Waiting for Request", "");
 			
-			Request r = (Request) ois.readObject();
+			Request r = null;
+			try {
+				r = (Request) ois.readObject();
+			} catch (ClassNotFoundException e) {
+				System.err.println(e);
+			}
 			
 			Log.log("UserSession", "Request Recieved", r.toString());
 			
@@ -46,7 +54,7 @@ public class UserSession extends Thread {
 			oos.close();
 			os.close();
 			s.close();
-		} catch (Exception e) {
+		} catch (IOException|SQLException|ParseException e) {
 			System.err.println(e);
 		}
 	}
@@ -55,7 +63,7 @@ public class UserSession extends Thread {
 		this.s = s;
 	}
 	
-	private void process(Request r) throws Exception {
+	private void process(Request r) throws SQLException, ParseException {
 		switch (r.type) {
 		case SEARCH_BOOK:
 			r.reply = GRFetch.queryBooks((String) r.params.get("query")); // TODO make it pass number of responses, put into database?

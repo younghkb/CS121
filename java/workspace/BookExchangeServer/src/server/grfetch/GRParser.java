@@ -1,6 +1,7 @@
-package xmlparse;
+package server.grfetch;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -8,16 +9,16 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import logging.Duration;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
-import database.entry.Book;
+import client.Book;
 
 
 /* DOM parser for the Goodreads XML book data. 
@@ -26,7 +27,7 @@ import database.entry.Book;
 public class GRParser {
 	
 	/* Parses the XML returned from the Goodreads query and returns the list of books found. */
-	public static List<Book> parse(String xml) throws Exception {
+	public static List<Book> parse(String xml) throws ParserConfigurationException, IOException, SAXException {
 		
 		InputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
 		
@@ -74,7 +75,7 @@ public class GRParser {
 		return bookList;
 	}
 	
-	public static void parseDetails(Book book, String xml) throws Exception {	
+	public static void parseDetails(Book book, String xml) throws ParserConfigurationException, IOException, SAXException {	
 		InputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
 		
 		// Create the DOM builder and document from the input

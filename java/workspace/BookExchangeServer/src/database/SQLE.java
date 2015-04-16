@@ -4,15 +4,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
 import logging.Log;
-import database.entry.Book;
-import database.entry.Exchange;
+import client.Book;
+import client.Exchange;
 
 // SQL Executer
 public abstract class SQLE {
@@ -24,27 +26,27 @@ public abstract class SQLE {
 	// create/delete books
 	// ===================
 	
-	public static void createBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) throws Exception {
+	public static void createBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) throws SQLException {
 		Log.log("SQLE", "createBook", "book_id = " + book_id);
 		update(SQLB.createBook(book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url));
 	}
 	
-	public static void createBook(Book book) throws Exception {
+	public static void createBook(Book book) throws SQLException {
 		Log.log("SQLE", "createBook", "book_id = " + book.book_id);
 		update(SQLB.createBook(book));
 	}
 	
-	public static void updateBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) throws Exception {
+	public static void updateBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) throws SQLException {
 		Log.log("SQLE", "updateBook", "book_id = " + book_id);
 		update(SQLB.updateBook(book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url));
 	}
 	
-	public static void updateBook(Book book) throws Exception { // TODO make a parameter version of this function?
+	public static void updateBook(Book book) throws SQLException { // TODO make a parameter version of this function?
 		Log.log("SQLE", "updateBook", "book_id = " + book.book_id);
 		update(SQLB.updateBook(book));
 	}
 	
-	public static void deleteBook(int book_id) throws Exception {
+	public static void deleteBook(int book_id) throws SQLException {
 		update(SQLB.deleteBook(book_id));
 	}
 	
@@ -52,7 +54,7 @@ public abstract class SQLE {
 	// get books
 	// =========
 	
-	public static Book getBook(int book_id) throws Exception {
+	public static Book getBook(int book_id) throws SQLException, ParseException {
 		Log.log("SQLE", "getBook", "book_id = " + book_id);
 		List<Book> books = queryBooks(SQLB.getBook(book_id));
 		if (books.size() > 0) {
@@ -62,7 +64,7 @@ public abstract class SQLE {
 		}
 	}
 	
-	public static Book getBookFromISBN(String isbn) throws Exception {
+	public static Book getBookFromISBN(String isbn) throws SQLException, ParseException {
 		Log.log("SQLE", "getBookFromISBN", "isbn = " + isbn);
 		List<Book> books = queryBooks(SQLB.getBookFromISBN(isbn));
 		if (books.size() > 0) {
@@ -72,7 +74,7 @@ public abstract class SQLE {
 		}
 	}
 	
-	public static Book getOldestBook() throws Exception {
+	public static Book getOldestBook() throws SQLException, ParseException {
 		Log.log("SQLE", "getOldestBook", "");
 		List<Book> books = queryBooks(SQLB.getOldestBook());
 		if (books.size() > 0) {
@@ -83,7 +85,7 @@ public abstract class SQLE {
 	}
 	
 	// Can be used to determine if a book is active or find exchanges for a specific book (i.e., user search)
-	public static List<Book> getExchangeForBook(int book_id) throws Exception {
+	public static List<Book> getExchangeForBook(int book_id) throws SQLException, ParseException {
 		Log.log("SQLE", "getExchangeForBook", "book_id = " + book_id);
 		return queryBooks(SQLB.getBook(book_id));
 	}
@@ -95,7 +97,7 @@ public abstract class SQLE {
 	// create exchanges
 	// ================
 	
-	public static void createExchange(int initUser_id, Exchange.Type exchange_type, int book_id, String book_title) throws Exception {
+	public static void createExchange(int initUser_id, Exchange.Type exchange_type, int book_id, String book_title) throws SQLException {
 		Log.log("SQLE", "createExchange", "book_id = " + book_id);
 		update(SQLB.createExchange(initUser_id, exchange_type, book_id, book_title));
 	}
@@ -104,7 +106,7 @@ public abstract class SQLE {
 	// get exchanges
 	// =============
 	
-	public static Exchange getExchange(int exchange_id) throws Exception { // Does not guarantee that user is allowed to view the exchange.
+	public static Exchange getExchange(int exchange_id) throws SQLException, ParseException { // Does not guarantee that user is allowed to view the exchange.
 		Log.log("SQLE", "getExchange", "exchange_id = " + exchange_id);
 		List<Exchange> exchanges = queryExchanges(SQLB.getExchange(exchange_id));
 		if (exchanges.size() > 0) {
@@ -114,12 +116,12 @@ public abstract class SQLE {
 		}
 	}
 	
-	public static List<Exchange> getPublicExchanges() throws Exception {
+	public static List<Exchange> getPublicExchanges() throws SQLException, ParseException {
 		Log.log("SQLE", "getPublicExchanges", "");
 		return queryExchanges(SQLB.getPublicExchanges());
 	}
 	
-	public static List<Exchange> getPrivateExchanges(int user_id) throws Exception {
+	public static List<Exchange> getPrivateExchanges(int user_id) throws SQLException, ParseException {
 		Log.log("SQLE", "getPrivateExchanges", "user_id = " + user_id);
 		return queryExchanges(SQLB.getPrivateExchanges(user_id));
 	}	
@@ -128,17 +130,17 @@ public abstract class SQLE {
 	// modify exchanges
 	// ================
 	
-	public static void updateBorrower(int exchange_id, int borrower_id) throws Exception {
+	public static void updateBorrower(int exchange_id, int borrower_id) throws SQLException {
 		Log.log("SQLE", "updateBorrower", "exchange_id = " + exchange_id + ", borrower_id = " + borrower_id);
 		update(SQLB.updateBorrower(exchange_id, borrower_id));
 	}
 	
-	public static void updateLoaner(int exchange_id, int loaner_id) throws Exception {
+	public static void updateLoaner(int exchange_id, int loaner_id) throws SQLException {
 		Log.log("SQLE", "updateLoaner", "exchange_id = " + exchange_id + ", loaner_id = " + loaner_id);
 		update(SQLB.updateLoaner(exchange_id, loaner_id));
 	}
 	
-	public static void updateExchangeStatus(int exchange_id, Exchange.Status status) throws Exception {
+	public static void updateExchangeStatus(int exchange_id, Exchange.Status status) throws SQLException {
 		Log.log("SQLE", "updateExchangeStatus", "exchange_id = " + exchange_id + ", status = " + status);
 		update(SQLB.updateExchangeStatus(exchange_id, status));
 	}
@@ -150,17 +152,17 @@ public abstract class SQLE {
 	// empty tables
 	// ============
 	
-	public static void deleteAllBooks() throws Exception {
+	public static void deleteAllBooks() throws SQLException {
 		Log.log("SQLE", "deleteAllBooks", "");
 		update(SQLB.deleteAllBooks());
 	}
 	
-	public static void deleteAllExchanges() throws Exception {
+	public static void deleteAllExchanges() throws SQLException {
 		Log.log("SQLE", "deleteAllExchanges", "");
 		update(SQLB.deleteAllExchanges());
 	}
 	
-	public static void deleteAllUsers() throws Exception {
+	public static void deleteAllUsers() throws SQLException {
 		Log.log("SQLE", "deleteAllUsers", "");
 		update(SQLB.deleteAllUsers());
 	}
@@ -168,7 +170,7 @@ public abstract class SQLE {
 	// ====================================================================================================
 	// ====================================================================================================
 	
-	private static List<Book> queryBooks(String sql) throws Exception {
+	private static List<Book> queryBooks(String sql) throws SQLException, ParseException {
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -190,7 +192,7 @@ public abstract class SQLE {
 		return lst;
 	}
 	
-	private static List<Exchange> queryExchanges(String sql) throws Exception {
+	private static List<Exchange> queryExchanges(String sql) throws SQLException, ParseException {
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -212,7 +214,7 @@ public abstract class SQLE {
 		return lst;
 	}
 	
-	private static Book mkBook(ResultSet rs) throws Exception {
+	private static Book mkBook(ResultSet rs) throws SQLException, ParseException {
 		Book book = new Book();
 		
 		book.book_id =  rs.getInt("book_id");
@@ -234,7 +236,7 @@ public abstract class SQLE {
 		return book;
 	}
 	
-	private static List<Book> mkBookList(ResultSet rs) throws Exception {
+	private static List<Book> mkBookList(ResultSet rs) throws SQLException, ParseException {
 		List<Book> books = new ArrayList<Book>();
 		
 	    while (rs.next()) {
@@ -244,7 +246,7 @@ public abstract class SQLE {
 		return books;
 	}
 	
-	private static Exchange mkExchange(ResultSet rs) throws Exception {
+	private static Exchange mkExchange(ResultSet rs) throws SQLException, ParseException {
 		Exchange exchange = new Exchange();
 		
 		exchange.exchange_id = rs.getInt("exchange_id");
@@ -272,7 +274,7 @@ public abstract class SQLE {
 		return exchange;
 	}
 	
-	private static List<Exchange> mkExchangeList(ResultSet rs) throws Exception {
+	private static List<Exchange> mkExchangeList(ResultSet rs) throws SQLException, ParseException {
 		List<Exchange> exchanges = new ArrayList<Exchange>();
 		
 	    while (rs.next()) {
@@ -282,7 +284,7 @@ public abstract class SQLE {
 		return exchanges;
 	}
 
-	public static void update(String sql) throws Exception {
+	private static void update(String sql) throws SQLException {
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -297,7 +299,7 @@ public abstract class SQLE {
 		c.close();
 	}
 	
-	public static void execute(String sql) throws Exception { // TODO make different from update?
+	public static void execute(String sql) throws SQLException { // TODO make different from update? besides visibility
 		Connection c = null;
 		Statement stmt = null;
 		

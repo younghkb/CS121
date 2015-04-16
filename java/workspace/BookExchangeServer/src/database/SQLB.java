@@ -1,11 +1,17 @@
 package database;
 
-import database.entry.Book;
-import database.entry.Exchange;
+import client.Book;
+import client.Exchange;
 
 // SQL Builder
 public abstract class SQLB { //TODO Sanitize
-
+	
+//	public static void main(String[] args) {
+//		System.out.println(createBook(10, "Test Book", "Mr. Test", "123", "1990", "1985", "www.google.com", "www.google.com"));
+//		System.out.println(createExchange(1, Exchange.Type.BORROW, 10, "Test Book"));
+//		System.out.println(getPublicExchanges());
+//	}
+	
 	// ===================
 	// create/delete books
 	// ===================

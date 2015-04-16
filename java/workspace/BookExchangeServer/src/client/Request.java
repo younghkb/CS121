@@ -1,4 +1,4 @@
-package server.user;
+package client;
 
 import java.io.Serializable;
 import java.util.HashMap;

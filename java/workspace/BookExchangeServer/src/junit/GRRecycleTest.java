@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import server.dbwrite.DBWrite;
-import server.grrecycle.GRRecycle;
+import server.threads.DBWrite;
+import server.threads.GRRecycle;
 import database.SQLE;
 //import xmlparse.GRE;
 

@@ -1,5 +1,6 @@
-package server.dbwrite;
+package server.threads;
 
+import java.sql.SQLException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import logging.Log;
@@ -24,45 +25,16 @@ public class DBWrite extends Thread {
 					SQLE.execute(sql);
 					sql = DBWriteQueue.poll();
 				}
+				try {
 				Thread.sleep(1000); //TODO have signals wake this up
+				} catch (InterruptedException e) {
+					System.err.println(e);
+				}
 			}
-		} catch (Exception e) { // TODO fix
+		} catch (SQLException e) {
 			System.err.println(e);
 		}
 	}
-	
-//	public void run() {
-//		try {
-//			Connection c;
-//			Statement stmt;
-//			
-//			Class.forName("org.sqlite.JDBC");
-//		
-//			c = DriverManager.getConnection("jdbc:sqlite:test.db");
-//			System.out.println("Opened database successfully");
-//		
-//			// TODO write things as they get queued up
-//			while (true) {
-//				System.out.println("Size: " + DBWriteQueue.size());
-//				while (DBWriteQueue.size() > 0) {
-//					stmt = c.createStatement();
-//					String sql = DBWriteQueue.poll();
-//					System.out.println("DEQUEUED: " + sql);
-//					stmt.executeUpdate(sql);
-//					stmt.close();
-//					c.commit();
-//				}
-//				Thread.sleep(1000); //TODO have signals wake this up
-//				
-////				synchronized (DBWriteQueue) {
-////					DBWriteQueue.wait();
-////				}
-//			}
-//			//c.close(); //TODO make this reachable
-//		} catch (Exception e) { // TODO fix
-//			System.err.println(e);
-//		}
-//	}
 	
 	public static void queue(String sql) { //TODO could write ordering causing problems?
 		Log.log("DBWrite", "Queue", sql);

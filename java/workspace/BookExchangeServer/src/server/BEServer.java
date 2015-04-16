@@ -3,9 +3,9 @@ package server;
 import java.net.ServerSocket;
 
 import logging.Log;
-import server.dbwrite.DBWrite;
-import server.grrecycle.GRRecycle;
-import server.user.UserSession;
+import server.threads.DBWrite;
+import server.threads.GRRecycle;
+import server.threads.UserSession;
 
 //import java.time.Clock; // only for JDK8 -- this class seems much nicer than Date
 
