@@ -155,4 +155,9 @@ public class Client {
         return;
     }
 
+    public static int login(String username, String password) throws Exception {
+        //TODO add detail once Andrew is done
+        // 0 or greater is userID, negative means there is no userID
+        return 0;
+    }
 }
