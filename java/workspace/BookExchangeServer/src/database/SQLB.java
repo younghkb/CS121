@@ -1,7 +1,12 @@
 package database;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import logging.Log;
 import client.Book;
 import client.Exchange;
+import client.User;
 
 // SQL Builder
 public abstract class SQLB { //TODO Sanitize
@@ -11,6 +16,30 @@ public abstract class SQLB { //TODO Sanitize
 //		System.out.println(createExchange(1, Exchange.Type.BORROW, 10, "Test Book"));
 //		System.out.println(getPublicExchanges());
 //	}
+
+	// ====================
+	// login/create account
+	// ====================
+	
+	public static String login(String username, String password) {
+		String command = "select * from users where username = '%s' and password = '%s';";
+		return String.format(command, username, password);
+	}
+	
+	public static String createLogin(String username, String password) {
+		String command = "insert into users (username, password) values ('%s', '%s');";
+		return String.format(command, username, password);
+	}
+	
+	public static String getUser(int user_id) {
+		String command = "select * from users where user_id = %d;";
+		return String.format(command, user_id);
+	}
+	
+	public static String getUserFromUsername(String username) {
+		String command = "select * from users where username = '%s';";
+		return String.format(command, username);
+	}
 	
 	// ===================
 	// create/delete books

@@ -15,12 +15,48 @@ import java.util.TimeZone;
 import logging.Log;
 import client.Book;
 import client.Exchange;
+import client.User;
 
 // SQL Executer
 public abstract class SQLE {
 	// TODO change queryBooks to query(SQL, List<E>), check if there is way to get current method header?
 	
 	final static String DATABASE_NAME = "bookexchange.db";
+
+	// ====================
+	// login/create account
+	// ====================
+	
+	public static int login(String username, String password) throws SQLException {
+		Log.log("SQLE", "login", "username = " + username);
+		List<User> users = queryUsers(SQLB.login(username, password));
+		if (users.size() != 1) {
+			return -1;
+		} else {
+			return users.get(0).user_id;
+		}
+	}
+	
+	public static int createLogin(String username, String password) throws SQLException {
+		if (loginExists(username)) {
+			return -1;
+		} else {
+			update(SQLB.createLogin(username, password));
+			return getUserIDFromUsername(username);
+		}
+	}
+	
+	public static boolean loginExists(String username) throws SQLException {
+		Log.log("SQLE", "loginExists", "username = " + username);
+		List<User> users = queryUsers(SQLB.getUserFromUsername(username));
+		return users.size() > 0;
+	}
+	
+	public static int getUserIDFromUsername(String username) throws SQLException { // assumes it exists
+		Log.log("SQLE", "getUserFromUsername", "username = " + username);
+		List<User> users = queryUsers(SQLB.getUserFromUsername(username));
+		return users.get(0).user_id;
+	}
 	
 	// ===================
 	// create/delete books
@@ -170,6 +206,28 @@ public abstract class SQLE {
 	// ====================================================================================================
 	// ====================================================================================================
 	
+	private static List<User> queryUsers(String sql) throws SQLException {
+		Connection c = null;
+		Statement stmt = null;
+		
+		c = DriverManager.getConnection("jdbc:sqlite:" + DATABASE_NAME);
+		c.setAutoCommit(false);
+		stmt = c.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		List<User> lst = mkUserList(rs);
+		
+		rs.close();
+		stmt.close();
+		c.close();
+		
+//		for (Book b : lst) {
+//			System.out.println(b);
+//		}
+		
+		return lst;
+	}
+	
 	private static List<Book> queryBooks(String sql) throws SQLException, ParseException {
 		Connection c = null;
 		Statement stmt = null;
@@ -212,6 +270,26 @@ public abstract class SQLE {
 //		}
 		
 		return lst;
+	}
+	
+	private static User mkUser(ResultSet rs) throws SQLException {
+		User user = new User();
+		
+		user.user_id = rs.getInt("user_id");
+		user.username = rs.getString("username");
+		user.password = rs.getString("password");
+		
+		return user;
+	}
+	
+	private static List<User> mkUserList(ResultSet rs) throws SQLException {
+		List<User> users = new ArrayList<User>();
+		
+	    while (rs.next()) {
+	    	users.add(mkUser(rs));
+	    }
+	    
+		return users;
 	}
 	
 	private static Book mkBook(ResultSet rs) throws SQLException, ParseException {

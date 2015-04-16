@@ -65,6 +65,12 @@ public class UserSession extends Thread {
 	
 	private void process(Request r) throws SQLException, ParseException {
 		switch (r.type) {
+		case LOGIN:
+			r.reply = SQLE.login((String) r.params.get("username"), (String) r.params.get("password"));
+			break;
+		case CREATE_LOGIN:
+			r.reply = SQLE.createLogin((String) r.params.get("username"), (String) r.params.get("password"));
+			break;
 		case SEARCH_BOOK:
 			r.reply = GRFetch.queryBooks((String) r.params.get("query")); // TODO make it pass number of responses, put into database?
 			break;

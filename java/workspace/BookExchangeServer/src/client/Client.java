@@ -12,11 +12,11 @@ import logging.Log;
 
 public abstract class Client {
 	
-	//final static String HOST = "localhost";
-	final static String HOST = "knuth.cs.hmc.edu";
+	final static String HOST = "localhost";
+	//final static String HOST = "knuth.cs.hmc.edu";
 	final static int PORT = 6789;
 	
-	public static void main(String[] arg) throws Exception {
+	public static void main(String[] arg) {
 		try {
 			Log.log("Client", "Client Start", "");
 //			Request r = new Request(Request.Type.SEARCH_BOOK);
@@ -24,7 +24,8 @@ public abstract class Client {
 //			Request reply = send(r);
 //			System.out.println(reply);
 			//System.out.println(getBook(206962));
-			System.out.println(getPublicExchanges());
+			
+			//System.out.println(getPublicExchanges());
 		} catch (Exception e) {
 			System.err.println(e);
 		}
@@ -64,6 +65,22 @@ public abstract class Client {
 		s.close();
 		
 		return response;
+	}
+	
+	public static int login(String username, String password) throws IOException {
+		Request r = new Request(Request.Type.LOGIN);
+		r.params.put("username", username);
+		r.params.put("password", password);
+		r = send(r);
+		return (Integer) r.reply;
+	}
+	
+	public static int createLogin(String username, String password) throws IOException {
+		Request r = new Request(Request.Type.CREATE_LOGIN);
+		r.params.put("username", username);
+		r.params.put("password", password);
+		r = send(r);
+		return (Integer) r.reply;
 	}
 	
 	public static List<Book> searchBook(String query) throws IOException {
