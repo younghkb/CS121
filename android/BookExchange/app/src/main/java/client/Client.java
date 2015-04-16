@@ -16,7 +16,7 @@ public class Client {
     final static int PORT = 6789;
 
     /* Set this to true to debug without actually connecting to the server. */
-    private static boolean debug = false;
+    private static boolean debug = true;
 
     private static Request send(Request r) throws Exception {
 
@@ -142,4 +142,9 @@ public class Client {
         return;
     }
 
+    public static int login(String username, String password) throws Exception {
+        //TODO add detail once Andrew is done
+        // 0 or greater is userID, negative means there is no userID
+        return 0;
+    }
 }
