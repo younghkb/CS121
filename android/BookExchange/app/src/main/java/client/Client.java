@@ -2,6 +2,7 @@ package client;
 
 import android.os.StrictMode;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,18 +17,15 @@ public class Client {
     final static String HOST = "knuth.cs.hmc.edu";
     final static int PORT = 6789;
 
+
     // TODO set dynamically
-    public static int userId = 1111;  // id of the current user
+    public static int userId = -1;  // id of the current user
 
     // TODO don't include this stuff in production version
     /* Set this to true to debug without actually connecting to the server. */
-    private static boolean debug = true;
+    private static boolean debug = false;
 
-    private static Request send(Request r) throws Exception {
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
+    private static Request send(Request r) throws IOException {
         Socket s = new Socket(HOST, PORT);
 
         OutputStream os = s.getOutputStream();
@@ -36,10 +34,21 @@ public class Client {
         InputStream is = s.getInputStream();
         ObjectInputStream ois = new ObjectInputStream(is);
 
+        //Log.log("Client", "Request Pending", r.toString());
+
         oos.writeObject(r);
         oos.flush();
 
-        Request response = (Request) ois.readObject();
+        //Log.log("Client", "Resquest Sent", r.toString());
+        //Log.log("Client", "Response Pending", "");
+
+        Request response = null;
+        try {
+            response = (Request) ois.readObject();
+            //Log.log("Client", "Response Recieved", response.toString());
+        } catch (ClassNotFoundException e) {
+            System.err.println(e);
+        }
 
         oos.close();
         os.close();
@@ -155,9 +164,19 @@ public class Client {
         return;
     }
 
-    public static int login(String username, String password) throws Exception {
-        //TODO add detail once Andrew is done
-        // 0 or greater is userID, negative means there is no userID
-        return 0;
+    public static int login(String username, String password) throws IOException {
+        Request r = new Request(Request.Type.LOGIN);
+        r.params.put("username", username);
+        r.params.put("password", password);
+        r = send(r);
+        return (Integer) r.reply;
+    }
+
+    public static int createLogin(String username, String password) throws IOException {
+        Request r = new Request(Request.Type.CREATE_LOGIN);
+        r.params.put("username", username);
+        r.params.put("password", password);
+        r = send(r);
+        return (Integer) r.reply;
     }
 }
