@@ -11,6 +11,7 @@ import java.text.ParseException;
 
 import logging.Log;
 import server.grfetch.GRFetch;
+import client.Book;
 import client.Exchange;
 import client.Request;
 import database.SQLB;
@@ -72,7 +73,11 @@ public class UserSession extends Thread {
 			r.reply = SQLE.createLogin((String) r.params.get("username"), (String) r.params.get("password"));
 			break;
 		case SEARCH_BOOK:
-			r.reply = GRFetch.queryBooks((String) r.params.get("query")); // TODO make it pass number of responses, put into database?
+			r.reply = GRFetch.queryBooks((String) r.params.get("query"), 5); // TODO make it pass number of responses, put into database? // TODO maxlength = 5?
+			break;
+		case CREATE_BOOK:
+			DBWrite.queue(SQLB.createBook((Book) r.params.get("book")));
+			r.reply = r; // TODO better thing to do?
 			break;
 		case GET_BOOK:
 			r.reply = SQLE.getBook((Integer) r.params.get("book_id"));
@@ -81,7 +86,7 @@ public class UserSession extends Thread {
 			r.reply = SQLE.getPublicExchanges();
 			break;
 		case GET_PRIVATE_EXCHANGES:
-			r.reply = SQLE.getBook((Integer) r.params.get("user_id"));
+			r.reply = SQLE.getPrivateExchanges((Integer) r.params.get("user_id"));
 			break;
 		case CREATE_EXCHANGE:
 			DBWrite.queue(SQLB.createExchange((Exchange) r.params.get("exchange")));

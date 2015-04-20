@@ -60,7 +60,7 @@ public abstract class SQLB { //TODO Sanitize
 		return String.format(command, book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url, book_id);
 	}
 	
-	public static String updateBook(Book book) {
+	public static String updateBook(Book book) { // TODO combine Book and Exchange versions with above?
 		String command = "update books set book_id = %d, book_title = '%s', author = '%s', isbn = '%s', pub_year = '%s', orig_pub_year = '%s', image_url = '%s', small_image_url = '%s', add_date = datetime('now') where book_id = %d;";
 		return String.format(command, book.book_id, book.book_title, book.author, book.isbn, book.pub_year, book.orig_pub_year, book.image_url, book.small_image_url, book.book_id);
 	}

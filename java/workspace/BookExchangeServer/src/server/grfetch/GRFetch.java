@@ -26,7 +26,7 @@ import database.SQLB;
  */
 public class GRFetch {
 	
-	private final static long MIN_FETCH_DURATION = 1000; // TODO Not request any method more than once a second. Does that mean same parameters?
+	private final static long MIN_FETCH_DURATION = 150; // TODO Not request any method more than once a second. Does that mean same parameters?
 	
 	private static String GRKey = "";
 	private final static String SCHEME = "https";
@@ -50,7 +50,7 @@ public class GRFetch {
 		List<Book> books = null;
 		
 		try {
-			GRParser.parse(fetch(mkQueryURL(query)));		
+			books = GRParser.parse(fetch(mkQueryURL(query)));		
 			int detailsCount = (maxLength < books.size() ? maxLength : books.size());
 			for (int i = 0; i < detailsCount; i++) {
 				Book book = books.get(i);
@@ -61,7 +61,7 @@ public class GRFetch {
 				books.remove(detailsCount);
 			}
 		} catch (ParserConfigurationException|IOException|SAXException e) {
-			System.err.println();
+			System.err.println(e);
 		}
 		
 		return books;
@@ -109,12 +109,9 @@ public class GRFetch {
 		try {
 			ldGRKey();
 			return new URI(SCHEME, null, HOST, -1, SEARCHPATH, "key=" + GRKey + "&q=" + query, null).toURL();
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException|URISyntaxException e) {
 			System.err.println(e);
 			throw new MalformedURLException(); // throws this since if either of these exceptions occur, it cannot form a valid URL
-		} catch (URISyntaxException e) {
-			System.err.println(e);
-			throw new MalformedURLException();
 		}
 	}
 	

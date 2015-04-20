@@ -17,6 +17,7 @@ public class Request implements Serializable {
 		LOGIN,
 		CREATE_LOGIN,
 		SEARCH_BOOK,
+		CREATE_BOOK,
 		GET_BOOK,
 		GET_PUBLIC_EXCHANGES,
 		GET_PRIVATE_EXCHANGES,

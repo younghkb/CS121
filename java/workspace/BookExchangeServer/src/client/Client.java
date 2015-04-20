@@ -12,8 +12,8 @@ import logging.Log;
 
 public abstract class Client {
 	
-	final static String HOST = "localhost";
-	//final static String HOST = "knuth.cs.hmc.edu";
+	//final static String HOST = "localhost";
+	final static String HOST = "knuth.cs.hmc.edu";
 	final static int PORT = 6789;
 	
 	public static void main(String[] arg) {
@@ -25,7 +25,8 @@ public abstract class Client {
 //			System.out.println(reply);
 			//System.out.println(getBook(206962));
 			
-			//System.out.println(getPublicExchanges());
+			System.out.println(getPublicExchanges());
+			System.out.println(login("naomi_", "PassWord"));
 		} catch (Exception e) {
 			System.err.println(e);
 		}
@@ -88,6 +89,13 @@ public abstract class Client {
 		r.params.put("query", query);
 		r = send(r);
 		return (List<Book>) r.reply;
+	}
+	
+	public static void createBook(Book book) throws IOException {
+		Request r = new Request(Request.Type.CREATE_BOOK);
+		r.params.put("book", book);
+		r = send(r);
+		return;
 	}
 
 	public static Book getBook(int book_id) throws IOException {

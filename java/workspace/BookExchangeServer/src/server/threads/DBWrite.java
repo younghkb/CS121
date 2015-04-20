@@ -13,11 +13,12 @@ public class DBWrite extends Thread {
 	
 	// static ConcurrentLinkedQueue<DBWriteElement> DBWriteQueue = new ConcurrentLinkedQueue<DBWriteElement>();
 	static ConcurrentLinkedQueue<String> DBWriteQueue = new ConcurrentLinkedQueue<String>(); //TODO switch to PreparedStatement?
+	static boolean keepRunning = true;
 	
 	public void run() {
 		try {
 			Log.log("DBWrite", "Thread Start", "");
-			while (true) {
+			while (keepRunning) {
 				//System.out.println("Size: " + DBWriteQueue.size());
 				String sql = DBWriteQueue.poll();
 				while (sql != null) { // better than checking length
