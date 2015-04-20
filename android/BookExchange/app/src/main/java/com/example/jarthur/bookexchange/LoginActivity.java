@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import android.widget.Toast;
@@ -272,8 +274,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            //Client.login(mEmail, mPassword);
-
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -282,8 +282,18 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 }
             }
 
+            try {
+                Client.userId = Client.login("naomi_", "PassWord");
+               // Client.userId = Client.login(mEmail, mPassword);
+            } catch (IOException e){
+                Client.userId = -2;
+                Log.e("catch case", e.toString());
+            }
+
+            return (Client.userId >= 0);
+
             // TODO: register the new account here.
-            return false;
+            //return false;
         }
 
         @Override

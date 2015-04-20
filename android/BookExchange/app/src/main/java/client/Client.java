@@ -17,7 +17,8 @@ public class Client {
     final static String HOST = "knuth.cs.hmc.edu";
     final static int PORT = 6789;
 
-    public static int userId = 1;   // Set in HomeScreen onCreate()
+    // TODO set dynamically
+    public static int userId = -1;  // id of the current user, set in LoginActivity
 
     // TODO don't include this stuff in production version
     /* Set this to true to debug without actually connecting to the server. */
