@@ -2,6 +2,7 @@ package client;
 
 import android.os.StrictMode;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,15 +17,15 @@ public class Client {
     final static String HOST = "knuth.cs.hmc.edu";
     final static int PORT = 6789;
 
-    // TODO set dynamically
-    public static int userId = 1111;  // id of the current user
+    public static int userId = 1;   // Set in HomeScreen onCreate()
 
     // TODO don't include this stuff in production version
     /* Set this to true to debug without actually connecting to the server. */
-    private static boolean debug = true;
+    private static boolean debug = false;
 
-    private static Request send(Request r) throws Exception {
+    private static Request send(Request r) throws IOException {
 
+        // We need to set a specific thread policy so we can open sockets on the main thread
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -39,7 +40,12 @@ public class Client {
         oos.writeObject(r);
         oos.flush();
 
-        Request response = (Request) ois.readObject();
+        Request response = null;
+        try {
+            response = (Request) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            System.err.println(e);
+        }
 
         oos.close();
         os.close();
@@ -48,11 +54,34 @@ public class Client {
         return response;
     }
 
+    public static int login(String username, String password) throws IOException {
+        Request r = new Request(Request.Type.LOGIN);
+        r.params.put("username", username);
+        r.params.put("password", password);
+        r = send(r);
+        return (Integer) r.reply;
+    }
+
+    public static int createLogin(String username, String password) throws IOException {
+        Request r = new Request(Request.Type.CREATE_LOGIN);
+        r.params.put("username", username);
+        r.params.put("password", password);
+        r = send(r);
+        return (Integer) r.reply;
+    }
+
     public static List<Book> searchBook(String query) throws Exception {
         Request r = new Request(Request.Type.SEARCH_BOOK);
         r.params.put("query", query);
         r = send(r);
         return (ArrayList<Book>) r.reply;
+    }
+
+    public static void createBook(Book book) throws IOException {
+        Request r = new Request(Request.Type.CREATE_BOOK);
+        r.params.put("book", book);
+        r = send(r);
+        return;
     }
 
     public static Book getBook(int book_id) throws Exception {
@@ -153,11 +182,5 @@ public class Client {
         r.params.put("status", status);
         r = send(r);
         return;
-    }
-
-    public static int login(String username, String password) throws Exception {
-        //TODO add detail once Andrew is done
-        // 0 or greater is userID, negative means there is no userID
-        return 0;
     }
 }

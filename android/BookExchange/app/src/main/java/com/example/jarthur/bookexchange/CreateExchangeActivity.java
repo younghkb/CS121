@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +38,8 @@ public class CreateExchangeActivity extends ActionBarActivity {
     // hopefully okay to make this static
     private static Exchange newExchange = new Exchange();
 
+    private static Book newBook = new Book();
+
     private static Log logger;
 
     @Override
@@ -48,19 +51,22 @@ public class CreateExchangeActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
+        // TODO MAKE THIS WORK
+        // http://stackoverflow.com/questions/5099814/knowing-when-edit-text-is-done-being-edited
         EditText bookQuery = (EditText) findViewById(R.id.bookQueryBox);
-        bookQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    selectBook();
-                    return true;
-                }
-                return false;
-            }
 
+        bookQuery.setOnFocusChangeListener( new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    selectBook();
+                    logger.i("CreateExchangeActivity", "selecting book");
+                }
+            }
         });
 
+
+        // Drop down menu for user to pick 'offer' or 'request'
         Spinner pickExchangeType = (Spinner) findViewById(R.id.SpinnerOfferLoan);
         pickExchangeType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -69,6 +75,9 @@ public class CreateExchangeActivity extends ActionBarActivity {
             }
 
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                logger.i("CreateExchangeActivity", "picking offer type");
+
                 // OFFER 0
                 // REQUEST 1
                 Button setDate = (Button) findViewById(R.id.setDate);
@@ -95,9 +104,15 @@ public class CreateExchangeActivity extends ActionBarActivity {
         else {
             try {
                 List<Book> booksFound = Client.searchBook(queryText);
+                // TODO put in stuff
+                newBook = booksFound.get(0);       // TODO make user choose
+
+                newExchange.book_title = newBook.book_title;
+                newExchange.book_id = newBook.book_id;
+
             }
             catch (Exception e) {
-                logger.e("SelectBook", "exception", e);
+                logger.e("CreateExchangeActivity", "exception in selectBook()", e);
             }
         }
 
@@ -138,13 +153,23 @@ public class CreateExchangeActivity extends ActionBarActivity {
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
+                            logger.i("CreateExchangeActivity", "Create Exchange button has been clicked");
+
+                            Toast t = Toast.makeText(getActivity().getApplicationContext(),
+                                                    "", Toast.LENGTH_SHORT);
+
                             try {
+                                Client.createBook(newBook);
                                 Client.createExchange(newExchange);
+                                t.setText("Exchange created!");
+                                t.show();
+
                             } catch (Exception e) {
                                 logger.e("Confirm Dialog", "exception", e);
+                                t.setText("Error! :(");
+                                t.show();
                             }
 
-                            // TODO give visual confirmation
 
                         }
 
@@ -166,6 +191,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
         confirmDialog.show(getFragmentManager(), "confirm_dialog");
     }
 
+    // Loaner can pick date that loan will end.
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 

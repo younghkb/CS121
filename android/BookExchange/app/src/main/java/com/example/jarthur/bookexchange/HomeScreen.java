@@ -37,7 +37,14 @@ public class HomeScreen extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        //getUserExchanges();
+        getUserExchanges();
+        getAvailableBooks();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh the list of available books      TODO is this needed?
         getAvailableBooks();
     }
 
@@ -72,7 +79,7 @@ public class HomeScreen extends ActionBarActivity {
 
         try {
             Exchange myExchange = availableExchanges.get(position);
-
+            // TODO debug this
             Book myBook = Client.getBook(myExchange.book_id);
 
             Bundle bundle = new Bundle();
@@ -112,9 +119,13 @@ public class HomeScreen extends ActionBarActivity {
 
     /** Collects a list of the exchanges the user is participating in. */
     private void getUserExchanges() {
-        int userId = 1111;      // FIXME get global static userId
         try {
-            userExchanges = (ArrayList<Exchange>) Client.getPrivateExchanges(userId);
+            userExchanges = (ArrayList<Exchange>) Client.getPrivateExchanges(Client.userId);
+            // TODO make sure it works if list is empty
+            if (userExchanges == null) {
+                logger.i(TAG, "User exchanges list was null");
+                return;
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

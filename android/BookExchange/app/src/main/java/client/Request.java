@@ -1,6 +1,5 @@
 package client;
 
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,10 @@ public class Request implements Serializable {
     }
 
     public static enum Type {
+        LOGIN,
+        CREATE_LOGIN,
         SEARCH_BOOK,
+        CREATE_BOOK,
         GET_BOOK,
         GET_PUBLIC_EXCHANGES,
         GET_PRIVATE_EXCHANGES,
