@@ -84,10 +84,12 @@ public class BookDetailsActivity extends ActionBarActivity {
         //TextView owner = (TextView) findViewById(R.id.owner);
         //owner.setText("Owner: " + myExchange.loaner_id);
 
-        TextView loanPeriod = (TextView) findViewById(R.id.loanPeriod);
+        // TODO FIXME exchange may not have that info
+        /*TextView loanPeriod = (TextView) findViewById(R.id.loanPeriod);
         loanPeriod.setText("Loan Period: " + myExchange.start_date.toString()
-                + " to " + myExchange.end_date.toString());
+                + " to " + myExchange.end_date.toString()); */
 
+        // TODO make sure user can't request their own book
         final Button requestButton = (Button) findViewById(R.id.requestButton);
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override

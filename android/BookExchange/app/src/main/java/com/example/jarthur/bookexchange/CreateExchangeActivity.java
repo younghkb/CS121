@@ -80,14 +80,14 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
                 // OFFER 0
                 // REQUEST 1
-                Button setDate = (Button) findViewById(R.id.setDate);
+                //Button setDate = (Button) findViewById(R.id.setDate);
 
                 if (position == 0) {
                     newExchange.exchange_type = Exchange.Type.LOAN;
-                    setDate.setVisibility(View.VISIBLE);
+                    //setDate.setVisibility(View.VISIBLE);
                 } else if (position == 1) {
                     newExchange.exchange_type = Exchange.Type.BORROW;
-                    setDate.setVisibility(View.GONE);
+                    //setDate.setVisibility(View.GONE);
                 }
             }
         });
@@ -192,7 +192,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
     }
 
     // Loaner can pick date that loan will end.
-    public static class DatePickerFragment extends DialogFragment
+/*    public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
         final Calendar c = Calendar.getInstance();
@@ -216,12 +216,12 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
            // TODO assert that date is after 'now'
         }
-    }
+    }*/
 
-    public void showDatePickerDialog(View v) {
+    /*public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
-    }
+    }*/
 }
 
 

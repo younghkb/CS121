@@ -51,13 +51,13 @@
         android:entries="@array/offer_or_loan">
     </Spinner>
 
-    <Button
+<!--    <Button
        android:id="@+id/setDate"
        android:layout_height="wrap_content"
        android:text="@string/set_date"
        android:onClick="showDatePickerDialog"
        android:layout_width="fill_parent">
-   </Button>
+   </Button>-->
 
 
         <EditText

@@ -45,6 +45,7 @@ public class HomeScreen extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         // Refresh the list of available books      TODO is this needed?
+        getUserExchanges();
         getAvailableBooks();
     }
 
