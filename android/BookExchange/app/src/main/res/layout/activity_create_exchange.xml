@@ -51,7 +51,8 @@
         android:entries="@array/offer_or_loan">
     </Spinner>
 
-<!--    <Button
+<!--    Deprecated for now
+        <Button
        android:id="@+id/setDate"
        android:layout_height="wrap_content"
        android:text="@string/set_date"

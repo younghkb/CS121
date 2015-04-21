@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -41,6 +42,8 @@ public class CreateExchangeActivity extends ActionBarActivity {
     private static Book newBook = new Book();
 
     private static Log logger;
+
+    private static DialogInterface.OnClickListener createListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,34 @@ public class CreateExchangeActivity extends ActionBarActivity {
                 }
             }
         });
+
+        createListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                logger.i("CreateExchangeActivity", "Create Exchange button has been clicked");
+
+                returnToHomeScreen();
+                /*Toast t = Toast.makeText(getActivity().getApplicationContext(),
+                        "", Toast.LENGTH_SHORT);
+
+                try {
+                    Client.createBook(newBook);
+                    Client.createExchange(newExchange);
+                    t.setText("Exchange created!");
+                    t.show();
+
+                } catch (Exception e) {
+                    logger.e("Confirm Dialog", "exception", e);
+                    t.setText("Error! :(");
+                    t.show();
+                }*/
+            }
+        };
+    }
+
+    private void returnToHomeScreen() {
+        Intent i = new Intent(this, HomeScreen.class);
+        startActivity(i);
     }
 
     private void selectBook() {
@@ -150,30 +181,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
             // Use the Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(R.string.confirm_dialog)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                            logger.i("CreateExchangeActivity", "Create Exchange button has been clicked");
-
-                            Toast t = Toast.makeText(getActivity().getApplicationContext(),
-                                                    "", Toast.LENGTH_SHORT);
-
-                            try {
-                                Client.createBook(newBook);
-                                Client.createExchange(newExchange);
-                                t.setText("Exchange created!");
-                                t.show();
-
-                            } catch (Exception e) {
-                                logger.e("Confirm Dialog", "exception", e);
-                                t.setText("Error! :(");
-                                t.show();
-                            }
-
-
-                        }
-
-                    })
+                    .setPositiveButton(R.string.yes, createListener)
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // User cancelled the dialog
@@ -186,11 +194,13 @@ public class CreateExchangeActivity extends ActionBarActivity {
         }
     }
 
+
     public void confirmAlert(View view) {
         DialogFragment confirmDialog = new AlertDialogFragment();
         confirmDialog.show(getFragmentManager(), "confirm_dialog");
     }
 
+    // Deprecated for now
     // Loaner can pick date that loan will end.
 /*    public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {

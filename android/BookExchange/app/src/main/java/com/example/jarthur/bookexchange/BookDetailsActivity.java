@@ -45,24 +45,26 @@ public class BookDetailsActivity extends ActionBarActivity {
         if (exchangeStatus == Exchange.Status.ACCEPTED || exchangeStatus == Exchange.Status.COMPLETED) {
 
             // Does not show request button, owner or possible loan period
-            View b = findViewById(R.id.requestButton);
-            b.setVisibility(View.GONE);
+            View requestButton = findViewById(R.id.requestButton);
+            requestButton.setVisibility(View.GONE);
 
-            View c = findViewById(R.id.loanPeriod);
-            c.setVisibility(View.GONE);
+            // Loan period is being deprecated for now.
+            //View c = findViewById(R.id.loanPeriod);
+            //c.setVisibility(View.GONE);
 
-            View d = findViewById(R.id.owner);
-            d.setVisibility(View.GONE);
+            // Commented out because I don't think this should be hidden - HR 4/20/15
+            //View d = findViewById(R.id.owner);
+            //d.setVisibility(View.GONE);
         }
         // Otherwise show everything
 
+        // TODO factor out the book details that are also used in ViewExchange
         TextView title = (TextView) findViewById(R.id.bookTitle);
         title.setText(myBook.book_title);
 
         TextView author = (TextView) findViewById(R.id.author);
         author.setText("Author: " + myBook.author);
 
-        // TODO resize actual image (not just padding)
         ImageView cover = (ImageView) findViewById(R.id.cover);
         try {
             GetImageTask task = new GetImageTask();
@@ -81,28 +83,34 @@ public class BookDetailsActivity extends ActionBarActivity {
         pubYear.setText("Publication Year: " + myBook.pub_year);
 
         // TODO We want to show the name of the user, not their id
-        //TextView owner = (TextView) findViewById(R.id.owner);
+        TextView owner = (TextView) findViewById(R.id.owner);
+        //String ownerName = Client.
         //owner.setText("Owner: " + myExchange.loaner_id);
 
-        // TODO FIXME exchange may not have that info
+        // Loan period is being deprecated for now
         /*TextView loanPeriod = (TextView) findViewById(R.id.loanPeriod);
         loanPeriod.setText("Loan Period: " + myExchange.start_date.toString()
                 + " to " + myExchange.end_date.toString()); */
 
-        // TODO make sure user can't request their own book
         final Button requestButton = (Button) findViewById(R.id.requestButton);
-        requestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Client.updateExchangeBorrower(myExchange.exchange_id, Client.userId);
-                    requestButton.setText("Requested!");
+        if (myExchange.exchange_id == Client.userId) {      // Users can't request their own book
+            requestButton.setVisibility(View.GONE);
+        }
+        else {
+            requestButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Client.updateExchangeBorrower(myExchange.exchange_id, Client.userId);
+                        // TODO update exchange status
+                        requestButton.setText("Requested!");
+                    }
+                    catch (Exception e) {
+                        logger.e("BookDetails", "exception", e);
+                    }
                 }
-                catch (Exception e) {
-                    logger.e("BookDetails", "exception", e);
-                }
-            }
-        });
+            });
+        }
     }
 
 
@@ -126,24 +134,5 @@ public class BookDetailsActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /* Private task to get the cover image from the Goodreads url. */
-    private class GetImageTask extends AsyncTask<URL, Integer, Drawable> {
-
-        Drawable bookImage;
-
-        protected Drawable doInBackground(URL... url) {
-            try {
-                logger.i("GetImageTask", "Getting Image");
-                URL myURL = url[0];
-                InputStream is = (InputStream) myURL.getContent();
-                bookImage = Drawable.createFromStream(is, "Goodreads Image URL");
-                return bookImage;
-            } catch (Exception e) {
-                logger.e("GetImageTask", "exception", e);
-            }
-            return null;    // TODO better error handling
-        }
     }
 }
