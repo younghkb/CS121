@@ -22,7 +22,7 @@ public class Client {
 
     // TODO don't include this stuff in production version
     /* Set this to true to debug without actually connecting to the server. */
-    private static boolean debug = true;
+    private static boolean debug = false;
 
     private static Request send(Request r) throws IOException {
 

@@ -44,9 +44,10 @@ public class HomeScreen extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // logger.i(TAG, "Updating!");
         // Refresh the list of available books      TODO is this needed?
-        getUserExchanges();
-        getAvailableBooks();
+        // getUserExchanges();
+        // getAvailableBooks();
     }
 
     // Go createExchangeActivity page where the user can make a new loan or offer

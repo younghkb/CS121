@@ -34,14 +34,14 @@
            android:layout_width="fill_parent">
         </CheckBox> -->
 
-   <EditText
+   <SearchView
        android:id="@+id/bookQueryBox"
        android:layout_height="wrap_content"
        android:hint="@string/book_info"
        android:inputType="textNoSuggestions"
        android:lines="2"
        android:layout_width="fill_parent">
-   </EditText>
+   </SearchView>
 
     <Spinner
         android:id="@+id/SpinnerOfferLoan"
