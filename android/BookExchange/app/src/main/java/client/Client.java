@@ -110,13 +110,14 @@ public class Client {
             ee.book_title = "Hop on Pop";
             List<Exchange> list = new ArrayList<Exchange>();
 
+            e.loaner_id = userId;
+            ee.borrower_id = userId;
+
             Date d = new Date();
             e.create_date = d;
-            e.start_date = d;
-            e.end_date = d;
+
             ee.create_date = d;
-            ee.start_date = d;
-            ee.end_date = d;
+
 
             list.add(e);
             list.add(ee);

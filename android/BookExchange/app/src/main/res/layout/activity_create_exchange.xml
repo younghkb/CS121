@@ -41,6 +41,13 @@
        android:inputType="textNoSuggestions"
        android:lines="2"
        android:layout_width="fill_parent">
+
+       <ListView
+           android:id="@+id/booksFound"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </ListView>
+
    </SearchView>
 
     <Spinner

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,8 @@ public class CreateExchangeActivity extends ActionBarActivity {
     private Exchange newExchange = new Exchange();
     private Book newBook = new Book();
     private List<Book> bookList = new ArrayList<>();
+    private String[] bookDisplayList;
+    private int[] bookListViews = {R.layout.book_view, R.layout.book_view, R.layout.book_view, R.layout.book_view, R.layout.book_view};
 
     private static Log logger;
 
@@ -68,7 +72,6 @@ public class CreateExchangeActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-
         createBookQueryBox();
 
         createExchangeTypeSpinner();
@@ -80,7 +83,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
                 try {
                     Client.createBook(newBook);
-                    Client.createExchange(newExchange);     // FIXME app is hanging
+                    Client.createExchange(newExchange);
                     returnToHomeScreen();
 
                 } catch (Exception e) {
@@ -173,38 +176,52 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
     private void createBookQueryBox() {
         // TODO MAKE THIS WORK
-        // http://stackoverflow.com/questions/5099814/knowing-when-edit-text-is-done-being-edited
+
         bookQuery = (SearchView) findViewById(R.id.bookQueryBox);
         bookQuery.setQueryHint("Search for a book by title, author, or ISBN");
+        bookQuery.setVisibility(View.VISIBLE);
 
-
-        bookQuery.setOnSearchClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ListView booksFound = new ListView(getApplicationContext());
-                suggestionsAdapter.getDropDownView(0, booksFound, bookQuery);
-                logger.i("CreateExchangeActivity", "selecting book");
-            }
-        });
-
+        // TODO set newBook title and id
         // Create a new Cursor Adapter that constantly listens for changes
         suggestionsAdapter = new CursorAdapter(getApplicationContext(), suggestionsCursor,
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER) {
+
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                TextView bookView = new TextView(context);
-                int pos = cursor.getPosition();
-                bookView.setText(bookList.get(pos).toString());
-                return bookView;
+                return LayoutInflater.from(context).inflate(R.layout.book_view, parent);
             }
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                    // TODO????
+                TextView bookView = new TextView(context);
+                int pos = cursor.getPosition();
+                bookView.setText(bookList.get(pos).toString());
             }
         };
 
-        bookQuery.setSuggestionsAdapter(suggestionsAdapter);
+        bookQuery.setOnSearchClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                logger.i("CreateExchangeActivity", "selecting book");
+                // Get the user input text with leading or ending whitespace removed
+                bookQuery = (SearchView) findViewById(R.id.bookQueryBox);       // TODO needed?
+                String queryText = bookQuery.getQuery().toString().trim();
+                if (queryText.isEmpty()) {
+                    // TODO give visual feedback
+                }
+                else {
+                    try {
+                        ListView booksFound = (ListView) findViewById(R.id.booksFound);
+                        booksFound.setAdapter(suggestionsAdapter);
+                    }
+                    catch (Exception e) {
+                        logger.e("CreateExchangeActivity", "exception in selectBook()", e);
+                    }
+                }
+            }
+        });
+
     }
 
     private void createExchangeTypeSpinner() {
