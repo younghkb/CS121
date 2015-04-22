@@ -4,10 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -17,9 +21,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -37,12 +43,17 @@ import client.Client;
 import client.User;
 
 
+
+
 /**
  * A login screen that offers login via email/password.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
-    private User myUser;
+public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
+    private User myUser; //necessary??
+    private static Log logger;
+
+
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -63,6 +74,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    // Create a new user.
+    private String mNewUserName = "";
+    private String mNewPassword = "";
+    private String mConfirmNewPassword = "";
+    private EditText mConfirmNewPasswordView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +113,43 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        // Make logo show up in action bar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        // Set up create account dialog
+//        EditText createUsername = (EditText) findViewById(R.id.username);
+//        createUsername.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == EditorInfo.IME_ACTION_NEXT) {
+//                   // mNewUserName = textView.getText().toString();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+       // EditText firstCreatePw = (EditText) findViewById(R.id.password);
+       // EditText secondCreatePw = (EditText) findViewById(R.id.confirm_password);
     }
+
+    public void newPasswordError(){
+        // Inform user that the password they have chosen is inconsistent
+        mConfirmNewPasswordView.setError(getString(R.string.error_invalid_password));
+        mConfirmNewPasswordView.requestFocus();
+    }
+
+//    public void createUser(){
+//
+//        mNewUserName = createUsername.getText().toString();
+//        mNewPassword = firstCreatePw.getText().toString().trim();
+//        mConfirmNewPassword = secondCreatePw.getText().toString().trim();
+//
+//        mConfirmNewPasswordView = secondCreatePw;
+//
+//    }
+
 
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
@@ -309,6 +363,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
+
             }
         }
 
@@ -317,6 +372,67 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    public static class createAccountDialog extends DialogFragment {
+        @Override
+        // creates the confirmation dialog fragment so that the user goes back to the home screen
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            // Get the layout inflater
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+
+            LoginActivity thisActivity = (LoginActivity) getActivity();
+           // thisActivity.createUser();
+
+            // Inflate and set the layout for the dialog
+            // Pass null as the parent view because its going in the dialog layout
+            builder.setView(inflater.inflate(R.layout.dialog_create_account, null))
+
+
+
+                    // Add action buttons
+                    .setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
+
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                           // Add the user to database
+                            //TODO test that this accurately grabs new user information
+
+//                            if (!thisActivity.mNewPassword.equals(thisActivity.mConfirmNewPassword)){
+//                                // There's a mismatch between the two passwords given
+//                               // thisActivity.newPasswordError();
+//                                createAccountDialog.this.getDialog().cancel();
+//                            }
+//
+//                            else if (thisActivity.mNewUserName == "a"){
+//                                // check to make sure that this user is not already in database
+//                                createAccountDialog.this.getDialog().cancel();
+//                            }
+//
+//                            else{
+//                                // add user to database
+//                                createAccountDialog.this.getDialog().cancel();
+//                            }
+
+                            createAccountDialog.this.getDialog().cancel();
+
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            createAccountDialog.this.getDialog().cancel();
+                        }
+                    });
+            return builder.create();
+        }
+    }
+
+
+    public void createAccount(View view) {
+        DialogFragment createAccountDialog = new createAccountDialog();
+        createAccountDialog.show(getFragmentManager(), "create_account_dialog");
     }
 }
 

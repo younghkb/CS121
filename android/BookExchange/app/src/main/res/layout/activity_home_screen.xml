@@ -17,6 +17,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/create"
+                    android:textColor="#FFFFFF"
+                    android:background="#906090"
                     android:onClick="openCreateExchangeActivity"/>
 
                 <Button
