@@ -27,19 +27,21 @@ public abstract class SQLE {
 	// login/create account
 	// ====================
 	
-	public static int login(String username, String password) throws SQLException {
+	public static int login(String username, String password) throws SQLException { // TODO make this always return list? maybe make the -1 error happen elsewhere?
 		Log.log("SQLE", "login", "username = " + username);
 		List<User> users = queryUsers(SQLB.login(username, password));
 		if (users.size() != 1) {
-			return -1;
+			Log.log("SQLE", "login", "Incorrect credentials");
+			return -1; // error number for incorrect credentials
 		} else {
+			Log.log("SQLE", "login", "Correct credentials");
 			return users.get(0).user_id;
 		}
 	}
 	
-	public static int createLogin(String username, String password) throws SQLException {
+	public static int createLogin(String username, String password) throws SQLException { // TODO make this always return list? maybe make the -1 error happen elsewhere?
 		if (loginExists(username)) {
-			return -1;
+			return -1; // error number for already exists
 		} else {
 			update(SQLB.createLogin(username, password));
 			return getUserIDFromUsername(username);
@@ -48,14 +50,20 @@ public abstract class SQLE {
 	
 	public static boolean loginExists(String username) throws SQLException {
 		Log.log("SQLE", "loginExists", "username = " + username);
-		List<User> users = queryUsers(SQLB.getUserFromUsername(username));
+		List<User> users = queryUsers(SQLB.getUserIDFromUsername(username));
 		return users.size() > 0;
 	}
 	
 	public static int getUserIDFromUsername(String username) throws SQLException { // assumes it exists
 		Log.log("SQLE", "getUserFromUsername", "username = " + username);
-		List<User> users = queryUsers(SQLB.getUserFromUsername(username));
+		List<User> users = queryUsers(SQLB.getUserIDFromUsername(username));
 		return users.get(0).user_id;
+	}
+	
+	public static String getUsernameFromUserID(int user_id) throws SQLException { // assumes it exists
+		Log.log("SQLE", "getUserFromUsername", "user_id = " + user_id);
+		List<User> users = queryUsers(SQLB.getUsernameFromUserID(user_id));
+		return users.get(0).username;
 	}
 	
 	// ===================

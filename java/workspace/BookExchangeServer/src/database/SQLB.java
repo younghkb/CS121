@@ -36,9 +36,14 @@ public abstract class SQLB { //TODO Sanitize
 		return String.format(command, user_id);
 	}
 	
-	public static String getUserFromUsername(String username) {
+	public static String getUserIDFromUsername(String username) {
 		String command = "select * from users where username = '%s';";
 		return String.format(command, username);
+	}
+	
+	public static String getUsernameFromUserID(int user_id) {
+		String command = "select * from users where user_id = '%d';";
+		return String.format(command, user_id);
 	}
 	
 	// ===================

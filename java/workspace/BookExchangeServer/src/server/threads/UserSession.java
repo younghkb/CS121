@@ -72,6 +72,9 @@ public class UserSession extends Thread {
 		case CREATE_LOGIN:
 			r.reply = SQLE.createLogin((String) r.params.get("username"), (String) r.params.get("password"));
 			break;
+		case GET_USERNAME_FROM_USERID:
+			r.reply = SQLE.getUsernameFromUserID((int) r.params.get("user_id"));
+			break;
 		case SEARCH_BOOK:
 			r.reply = GRFetch.queryBooks((String) r.params.get("query"), 5); // TODO make it pass number of responses, put into database? // TODO maxlength = 5?
 			break;

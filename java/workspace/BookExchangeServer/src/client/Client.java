@@ -16,6 +16,8 @@ public abstract class Client {
 	final static String HOST = "knuth.cs.hmc.edu";
 	final static int PORT = 6789;
 	
+	static int user_id;
+	
 	public static void main(String[] arg) {
 		try {
 			Log.log("Client", "Client Start", "");
@@ -27,6 +29,7 @@ public abstract class Client {
 			
 			System.out.println(getPublicExchanges());
 			System.out.println(login("naomi_", "PassWord"));
+			System.out.println(getUsernameFromUserID(1));
 		} catch (Exception e) {
 			System.err.println(e);
 		}
@@ -37,6 +40,11 @@ public abstract class Client {
 	// TODO rename reply as response
 	
 	private static Request send(Request r) throws IOException {
+		
+		// Needed for Android
+		// StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        // StrictMode.setThreadPolicy(policy);
+		
 		Socket s = new Socket(HOST, PORT);
 		
 		OutputStream os = s.getOutputStream();
@@ -75,6 +83,13 @@ public abstract class Client {
 		r = send(r);
 		return (Integer) r.reply;
 	}
+	
+	public static String getUsernameFromUserID(int user_id) throws IOException {
+		Request r = new Request(Request.Type.GET_USERNAME_FROM_USERID);
+		r.params.put("user_id", user_id);
+		r = send(r);
+		return (String) r.reply;
+	} 
 	
 	public static int createLogin(String username, String password) throws IOException {
 		Request r = new Request(Request.Type.CREATE_LOGIN);

@@ -16,6 +16,7 @@ public class Request implements Serializable {
 	public static enum Type {
 		LOGIN,
 		CREATE_LOGIN,
+		GET_USERNAME_FROM_USERID,
 		SEARCH_BOOK,
 		CREATE_BOOK,
 		GET_BOOK,
