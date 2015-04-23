@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import java.util.ArrayList;
+import com.commonsware.cwac.merge.MergeAdapter;
 
 import client.Book;
 import client.Client;
@@ -27,6 +28,7 @@ public class HomeScreen extends ActionBarActivity {
     private ArrayList<Exchange> availableExchanges = new ArrayList<Exchange>();
     private ArrayList<Exchange> userExchanges = new ArrayList<Exchange>();
 
+    MergeAdapter myAdapter = new MergeAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class HomeScreen extends ActionBarActivity {
 
         // TODO differentiate between offer and request!!!! IMPORTANT
         getAvailableBooks();
+
+
     }
 
     @Override
