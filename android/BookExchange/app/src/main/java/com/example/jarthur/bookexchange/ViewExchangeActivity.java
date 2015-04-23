@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.net.URL;
@@ -165,7 +167,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
     private void setBookInfo() {
         TextView title = (TextView) findViewById(R.id.bookTitle);
-        title.setText("Book: " + myBook.book_title);
+        title.setText(myBook.book_title);
 
         TextView author = (TextView) findViewById(R.id.author);
         author.setText("Author: " + myBook.author);
@@ -180,8 +182,6 @@ public class ViewExchangeActivity extends ActionBarActivity {
         catch (Exception e) {
             logger.e("ViewExchangeActivity", "exception", e);
         }
-
-        // TODO add more fields as necessary
 
         TextView isbn = (TextView) findViewById(R.id.ISBN);
         if (myBook.isbn != null) {
@@ -198,5 +198,55 @@ public class ViewExchangeActivity extends ActionBarActivity {
         else {
             pubYear.setText("Publication Year: not available");
         }
+
+        TextView status = (TextView) findViewById(R.id.exchangeStatus);
+
+        RadioGroup action = (RadioGroup) findViewById(R.id.handleRequest);   // Default GONE
+        String borrowerName = "Unknown";
+        String ownerName = "Unknown";
+
+        // FIXME will we set loaner/borrower id before offer/request has been accepted?
+        try {
+            borrowerName = Client.getUsernameFromUserID(myExchange.borrower_id);
+            ownerName = Client.getUsernameFromUserID(myExchange.loaner_id);
+        }
+        catch (Exception e) {
+            logger.e("ViewExchange", "exception", e);
+        }
+
+
+        switch (myExchange.status) {
+            case INITIAL:
+                if (isOwner) {
+                    status.setText(R.string.initial_offer);
+                    break;
+                }
+                status.setText(R.string.initial_request);
+                break;
+
+            case RESPONSE:
+                action.setVisibility(View.VISIBLE);
+                if (isOwner) {
+                    status.setText(borrowerName + R.string.requested_loaner);
+                }
+                status.setText(ownerName + R.string.requested_borrower);
+                break;
+
+            case ACCEPTED:
+                if (isOwner) {
+                    status.setText(R.string.accepted_loaner + borrowerName);
+                    break;
+                }
+                status.setText(ownerName + R.string.accepted_borrower);
+                break;
+
+            case COMPLETED:
+                status.setText(R.string.completed);
+        }
+
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // TODO implement
     }
 }

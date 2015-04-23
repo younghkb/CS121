@@ -59,6 +59,13 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="cancel">Cancel</string>
 
-
+    <!--Information about Exchange Status-->
+    <string name="initial_request">You have posted a request to borrow this book.</string>
+    <string name="initial_offer">You have posted an offer to loan this book.</string>
+    <string name="requested_loaner"> has requested this book. Would you like to accept the request?</string>
+    <string name="requested_borrower"> has offered to loan you this book. Would you like to accept the offer?</string>
+    <string name="accepted_borrower"> has accepted your request. You may now borrow this book.</string>
+    <string name="accepted_loaner" >You are lending this book to </string>
+    <string name="completed">This exchange has been completed.</string>
 
 </resources>

@@ -64,6 +64,9 @@ public class Client {
     }
 
     public static String getUsernameFromUserID(int user_id) throws IOException {
+        if (user_id == 0) {     // Slightly hacky fix so the server doesn't have to deal with this.
+            return "Unknown";
+        }
         Request r = new Request(Request.Type.GET_USERNAME_FROM_USERID);
         r.params.put("user_id", user_id);
         r = send(r);

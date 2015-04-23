@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -11,6 +11,15 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/bookTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:padding="5sp" >
+        </TextView>
+
         <ImageView
             android:id="@+id/cover"
             android:layout_width="200sp"
@@ -20,17 +29,10 @@
             android:layout_gravity="center"/>
 
         <TextView
-            android:id="@+id/bookTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10pt">
-        </TextView>
-
-        <TextView
             android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10pt">
+            android:textSize="18sp">
         </TextView>
 
         <TextView
@@ -51,7 +53,7 @@
             android:id="@+id/otherPerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10pt">
+            android:textSize="18sp">
         </TextView>
 <!--
         <TextView
@@ -62,13 +64,46 @@
             android:textSize="10pt">
         </TextView>-->
 
-        <TextView
+<!--        <TextView
             android:id="@+id/dueDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/due_date"
-            android:textSize="10pt">
-        </TextView>
+            android:textSize="18sp">
+        </TextView>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <TextView
+                android:id="@+id/exchangeStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp">
+            </TextView>
+
+            <RadioGroup
+                android:id="@+id/handleRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:textSize="14sp"
+                android:visibility="gone">
+                <RadioButton
+                    android:id="@+id/accept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Yes"/>
+                <RadioButton
+                    android:id="@+id/reject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="No"/>
+            </RadioGroup>
+        </LinearLayout>
 
         <Button
             android:id="@+id/finishButton"
@@ -80,4 +115,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>
