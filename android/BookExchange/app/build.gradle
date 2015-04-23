@@ -19,9 +19,18 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url "https://repo.commonsware.com.s3.amazonaws.com"
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.google.android.gms:play-services:7.0.0'
+    compile 'com.commonsware.cwac:merge:1.1.+'
+    compile files('libs/CWAC-MergeAdapter.jar')
+    compile files('libs/cwac-sacklist-1.0.2.jar')
 }
