@@ -76,10 +76,13 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
     private View mLoginFormView;
 
     // Create a new user.
-    private String mNewUserName = "";
+    private String mNewUsername = "";
     private String mNewPassword = "";
     private String mConfirmNewPassword = "";
+    private EditText mNewPasswordView;
     private EditText mConfirmNewPasswordView;
+    private EditText mNewUsernameView;
+
 
 
     @Override
@@ -118,37 +121,61 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        // Set up create account dialog
-//        EditText createUsername = (EditText) findViewById(R.id.username);
-//        createUsername.setOnEditorActionListener(new TextView.OnEditorActionListener(){
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//                if (id == EditorInfo.IME_ACTION_NEXT) {
-//                   // mNewUserName = textView.getText().toString();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-       // EditText firstCreatePw = (EditText) findViewById(R.id.password);
-       // EditText secondCreatePw = (EditText) findViewById(R.id.confirm_password);
+
+        // Set listener for when the user types a new username
+        mNewUsernameView = (EditText) findViewById(R.id.new_username);
+        mNewUsernameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mNewUsername = v.getText().toString();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
+        // Set listener for when user types a new password
+        mNewPasswordView = (EditText) findViewById(R.id.new_password);
+        mNewPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    //sendMessage();
+                    mNewPassword = v.getText().toString();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
+
+        // Set listener for when user types confirmed version of the password
+        mConfirmNewPasswordView = (EditText) findViewById(R.id.confirm_new_password);
+        mConfirmNewPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mConfirmNewPassword = v.getText().toString();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
+
     }
 
+    //TODO fix me cause apparently I break everything
     public void newPasswordError(){
         // Inform user that the password they have chosen is inconsistent
         mConfirmNewPasswordView.setError(getString(R.string.error_invalid_password));
         mConfirmNewPasswordView.requestFocus();
     }
 
-//    public void createUser(){
-//
-//        mNewUserName = createUsername.getText().toString();
-//        mNewPassword = firstCreatePw.getText().toString().trim();
-//        mConfirmNewPassword = secondCreatePw.getText().toString().trim();
-//
-//        mConfirmNewPasswordView = secondCreatePw;
-//
-//    }
 
 
     private void populateAutoComplete() {
@@ -374,7 +401,19 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         }
     }
 
-    public static class createAccountDialog extends DialogFragment {
+    public void createAccount(View view) {
+        try {
+            Client.createLogin(mNewUsername, mConfirmNewPassword);
+        } catch (IOException e){
+            Client.userId = -2;
+            Log.e("catch case", e.toString());
+        }
+
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
+    }
+
+ /*   public static class createAccountDialog extends DialogFragment {
         @Override
         // creates the confirmation dialog fragment so that the user goes back to the home screen
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -382,7 +421,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
             // Get the layout inflater
             LayoutInflater inflater = getActivity().getLayoutInflater();
 
-            LoginActivity thisActivity = (LoginActivity) getActivity();
+            //LoginActivity thisActivity = (LoginActivity) getActivity();
            // thisActivity.createUser();
 
             // Inflate and set the layout for the dialog
@@ -397,8 +436,11 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
 
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
+                            LoginActivity thisActivity = (LoginActivity) getActivity();
                            // Add the user to database
                             //TODO test that this accurately grabs new user information
+                            //thisActivity.newPasswordError();
+                               //createAccountDialog.this.getDialog().cancel();
 
 //                            if (!thisActivity.mNewPassword.equals(thisActivity.mConfirmNewPassword)){
 //                                // There's a mismatch between the two passwords given
@@ -433,7 +475,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
     public void createAccount(View view) {
         DialogFragment createAccountDialog = new createAccountDialog();
         createAccountDialog.show(getFragmentManager(), "create_account_dialog");
-    }
+    }*/
 }
 
 
