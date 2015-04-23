@@ -77,16 +77,30 @@ public class BookDetailsActivity extends ActionBarActivity {
         }
 
         TextView isbn = (TextView) findViewById(R.id.ISBN);
-        isbn.setText("ISBN: " + myBook.isbn);
+        if (myBook.isbn != null) {
+            isbn.setText("ISBN: " + myBook.isbn);
+        }
+        else {
+            isbn.setText("ISBN: not available");
+        }
 
         TextView pubYear = (TextView) findViewById(R.id.pubYear);
-        pubYear.setText("Publication Year: " + myBook.pub_year);
+        if (myBook.pub_year != null) {
+            pubYear.setText("Publication Year: " + myBook.pub_year);
+        }
+        else {
+            pubYear.setText("Publication Year: not available");
+        }
 
-        // TODO We want to show the name of the user, not their id
         TextView owner = (TextView) findViewById(R.id.owner);
         try {
             String ownerName = Client.getUsernameFromUserID(myExchange.loaner_id);
-            owner.setText("Owner: " + ownerName);
+            if (ownerName != null) {
+                owner.setText("Owner: " + ownerName);
+            }
+            else {
+                owner.setVisibility(View.GONE);
+            }
         }
         catch (Exception e) {
             logger.e("BookDetails", "exception", e);

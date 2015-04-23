@@ -24,6 +24,7 @@
             android:id="@+id/cover"
             android:layout_width="200sp"
             android:layout_height="200sp"
+            android:padding="5sp"
             android:scaleType="fitCenter"
             android:layout_gravity="center"/>
 

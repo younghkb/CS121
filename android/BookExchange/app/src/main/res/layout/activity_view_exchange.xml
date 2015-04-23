@@ -15,6 +15,7 @@
             android:id="@+id/cover"
             android:layout_width="200sp"
             android:layout_height="200sp"
+            android:padding="5sp"
             android:scaleType="fitCenter"
             android:layout_gravity="center"/>
 
@@ -30,6 +31,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10pt">
+        </TextView>
+
+        <TextView
+            android:id="@+id/ISBN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/pubYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp">
         </TextView>
 
         <TextView

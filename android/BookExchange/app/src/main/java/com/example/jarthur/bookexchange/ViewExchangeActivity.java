@@ -56,7 +56,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
         // Pages can show book (always), otherPerson, contactInfo, dueDate, finishButton
         setVisibilities(myExchange.status);
 
-        // TODO factor out
+        // TODO factor out?
         setBookInfo();
 
     }
@@ -121,27 +121,30 @@ public class ViewExchangeActivity extends ActionBarActivity {
     private void setVisibilities(Exchange.Status exchangeStatus) {
         View otherPerson = findViewById(R.id.otherPerson);
         //View contactInfo = findViewById(R.id.contactInfo);  // TODO deprecate?
-        View dueDate = findViewById(R.id.dueDate);          // TODO implement
+        //View dueDate = findViewById(R.id.dueDate);          // TODO implement if time
         View finishButton = findViewById(R.id.finishButton);
         //View cancelButton = findViewById(R.id.cancelButton);
+        // TODO add visual feedback for exchange status, e.g. 'your request has been accepted'
 
         switch (exchangeStatus) {
 
             case INITIAL:
                 otherPerson.setVisibility(View.GONE);
                 //contactInfo.setVisibility(View.GONE);
-                if (!isOwner) {     // Borrow request
-                    dueDate.setVisibility(View.GONE);
-                }
+//                if (!isOwner) {     // Borrow request
+//                    dueDate.setVisibility(View.GONE);
+//                }
                 finishButton.setVisibility(View.GONE);
                 break;
 
             case RESPONSE:   // Same as Initial
                 otherPerson.setVisibility(View.GONE);
                 //contactInfo.setVisibility(View.GONE);
-                if (!isOwner) {     // Borrow request
-                    dueDate.setVisibility(View.GONE);
-                }
+//                if (!isOwner) {     // Borrow request
+//                    dueDate.setVisibility(View.GONE);
+//                }
+                // TODO MAKE ACCEPT BUTTON
+                //acceptButton.setVisibility(View.VISIBLE);
                 finishButton.setVisibility(View.GONE);
                 break;
 
@@ -175,15 +178,25 @@ public class ViewExchangeActivity extends ActionBarActivity {
             cover.setImageDrawable(coverImage);
         }
         catch (Exception e) {
-            logger.e("BookDetails", "exception", e);
+            logger.e("ViewExchangeActivity", "exception", e);
         }
 
         // TODO add more fields as necessary
 
-        //TextView isbn = (TextView) findViewById(R.id.ISBN);
-        //isbn.setText("ISBN: " + myBook.isbn);
+        TextView isbn = (TextView) findViewById(R.id.ISBN);
+        if (myBook.isbn != null) {
+            isbn.setText("ISBN: " + myBook.isbn);
+        }
+        else {
+            isbn.setText("ISBN: not available");
+        }
 
-        //TextView pubYear = (TextView) findViewById(R.id.pubYear);
-        //pubYear.setText("Publication Year: " + myBook.pub_year);
+        TextView pubYear = (TextView) findViewById(R.id.pubYear);
+        if (myBook.pub_year != null) {
+            pubYear.setText("Publication Year: " + myBook.pub_year);
+        }
+        else {
+            pubYear.setText("Publication Year: not available");
+        }
     }
 }

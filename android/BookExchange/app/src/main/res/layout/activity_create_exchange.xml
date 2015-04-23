@@ -70,14 +70,14 @@
    </Button>-->
 
 
-        <EditText
+<!--        <EditText
             android:id="@+id/EditTextFeedbackBody"
             android:layout_height="wrap_content"
             android:hint="@string/feedback_body"
             android:inputType="textMultiLine"
             android:lines="5"
             android:layout_width="fill_parent">
-        </EditText>
+        </EditText>-->
 
         <Button
             android:id="@+id/confirmAlertDialog"
