@@ -14,14 +14,11 @@
     <string name="register_account">Register a new account</string>
 
     <!--Create an account-->
-    <string name="register">Create a new account</string>
-    <string name="account_details">New Account Registration</string>
+    <string name="register">Register</string>
+    <string name="register_instructions">Please tap \"Done\" on the keyboard after filling in each field.</string>
 
     <string name="username">Your email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-
-    <string name="cancel">Cancel</string>
-    <string name="submit_register">Register</string>
 
 </resources>

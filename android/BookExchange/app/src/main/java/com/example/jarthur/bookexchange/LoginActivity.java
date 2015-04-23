@@ -234,9 +234,8 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic, add other invalid characters
-        //return email.contains("@");
-        return true;
+        return email.contains("@");
+
     }
 
     private boolean isPasswordValid(String password) {
@@ -397,17 +396,67 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         }
     }
 
-    public void createAccount(View view) {
+    // Checks to make sure input for registering a new account is valid and useable
+    // If input is valid, logs in new user and takes them to home page
+    public void createAccount(View view){
+        // Initialize the new user's ID in case of creating an account
+        int newID;
+
+        // If the password is invalid
+        if (!isPasswordValid(mNewPassword)){
+            // If no password inputted
+            if (mNewPassword.equals("")){
+                mNewPasswordView.setError("Password field is required");
+            }
+            // If the password is too short
+            else {
+                mNewPasswordView.setError("Password is too short");
+            }
+            return;
+        }
+
+        // If an invalid email
+        if (!isEmailValid(mNewUsername)){
+            // If no email inputted
+            if (mNewUsername.equals("")){
+                mNewUsernameView.setError("Email field is required");
+            }
+            // If email does not contain @ symbol
+            else {
+                mNewUsernameView.setError("Please use a valid email address");
+            }
+            return;
+        }
+
+        // If passwords don't match
+        if (!(mNewPassword.equals(mConfirmNewPassword))){
+            mConfirmNewPasswordView.setError("Passwords do not match");
+            return;
+        }
+
+        // If none of those if blocks run, this all will go through.
+        // This will create the new account unless there is a server error or the email is
+        // already in use.
         try {
-            Client.createLogin(mNewUsername, mConfirmNewPassword);
+            newID = Client.createLogin(mNewUsername, mConfirmNewPassword);
         } catch (IOException e){
             Client.userId = -2;
+            newID = -2;
             Log.e("catch case", e.toString());
         }
 
-        Intent intent = new Intent(this, HomeScreen.class);
-        startActivity(intent);
+        // If the email is already in use
+        if (newID < 0){
+            mNewUsernameView.setError("This email is already associated with an account");
+        }
+        // Log in user and go to home page
+        else {
+            Intent intent = new Intent(this, HomeScreen.class);
+            startActivity(intent);
+        }
+
     }
+
 
  /*   public static class createAccountDialog extends DialogFragment {
         @Override

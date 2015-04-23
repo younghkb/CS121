@@ -21,6 +21,7 @@
             <!--Login-->
             <TextView
                 android:text="@string/title_activity_login"
+                android:padding="@dimen/abc_text_size_caption_material"
                 android:textSize="@dimen/abc_text_size_title_material"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
@@ -47,22 +48,26 @@
                 android:layout_marginTop="16dp" android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
-            <Button android:id="@+id/create_account_dialog" style="?android:textAppearanceSmall"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" android:text="@string/register_account"
-                android:onClick="createAccount"
-                android:textStyle="bold" />
 
             <!--Create Account-->
             <TextView
-                android:text="@string/submit_register"
+                android:text="@string/register"
                 android:textSize="@dimen/abc_text_size_title_material"
+                android:padding="@dimen/abc_text_size_caption_material"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:background="#906090"
                 android:contentDescription="@string/app_name" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/register_instructions"/>
             <EditText
                 android:id="@+id/new_username"
                 android:inputType="textEmailAddress"
@@ -104,7 +109,7 @@
 
             <Button android:id="@+id/complete_create_account" style="?android:textAppearanceSmall"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" android:text="@string/submit_register"
+                android:layout_marginTop="16dp" android:text="@string/register"
                 android:onClick="createAccount"
                 android:textStyle="bold" />
 
