@@ -34,6 +34,11 @@
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" android:text="@string/action_sign_in"
                 android:textStyle="bold" />
+            <Button android:id="@+id/create_account_dialog" style="?android:textAppearanceSmall"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" android:text="@string/create_account"
+                android:onClick="createAccount"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
