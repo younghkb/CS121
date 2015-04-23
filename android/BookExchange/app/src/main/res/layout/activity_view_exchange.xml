@@ -11,11 +11,24 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="200sp"
+            android:layout_height="200sp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"/>
+
         <TextView
-            android:id="@+id/book"
+            android:id="@+id/bookTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/book_title"
+            android:textSize="10pt">
+        </TextView>
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="10pt">
         </TextView>
 
@@ -23,17 +36,16 @@
             android:id="@+id/otherPerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exchange_partner"
             android:textSize="10pt">
         </TextView>
-
+<!--
         <TextView
             android:id="@+id/contactInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/contact_info"
             android:textSize="10pt">
-        </TextView>
+        </TextView>-->
 
         <TextView
             android:id="@+id/dueDate"

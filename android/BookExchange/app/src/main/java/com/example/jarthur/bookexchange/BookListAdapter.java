@@ -7,35 +7,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import client.Book;
 import client.Exchange;
 
-/* Adapts a list of Exchanges to display on the Home Screen */
+/* Adapts a list of Books to display in the CreateExchangeActivity */
 //https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
-public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
+public class BookListAdapter extends ArrayAdapter<Book> {
 
     Log logger;
-    private String TAG = "ExchangeListAdapter";
+    private String TAG = "BookListAdapter";
 
-    public ExchangeListAdapter(Context context, ArrayList<Exchange> exchanges) {
-        super(context, 0, exchanges);
+    public BookListAdapter(Context context, ArrayList<Book> books) {
+        super(context, 0, books);
     }
 
     /** Returns the convertView to display the data we want. */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Exchange exchange = getItem(position);
+        Book book = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.exchange_view, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.book_view, parent, false);
         }
 
-        Button myView = (Button) convertView;
-        myView.setText(exchange.book_title);
+        TextView myView = (TextView) convertView;
+        myView.setText(book.book_title);
 
         return myView;
     }

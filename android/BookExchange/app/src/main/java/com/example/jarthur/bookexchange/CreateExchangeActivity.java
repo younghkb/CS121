@@ -48,18 +48,11 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
     private Exchange newExchange = new Exchange();
     private Book newBook = new Book();
-    private List<Book> bookList = new ArrayList<>();
-    private String[] bookDisplayList;
-    private int[] bookListViews = {R.layout.book_view, R.layout.book_view, R.layout.book_view, R.layout.book_view, R.layout.book_view};
+    private ArrayList<Book> bookList = new ArrayList<>();
 
     private static Log logger;
 
-    private String[] columnName = {"_id"};      // necessary for CursorAdapter to work
-    private final int DEFAULT_NUM_BOOKS = 5;
-
     private SearchView bookQuery;
-    private CursorAdapter suggestionsAdapter;
-    private Cursor suggestionsCursor = new MatrixCursor(columnName, DEFAULT_NUM_BOOKS);
 
     private static DialogInterface.OnClickListener createListener;
 
@@ -99,31 +92,6 @@ public class CreateExchangeActivity extends ActionBarActivity {
         startActivity(i);
     }
 
-    // TODO deprecate
-    private void selectBook() {
-
-        // Get the user input text with leading or ending whitespace removed
-        bookQuery = (SearchView) findViewById(R.id.bookQueryBox);
-        String queryText = bookQuery.getQuery().toString().trim();
-        if (queryText.isEmpty()) {
-            // TODO give visual feedback
-        }
-        else {
-            try {
-                bookList = Client.searchBook(queryText);
-                // TODO put in stuff
-                newBook = bookList.get(0);       // TODO make user choose
-
-                newExchange.book_title = newBook.book_title;
-                newExchange.book_id = newBook.book_id;
-
-            }
-            catch (Exception e) {
-                logger.e("CreateExchangeActivity", "exception in selectBook()", e);
-            }
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -145,8 +113,6 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
     public static class AlertDialogFragment extends DialogFragment {
 
@@ -181,44 +147,65 @@ public class CreateExchangeActivity extends ActionBarActivity {
         bookQuery.setQueryHint("Search for a book by title, author, or ISBN");
         bookQuery.setVisibility(View.VISIBLE);
 
-        // TODO set newBook title and id
-        // Create a new Cursor Adapter that constantly listens for changes
-        suggestionsAdapter = new CursorAdapter(getApplicationContext(), suggestionsCursor,
-                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER) {
-
+        // Okay to set to final? (required for use in inner class)
+        final AdapterView.OnItemClickListener bookSelectedListener = new AdapterView.OnItemClickListener() {
             @Override
-            public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                return LayoutInflater.from(context).inflate(R.layout.book_view, parent);
-            }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                newBook = bookList.get(position);
+                newExchange.book_title = newBook.book_title;
+                newExchange.book_id = newBook.book_id;
+                newExchange.status = Exchange.Status.INITIAL;
 
-            @Override
-            public void bindView(View view, Context context, Cursor cursor) {
-                TextView bookView = new TextView(context);
-                int pos = cursor.getPosition();
-                bookView.setText(bookList.get(pos).toString());
+                try {
+                    bookQuery.setQuery(newBook.book_title, false);
+                    logger.i("CreateExchangeActivity", "Updating Query Box and book list");
+
+                    // A little hacky because we're manually setting the visibility of the
+                    // list view this adapter controls
+                    ListView booksFound = (ListView) findViewById(R.id.booksFound);
+                    booksFound.setVisibility(View.GONE);
+                }
+                catch (Exception e) {
+                    logger.e("CreateExchangeActivity","exception on book selected", e);
+                }
             }
         };
 
-        bookQuery.setOnSearchClickListener( new View.OnClickListener() {
+        bookQuery.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
-
+            public boolean onQueryTextSubmit(String query) {
                 logger.i("CreateExchangeActivity", "selecting book");
                 // Get the user input text with leading or ending whitespace removed
                 bookQuery = (SearchView) findViewById(R.id.bookQueryBox);       // TODO needed?
                 String queryText = bookQuery.getQuery().toString().trim();
                 if (queryText.isEmpty()) {
                     // TODO give visual feedback
+                    return false;
                 }
                 else {
                     try {
+                        bookList = (ArrayList<Book>) Client.searchBook(queryText);
+
+                        // TODO if book list is empty show 'no books found'
                         ListView booksFound = (ListView) findViewById(R.id.booksFound);
-                        booksFound.setAdapter(suggestionsAdapter);
+                        booksFound.setAdapter(new BookListAdapter(getApplicationContext(), bookList));
+                        booksFound.setVisibility(View.VISIBLE);
+                        logger.i("OnQueryTextSubmit", "setting visibility of book list");
+                        booksFound.setOnItemClickListener(bookSelectedListener);
                     }
                     catch (Exception e) {
                         logger.e("CreateExchangeActivity", "exception in selectBook()", e);
+                        return false;
                     }
                 }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ListView booksFound = (ListView) findViewById(R.id.booksFound);
+                booksFound.setVisibility(View.GONE);
+                return true;
             }
         });
 
@@ -239,55 +226,19 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
                 // OFFER 0
                 // REQUEST 1
-                //Button setDate = (Button) findViewById(R.id.setDate);
-
-                if (position == 0) {
+                if (position == 0) {            // "Offer" selected
                     newExchange.exchange_type = Exchange.Type.LOAN;
                     newExchange.loaner_id = Client.userId;
                     newExchange.borrower_id = 0;
-                    //setDate.setVisibility(View.VISIBLE);
-                } else if (position == 1) {
+                } else if (position == 1) {     // "Request" selected
                     newExchange.exchange_type = Exchange.Type.BORROW;
                     newExchange.borrower_id = Client.userId;
                     newExchange.loaner_id = 0;
-                    //setDate.setVisibility(View.GONE);
                 }
             }
         });
     }
 
-    // Deprecated for now
-    // Loaner can pick date that loan will end.
-/*    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        final Calendar c = Calendar.getInstance();
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-
-            Date date = c.getTime();        // hopefully returns the correct date (TEST ME!)
-            newExchange.end_date = date;
-
-           // assert that date is after 'now'
-        }
-    }*/
-
-    /*public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "datePicker");
-    }*/
 }
 
 

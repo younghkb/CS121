@@ -27,10 +27,9 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
     private static Log logger;
 
-    // TODO okay to make these static?
-    // Might need to clear them in onFinish()
-    private static Exchange myExchange;
-    private static Book myBook;
+    private Exchange myExchange;
+    private static int exchangeId;  // Needs to be static for use in inner declared class
+    private Book myBook;
 
     private boolean isOwner;
 
@@ -42,6 +41,9 @@ public class ViewExchangeActivity extends ActionBarActivity {
         Intent i = getIntent();
         myExchange = (Exchange) i.getSerializableExtra("exchange");
         myBook = (Book) i.getSerializableExtra("book");
+
+        logger.i("ViewExchange. Book: ", myBook.toString());
+        exchangeId = myExchange.exchange_id;
 
         // Make logo show up in action bar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -71,7 +73,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
                             // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
                             // want to do this
                             try {
-                                Client.updateExchangeStatus(myExchange.exchange_id, Exchange.Status.COMPLETED);
+                                Client.updateExchangeStatus(exchangeId, Exchange.Status.COMPLETED);
 
                             } catch (Exception e) {
                                 logger.e("ViewExchangeActivity", "exception", e);
@@ -118,7 +120,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
     private void setVisibilities(Exchange.Status exchangeStatus) {
         View otherPerson = findViewById(R.id.otherPerson);
-        View contactInfo = findViewById(R.id.contactInfo);  // TODO deprecate?
+        //View contactInfo = findViewById(R.id.contactInfo);  // TODO deprecate?
         View dueDate = findViewById(R.id.dueDate);          // TODO implement
         View finishButton = findViewById(R.id.finishButton);
         //View cancelButton = findViewById(R.id.cancelButton);
@@ -127,7 +129,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
             case INITIAL:
                 otherPerson.setVisibility(View.GONE);
-                contactInfo.setVisibility(View.GONE);
+                //contactInfo.setVisibility(View.GONE);
                 if (!isOwner) {     // Borrow request
                     dueDate.setVisibility(View.GONE);
                 }
@@ -136,7 +138,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
             case RESPONSE:   // Same as Initial
                 otherPerson.setVisibility(View.GONE);
-                contactInfo.setVisibility(View.GONE);
+                //contactInfo.setVisibility(View.GONE);
                 if (!isOwner) {     // Borrow request
                     dueDate.setVisibility(View.GONE);
                 }
@@ -160,7 +162,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
     private void setBookInfo() {
         TextView title = (TextView) findViewById(R.id.bookTitle);
-        title.setText(myBook.book_title);
+        title.setText("Book: " + myBook.book_title);
 
         TextView author = (TextView) findViewById(R.id.author);
         author.setText("Author: " + myBook.author);
@@ -176,10 +178,12 @@ public class ViewExchangeActivity extends ActionBarActivity {
             logger.e("BookDetails", "exception", e);
         }
 
-        TextView isbn = (TextView) findViewById(R.id.ISBN);
-        isbn.setText("ISBN: " + myBook.isbn);
+        // TODO add more fields as necessary
 
-        TextView pubYear = (TextView) findViewById(R.id.pubYear);
-        pubYear.setText("Publication Year: " + myBook.pub_year);
+        //TextView isbn = (TextView) findViewById(R.id.ISBN);
+        //isbn.setText("ISBN: " + myBook.isbn);
+
+        //TextView pubYear = (TextView) findViewById(R.id.pubYear);
+        //pubYear.setText("Publication Year: " + myBook.pub_year);
     }
 }

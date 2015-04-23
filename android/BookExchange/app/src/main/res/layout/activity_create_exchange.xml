@@ -39,16 +39,18 @@
        android:layout_height="wrap_content"
        android:hint="@string/book_info"
        android:inputType="textNoSuggestions"
+       android:clickable="true"
+       android:focusable="true"
        android:lines="2"
        android:layout_width="fill_parent">
-
-       <ListView
-           android:id="@+id/booksFound"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-       </ListView>
-
    </SearchView>
+
+    <ListView
+        android:id="@+id/booksFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+    </ListView>
 
     <Spinner
         android:id="@+id/SpinnerOfferLoan"

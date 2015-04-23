@@ -63,6 +63,13 @@ public class Client {
         return (Integer) r.reply;
     }
 
+    public static String getUsernameFromUserID(int user_id) throws IOException {
+        Request r = new Request(Request.Type.GET_USERNAME_FROM_USERID);
+        r.params.put("user_id", user_id);
+        r = send(r);
+        return (String) r.reply;
+    }
+
     public static int createLogin(String username, String password) throws IOException {
         Request r = new Request(Request.Type.CREATE_LOGIN);
         r.params.put("username", username);
@@ -72,6 +79,17 @@ public class Client {
     }
 
     public static List<Book> searchBook(String query) throws Exception {
+
+        if (debug) {
+            Book b = new Book();
+            b.book_title = "The Hobbit";
+            b.author = "J. R. R. Tolkien";
+            b.image_url = "https://d.gr-assets.com/books/1372847500m/5907.jpg";
+            List<Book> newList = new ArrayList<>();
+            newList.add(b);
+            return newList;
+        }
+
         Request r = new Request(Request.Type.SEARCH_BOOK);
         r.params.put("query", query);
         r = send(r);

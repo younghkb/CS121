@@ -84,8 +84,13 @@ public class BookDetailsActivity extends ActionBarActivity {
 
         // TODO We want to show the name of the user, not their id
         TextView owner = (TextView) findViewById(R.id.owner);
-        //String ownerName = Client.
-        //owner.setText("Owner: " + myExchange.loaner_id);
+        try {
+            String ownerName = Client.getUsernameFromUserID(myExchange.loaner_id);
+            owner.setText("Owner: " + ownerName);
+        }
+        catch (Exception e) {
+            logger.e("BookDetails", "exception", e);
+        }
 
         // Loan period is being deprecated for now
         /*TextView loanPeriod = (TextView) findViewById(R.id.loanPeriod);
