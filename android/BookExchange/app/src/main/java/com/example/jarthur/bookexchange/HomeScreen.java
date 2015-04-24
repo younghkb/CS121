@@ -43,17 +43,16 @@ public class HomeScreen extends ActionBarActivity {
 
         // TODO differentiate between offer and request!!!! IMPORTANT
         getAvailableBooks();
-
-
     }
 
+    // Update when we return to the home screen.
     @Override
     protected void onResume() {
         super.onResume();
-        //logger.i(TAG, "Updating!");
-        // Refresh the list of available books      TODO is this needed?
-        //getUserExchanges();
-        //getAvailableBooks();
+        logger.i(TAG, "Updating!");
+        // Refresh the list of available books
+        getUserExchanges();
+        getAvailableBooks();
     }
 
     // Go createExchangeActivity page where the user can make a new loan or offer
@@ -87,7 +86,6 @@ public class HomeScreen extends ActionBarActivity {
 
         try {
             Exchange myExchange = availableExchanges.get(position);
-            // TODO debug this
             Book myBook = Client.getBook(myExchange.book_id);
 
             Bundle bundle = new Bundle();
@@ -129,7 +127,10 @@ public class HomeScreen extends ActionBarActivity {
     private void getUserExchanges() {
         try {
             userExchanges = (ArrayList<Exchange>) Client.getPrivateExchanges(Client.userId);
-            // TODO make sure it works if list is empty
+            if (userExchanges.isEmpty()) {
+                View noExchanges = findViewById(R.id.ifNoUserExchanges);
+                noExchanges.setVisibility(View.VISIBLE);
+            }
             if (userExchanges == null) {
                 logger.i(TAG, "User exchanges list was null");
                 return;
@@ -158,6 +159,10 @@ public class HomeScreen extends ActionBarActivity {
 
         try {
             availableExchanges = (ArrayList<Exchange>) Client.getPublicExchanges();
+            if (availableExchanges.isEmpty()) {
+                View noExchanges = findViewById(R.id.ifNoOpenExchanges);
+                noExchanges.setVisibility(View.VISIBLE);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

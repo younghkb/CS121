@@ -39,13 +39,20 @@
                     android:typeface="serif"
                     android:textSize="20sp" />
 
+                    <TextView
+                        android:id="@+id/ifNoUserExchanges"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="You have no current exchanges."
+                        android:visibility="gone"/>
+
 
                 <ListView
                     android:id="@+id/userExchangeList"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >
                 </ListView>
-
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -59,7 +66,16 @@
                     android:typeface="serif"
                     android:textSize="20sp"/>
 
-                <ListView
+                <TextView
+                    android:id="@+id/ifNoOpenExchanges"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="There are no open exchanges."
+                    android:visibility="gone"/>
+
+
+    <ListView
                     android:id="@+id/bookList"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" >

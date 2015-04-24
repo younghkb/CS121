@@ -28,6 +28,7 @@ public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Exchange exchange = getItem(position);
+        String text = "";
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -35,7 +36,12 @@ public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
         }
 
         Button myView = (Button) convertView;
-        myView.setText(exchange.book_title);
+
+        // TODO make this prettier!!
+        if (exchange.status == Exchange.Status.INITIAL) {       // TODO might also want 'response'?
+            text += exchange.exchange_type + ": ";
+        }
+        myView.setText(text + exchange.book_title);
 
         return myView;
     }
