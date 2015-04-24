@@ -351,7 +351,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
                 Log.e("catch case", e.toString());
             }
 
-            return (Client.userId >= 0);
+            return (Client.userId > 0);
 
         }
 
@@ -421,6 +421,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         // already in use.
         try {
             newID = Client.createLogin(mNewUsername, mConfirmNewPassword);
+            Client.userId = newID;
         } catch (IOException e) {
             Client.userId = -2;
             newID = -2;
