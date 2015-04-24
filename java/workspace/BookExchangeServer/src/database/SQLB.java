@@ -51,12 +51,12 @@ public abstract class SQLB { //TODO Sanitize
 	// ===================
 	
 	public static String createBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) {
-		String command = "insert into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));";
+		String command = "insert or ignore into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));"; // 'or ignore' ignores non-unique inserts 
 		return String.format(command, book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url);
 	}
 	
 	public static String createBook(Book book) {
-		String command = "insert into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));";
+		String command = "if not exists (insert into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));";
 		return String.format(command, book.book_id, book.book_title, book.author, book.isbn, book.pub_year, book.orig_pub_year, book.image_url, book.small_image_url);
 	}
 	

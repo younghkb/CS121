@@ -12,8 +12,8 @@ import logging.Log;
 
 public abstract class Client {
 	
-	//final static String HOST = "localhost";
-	final static String HOST = "knuth.cs.hmc.edu";
+	final static String HOST = "localhost";
+	//final static String HOST = "knuth.cs.hmc.edu";
 	final static int PORT = 6789;
 	
 	static int user_id;
@@ -27,9 +27,25 @@ public abstract class Client {
 //			System.out.println(reply);
 			//System.out.println(getBook(206962));
 			
-			System.out.println(getPublicExchanges());
-			System.out.println(login("naomi_", "PassWord"));
-			System.out.println(getUsernameFromUserID(1));
+			//System.out.println(getPublicExchanges());
+			//System.out.println(login("naomi_", "PassWord"));
+			//System.out.println(getUsernameFromUserID(1));
+			
+			List<Book> books = searchBook("Cat in the Hat");
+			Book selected = books.get(0);
+			Exchange e = new Exchange();
+			
+			e.book_id = selected.book_id;
+			e.book_title = selected.book_title;
+			e.status = Exchange.Status.INITIAL;
+			
+			e.exchange_type = Exchange.Type.BORROW;
+			e.borrower_id = 1;
+			e.loaner_id = 0;
+			
+			createBook(selected);
+			createExchange(e);
+			
 		} catch (Exception e) {
 			System.err.println(e);
 		}

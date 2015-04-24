@@ -16,24 +16,24 @@ public class DBWrite extends Thread {
 	static boolean keepRunning = true;
 	
 	public void run() {
-		try {
-			Log.log("DBWrite", "Thread Start", "");
-			while (keepRunning) {
-				//System.out.println("Size: " + DBWriteQueue.size());
-				String sql = DBWriteQueue.poll();
-				while (sql != null) { // better than checking length
-					Log.log("DBWrite", "Deque", sql);
-					SQLE.execute(sql);
-					sql = DBWriteQueue.poll();
-				}
+		Log.log("DBWrite", "Thread Start", "");
+		while (keepRunning) {
+			//System.out.println("Size: " + DBWriteQueue.size());
+			String sql = DBWriteQueue.poll();
+			while (sql != null) { // better than checking length
+				Log.log("DBWrite", "Deque", sql);
 				try {
-				Thread.sleep(1000); //TODO have signals wake this up
-				} catch (InterruptedException e) {
+					SQLE.execute(sql); // TODO don't allow multiple violating inserts
+				} catch (SQLException e) {
 					System.err.println(e);
 				}
+				sql = DBWriteQueue.poll();
 			}
-		} catch (SQLException e) {
-			System.err.println(e);
+			try {
+				Thread.sleep(1000); //TODO have signals wake this up
+			} catch (InterruptedException e) {
+				System.err.println(e);
+			}
 		}
 	}
 	

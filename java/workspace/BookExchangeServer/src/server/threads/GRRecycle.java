@@ -26,14 +26,18 @@ public class GRRecycle extends Thread {
 	
 	public void run() {
 		//TODO refresh data
-		try {
+		
 			Log.log("GRRecycle", "Thread Start", "");
 			while (keepRunning) {
-				updateRecycle();
-				while (isTime()) {
-					recycle(nextRecycle);
-					nextRecycle = null; // need to do this so updateRecycle() will update
-					updateRecycle(); // TODO sleep so we don't over query
+				try {
+					updateRecycle();
+					while (isTime()) {
+						recycle(nextRecycle);
+						nextRecycle = null; // need to do this so updateRecycle() will update
+						updateRecycle(); // TODO sleep so we don't over query
+					}
+				} catch (SQLException|ParseException e) {
+					System.err.println(e);
 				}
 				try {
 					Thread.sleep(60000); //TODO have signals wake this up
@@ -41,9 +45,7 @@ public class GRRecycle extends Thread {
 					System.err.println(e);
 				}
 			}
-		} catch (SQLException|ParseException e) {
-			System.err.println(e);
-		}
+		
 	}
 	
 	private void updateRecycle() throws SQLException, ParseException {
