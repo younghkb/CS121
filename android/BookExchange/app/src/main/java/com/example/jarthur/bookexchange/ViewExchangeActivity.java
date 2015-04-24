@@ -97,54 +97,21 @@ public class ViewExchangeActivity extends ActionBarActivity {
         newFragment.show(getFragmentManager(), "alert");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_status, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     private void setVisibilities(Exchange.Status exchangeStatus) {
-        View otherPerson = findViewById(R.id.otherPerson);
-        //View contactInfo = findViewById(R.id.contactInfo);  // TODO deprecate?
-        //View dueDate = findViewById(R.id.dueDate);          // TODO implement if time
+        View owner = findViewById(R.id.owner);
         View finishButton = findViewById(R.id.finishButton);
-        //View cancelButton = findViewById(R.id.cancelButton);
+
         // TODO add visual feedback for exchange status, e.g. 'your request has been accepted'
 
         switch (exchangeStatus) {
 
             case INITIAL:
-                otherPerson.setVisibility(View.GONE);
-                //contactInfo.setVisibility(View.GONE);
-//                if (!isOwner) {     // Borrow request
-//                    dueDate.setVisibility(View.GONE);
-//                }
+                owner.setVisibility(View.GONE);
                 finishButton.setVisibility(View.GONE);
                 break;
 
             case RESPONSE:   // Same as Initial
-                otherPerson.setVisibility(View.GONE);
-                //contactInfo.setVisibility(View.GONE);
-//                if (!isOwner) {     // Borrow request
-//                    dueDate.setVisibility(View.GONE);
-//                }
                 // TODO MAKE ACCEPT BUTTON
                 //acceptButton.setVisibility(View.VISIBLE);
                 finishButton.setVisibility(View.GONE);
@@ -205,7 +172,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
         String borrowerName = "Unknown";
         String ownerName = "Unknown";
 
-        // FIXME will we set loaner/borrower id before offer/request has been accepted?
+        // Note: we will set loaner/borrower id before offer/request has been accepted
         try {
             borrowerName = Client.getUsernameFromUserID(myExchange.borrower_id);
             ownerName = Client.getUsernameFromUserID(myExchange.loaner_id);
@@ -213,6 +180,9 @@ public class ViewExchangeActivity extends ActionBarActivity {
         catch (Exception e) {
             logger.e("ViewExchange", "exception", e);
         }
+
+        TextView owner = (TextView) findViewById(R.id.owner);
+        owner.setText("Owner: " + ownerName);
 
 
         switch (myExchange.status) {
@@ -247,6 +217,6 @@ public class ViewExchangeActivity extends ActionBarActivity {
     }
 
     public void onRadioButtonClicked(View view) {
-        // TODO implement
+        // TODO implement FIXME
     }
 }

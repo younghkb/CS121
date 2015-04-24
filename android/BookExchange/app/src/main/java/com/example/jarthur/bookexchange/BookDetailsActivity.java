@@ -95,7 +95,7 @@ public class BookDetailsActivity extends ActionBarActivity {
         TextView owner = (TextView) findViewById(R.id.owner);
         try {
             String ownerName = Client.getUsernameFromUserID(myExchange.loaner_id);
-            if (ownerName != null) {
+            if (ownerName != "Unknown") {
                 owner.setText("Owner: " + ownerName);
             }
             else {
@@ -111,47 +111,49 @@ public class BookDetailsActivity extends ActionBarActivity {
         loanPeriod.setText("Loan Period: " + myExchange.start_date.toString()
                 + " to " + myExchange.end_date.toString()); */
 
-        final Button requestButton = (Button) findViewById(R.id.requestButton);
-        if (myExchange.exchange_id == Client.userId) {      // Users can't request their own book
-            requestButton.setVisibility(View.GONE);
+        // Users can't request their own book
+        if (myExchange.loaner_id == Client.userId || myExchange.borrower_id == Client.userId) {
+            // TODO add cancel button
         }
-        else {
+        else if (myExchange.exchange_type == Exchange.Type.BORROW) {    // Set up response buttons
+            final Button offerButton = (Button) findViewById(R.id.offerButton);
+            offerButton.setVisibility(View.VISIBLE);
+            offerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Client.updateExchangeLoaner(myExchange.loaner_id, Client.userId);
+                        Client.updateExchangeStatus(myExchange.exchange_id, Exchange.Status.RESPONSE);
+                        offerButton.setText("Offered!");
+                    }
+                    catch (Exception e) {
+                        logger.e("OfferButton", "exception", e);
+                    }
+                }
+            });
+
+        }
+        else {      // Loan
+            final Button requestButton = (Button) findViewById(R.id.requestButton);
+            requestButton.setVisibility(View.VISIBLE);
             requestButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
                         Client.updateExchangeBorrower(myExchange.exchange_id, Client.userId);
-                        // TODO update exchange status
+                        Client.updateExchangeStatus(myExchange.exchange_id, Exchange.Status.RESPONSE);
                         requestButton.setText("Requested!");
                     }
                     catch (Exception e) {
-                        logger.e("BookDetails", "exception", e);
+                        logger.e("RequestButton", "exception", e);
                     }
                 }
             });
-        }
-    }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_book_details, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
 
-        return super.onOptionsItemSelected(item);
     }
+
+
+
 }

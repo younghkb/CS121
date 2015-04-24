@@ -8,80 +8,72 @@
     android:orientation="vertical"
     tools:context="com.example.jarthur.bookexchange.CreateLoan">
 
-<!--        <TextView
-            android:id="@+id/TextViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_header"
-            android:textSize="10pt">
-        </TextView>-->
-
-
-
-    <!--   This code is not necessary to the layout, but it is a good example in case I need
-       this sort of drop down menu in the future
-        <CheckBox
-           android:id="@+id/CheckBoxResponseOffer"
-           android:layout_height="wrap_content"
-           android:text="@string/choose_offer"
-           android:layout_width="fill_parent">
-         </CheckBox>
-
-        <CheckBox
-           android:id="@+id/CheckBoxResponseRequest"
-           android:layout_height="wrap_content"
-           android:text="@string/choose_request"
-           android:layout_width="fill_parent">
-        </CheckBox> -->
-
-   <SearchView
+   <EditText
        android:id="@+id/bookQueryBox"
        android:layout_height="wrap_content"
        android:hint="@string/book_info"
+       android:background="#787878"
+       android:padding="5sp"
        android:inputType="textNoSuggestions"
-       android:clickable="true"
-       android:focusable="true"
-       android:lines="2"
+       android:textColor="#FFFFFF"
+       android:imeOptions="actionSearch"
+       android:singleLine="true"
        android:layout_width="fill_parent">
-   </SearchView>
+   </EditText>
 
     <ListView
         android:id="@+id/booksFound"
+        android:background="#787878"
+        style="@style/TextAppearance.AppCompat.SearchResult.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10sp"
         android:visibility="gone">
     </ListView>
+<!--
 
     <Spinner
         android:id="@+id/SpinnerOfferLoan"
         android:layout_height="@dimen/abc_text_size_display_3_material"
+        android:background="#ababab"
+        android:layout_marginTop="16sp"
         android:prompt="@string/choose_loan_type"
         android:layout_width="fill_parent"
         android:entries="@array/offer_or_loan">
     </Spinner>
+-->
 
-<!--    Deprecated for now
-        <Button
-       android:id="@+id/setDate"
-       android:layout_height="wrap_content"
-       android:text="@string/set_date"
-       android:onClick="showDatePickerDialog"
-       android:layout_width="fill_parent">
-   </Button>-->
-
-
-<!--        <EditText
-            android:id="@+id/EditTextFeedbackBody"
+    <RadioGroup
+        android:id="@+id/pickExchangeType"
+        android:layout_marginTop="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:textSize="14sp">
+        <RadioButton
+            android:id="@+id/offer"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/feedback_body"
-            android:inputType="textMultiLine"
-            android:lines="5"
-            android:layout_width="fill_parent">
-        </EditText>-->
+            android:layout_marginRight="20sp"
+            android:checked="true"
+            android:onClick="onRadioButtonClicked"
+            android:text="Offer"/>
+        <RadioButton
+            android:id="@+id/request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:onClick="onRadioButtonClicked"
+            android:text="Request"/>
+    </RadioGroup>
 
         <Button
             android:id="@+id/confirmAlertDialog"
+            android:layout_marginTop="30sp"
             android:layout_height="wrap_content"
+            android:background="#906090"
+            android:textColor="#FFFFFF"
             android:text="@string/feedback_button"
             android:onClick="confirmAlert"
             android:layout_width="fill_parent">

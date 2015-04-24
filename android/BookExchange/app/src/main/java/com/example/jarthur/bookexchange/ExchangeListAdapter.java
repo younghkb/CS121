@@ -1,6 +1,8 @@
 package com.example.jarthur.bookexchange;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.hardware.camera2.params.BlackLevelPattern;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+import client.Client;
 import client.Exchange;
 
 /* Adapts a list of Exchanges to display on the Home Screen */
@@ -36,10 +39,18 @@ public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
         }
 
         Button myView = (Button) convertView;
+        myView.setTextColor(Color.BLACK);
+        myView.setTextSize(16);
 
         // TODO make this prettier!!
-        if (exchange.status == Exchange.Status.INITIAL) {       // TODO might also want 'response'?
+        if (exchange.status == Exchange.Status.INITIAL) {
             text += exchange.exchange_type + ": ";
+        }
+        else if (exchange.loaner_id == Client.userId) {
+            text += "Loaning: ";
+        }
+        else if (exchange.borrower_id == Client.userId) {
+            text += "Borrowing: ";
         }
         myView.setText(text + exchange.book_title);
 
