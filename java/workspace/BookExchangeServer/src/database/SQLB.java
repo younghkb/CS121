@@ -17,6 +17,8 @@ public abstract class SQLB { //TODO Sanitize
 //		System.out.println(getPublicExchanges());
 //	}
 
+	// ADDED TOO MANY 
+	
 	// ====================
 	// login/create account
 	// ====================
@@ -28,7 +30,7 @@ public abstract class SQLB { //TODO Sanitize
 	
 	public static String createLogin(String username, String password) {
 		String command = "insert into users (username, password) values ('%s', '%s');";
-		return String.format(command, username, password);
+		return String.format(command, username, password); // REPLACE #
 	}
 	
 	public static String getUser(int user_id) {
@@ -52,22 +54,22 @@ public abstract class SQLB { //TODO Sanitize
 	
 	public static String createBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) {
 		String command = "insert or ignore into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));"; // 'or ignore' ignores non-unique inserts 
-		return String.format(command, book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url);
+		return String.format(command, book_id, book_title.replace("'", "''"), author, isbn, pub_year, orig_pub_year, image_url, small_image_url);
 	}
 	
 	public static String createBook(Book book) {
-		String command = "if not exists (insert into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));";
-		return String.format(command, book.book_id, book.book_title, book.author, book.isbn, book.pub_year, book.orig_pub_year, book.image_url, book.small_image_url);
+		String command = "insert or ignore into books values (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', datetime('now'));"; // 'or ignore' ignores non-unique inserts
+		return String.format(command, book.book_id, book.book_title.replace("'", "''"), book.author, book.isbn, book.pub_year, book.orig_pub_year, book.image_url, book.small_image_url);
 	}
 	
 	public static String updateBook(int book_id, String book_title, String author, String isbn, String pub_year, String orig_pub_year, String image_url, String small_image_url) {
 		String command = "update books set book_id = %d, book_title = '%s', author = '%s', isbn = '%s', pub_year = '%s', orig_pub_year = '%s', image_url = '%s', small_image_url = '%s', add_date = datetime('now') where book_id = %d;";
-		return String.format(command, book_id, book_title, author, isbn, pub_year, orig_pub_year, image_url, small_image_url, book_id);
+		return String.format(command, book_id, book_title.replace("'", "''"), author, isbn, pub_year, orig_pub_year, image_url, small_image_url, book_id);
 	}
 	
 	public static String updateBook(Book book) { // TODO combine Book and Exchange versions with above?
 		String command = "update books set book_id = %d, book_title = '%s', author = '%s', isbn = '%s', pub_year = '%s', orig_pub_year = '%s', image_url = '%s', small_image_url = '%s', add_date = datetime('now') where book_id = %d;";
-		return String.format(command, book.book_id, book.book_title, book.author, book.isbn, book.pub_year, book.orig_pub_year, book.image_url, book.small_image_url, book.book_id);
+		return String.format(command, book.book_id, book.book_title.replace("'", "''"), book.author, book.isbn, book.pub_year, book.orig_pub_year, book.image_url, book.small_image_url, book.book_id);
 	}
 	
 	public static String deleteBook(int book_id) {
@@ -138,12 +140,12 @@ public abstract class SQLB { //TODO Sanitize
 	
 	private static String createExchangeBorrow(int borrow_id, Exchange.Type exchange_type, int book_id, String book_title) { //TODO exchange type
 		String command = "insert into exchanges (borrower_id, exchange_type, book_id, book_title, create_date, status) values (%d, '%s', %d, '%s', datetime('now'), 'INITIAL');";
-		return String.format(command, borrow_id, exchange_type, book_id, book_title);
+		return String.format(command, borrow_id, exchange_type, book_id, book_title.replace("'", "''"));
 	}
 	
 	private static String createExchangeLoan(int loaner_id, Exchange.Type exchange_type, int book_id, String book_title) { //TODO exchange type
 		String command = "insert into exchanges (loaner_id, exchange_type, book_id, book_title, create_date, status) values (%d, '%s', %d, '%s', datetime('now'), 'INITIAL');";
-		return String.format(command, loaner_id, exchange_type, book_id, book_title);
+		return String.format(command, loaner_id, exchange_type, book_id, book_title.replace("'", "''"));
 	}
 	
 	// =============

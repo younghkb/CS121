@@ -46,7 +46,11 @@ public class UserSession extends Thread {
 			
 			Log.log("UserSession", "Request Recieved", r.toString());
 			
-			process(r);
+			try {
+				process(r);
+			} catch(SQLException|ParseException e) {
+				System.err.println(e);
+			}
 			oos.writeObject(r);
 			oos.flush();
 			
@@ -55,16 +59,18 @@ public class UserSession extends Thread {
 			oos.close();
 			os.close();
 			s.close();
-		} catch (IOException|SQLException|ParseException e) {
+		} catch (IOException e) {
 			System.err.println(e);
 		}
 	}
 	
 	public UserSession(Socket s) {
 		this.s = s;
+		setName(toString());
 	}
 	
 	private void process(Request r) throws SQLException, ParseException {
+		setName(toString(r.type));
 		switch (r.type) {
 		case LOGIN:
 			r.reply = SQLE.login((String) r.params.get("username"), (String) r.params.get("password"));
@@ -80,7 +86,7 @@ public class UserSession extends Thread {
 			break;
 		case CREATE_BOOK:
 			DBWrite.queue(SQLB.createBook((Book) r.params.get("book")));
-			r.reply = r; // TODO better thing to do?
+			//r.reply = r; // TODO better thing to do?
 			break;
 		case GET_BOOK:
 			r.reply = SQLE.getBook((Integer) r.params.get("book_id"));
@@ -93,21 +99,29 @@ public class UserSession extends Thread {
 			break;
 		case CREATE_EXCHANGE:
 			DBWrite.queue(SQLB.createExchange((Exchange) r.params.get("exchange")));
-			r.reply = r; // TODO better thing to do?
+			//r.reply = r; // TODO better thing to do?
 			break;
 		case UPDATE_EXCHANGE_BORROWER:
 			DBWrite.queue(SQLB.updateBorrower((Integer) r.params.get("exchange_id"), (Integer) r.params.get("borrower_id")));
-			r.reply = r; // TODO better thing to do?
+			//r.reply = r; // TODO better thing to do?
 			break;
 		case UPDATE_EXCHANGE_LOANER:
 			DBWrite.queue(SQLB.updateBorrower((Integer) r.params.get("exchange_id"), (Integer) r.params.get("loaner_id")));
-			r.reply = r; // TODO better thing to do?
+			//r.reply = r; // TODO better thing to do?
 			break;
 		case UPDATE_EXCHANGE_STATUS:
 			DBWrite.queue(SQLB.updateExchangeStatus((Integer) r.params.get("exchange_id"), (Exchange.Status) r.params.get("status")));
-			r.reply = r; // TODO better thing to do?
+			//r.reply = r; // TODO better thing to do?
 			break;
 		}
+	}
+	
+	public String toString() {
+		return "UserThread: " + s.getInetAddress();
+	}
+	
+	public String toString(Request.Type type) {
+		return "UserThread: " + type + " - " + s.getInetAddress();
 	}
 	
 } // end of UserThread

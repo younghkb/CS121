@@ -31,7 +31,7 @@ public abstract class Client {
 			//System.out.println(login("naomi_", "PassWord"));
 			//System.out.println(getUsernameFromUserID(1));
 			
-			List<Book> books = searchBook("Cat in the Hat");
+			List<Book> books = searchBook("Harry Potter");
 			Book selected = books.get(0);
 			Exchange e = new Exchange();
 			
