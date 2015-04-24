@@ -74,6 +74,7 @@ public class Client {
     }
 
     public static int createLogin(String username, String password) throws IOException {
+        // If login exists, returns -1. Otherwise, returns new user ID.
         Request r = new Request(Request.Type.CREATE_LOGIN);
         r.params.put("username", username);
         r.params.put("password", password);
