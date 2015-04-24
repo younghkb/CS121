@@ -17,12 +17,13 @@ public class Client {
     final static String HOST = "knuth.cs.hmc.edu";
     final static int PORT = 6789;
 
-    // TODO set dynamically
-    public static int userId = -1;  // id of the current user, set in LoginActivity
+    // Id of the current user, set in LoginActivity.
+    // All users should have strictly positive id numbers.
+    public static int userId = -1;
 
     // TODO don't include this stuff in production version
     /* Set this to true to debug without actually connecting to the server. */
-    private static boolean debug = false;
+    private static boolean debug = true;
 
     private static Request send(Request r) throws IOException {
 
@@ -73,8 +74,8 @@ public class Client {
         return (String) r.reply;
     }
 
+    // If login exists, returns -1. Otherwise, returns new user ID.
     public static int createLogin(String username, String password) throws IOException {
-        // If login exists, returns -1. Otherwise, returns new user ID.
         Request r = new Request(Request.Type.CREATE_LOGIN);
         r.params.put("username", username);
         r.params.put("password", password);

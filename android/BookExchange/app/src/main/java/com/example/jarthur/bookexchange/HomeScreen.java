@@ -8,9 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import java.util.ArrayList;
-import com.commonsware.cwac.merge.MergeAdapter;
 
 import client.Book;
 import client.Client;
@@ -28,8 +28,6 @@ public class HomeScreen extends ActionBarActivity {
     private ArrayList<Exchange> availableExchanges = new ArrayList<Exchange>();
     private ArrayList<Exchange> userExchanges = new ArrayList<Exchange>();
 
-    MergeAdapter myAdapter = new MergeAdapter();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +40,7 @@ public class HomeScreen extends ActionBarActivity {
         getUserExchanges();
 
         // TODO differentiate between offer and request!!!! IMPORTANT
-        getAvailableBooks();
+        getPublicExchanges();
     }
 
     // Update when we return to the home screen.
@@ -52,7 +50,7 @@ public class HomeScreen extends ActionBarActivity {
         logger.i(TAG, "Updating!");
         // Refresh the list of available books
         getUserExchanges();
-        getAvailableBooks();
+        getPublicExchanges();
     }
 
     // Go createExchangeActivity page where the user can make a new loan or offer
@@ -127,6 +125,7 @@ public class HomeScreen extends ActionBarActivity {
     private void getUserExchanges() {
         try {
             userExchanges = (ArrayList<Exchange>) Client.getPrivateExchanges(Client.userId);
+            logger.i(TAG, "Calling get Private Exchanges");
             if (userExchanges.isEmpty()) {
                 View noExchanges = findViewById(R.id.ifNoUserExchanges);
                 noExchanges.setVisibility(View.VISIBLE);
@@ -155,7 +154,7 @@ public class HomeScreen extends ActionBarActivity {
         userExchangeList.setOnItemClickListener(exchangeListener);
     }
 
-    private void getAvailableBooks() {
+    private void getPublicExchanges() {
 
         try {
             availableExchanges = (ArrayList<Exchange>) Client.getPublicExchanges();
@@ -182,5 +181,10 @@ public class HomeScreen extends ActionBarActivity {
         };
 
         bookList.setOnItemClickListener(bookListener);
+    }
+
+    public void onLogout(View v) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
