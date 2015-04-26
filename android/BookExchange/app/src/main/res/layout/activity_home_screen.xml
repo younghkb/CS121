@@ -17,9 +17,8 @@
                     android:id="@+id/createExchangeButton"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:background="#6CB8AA"
                     android:text="@string/create"
-                    android:textColor="#FFFFFF"
-                    android:background="#906090"
                     android:textSize="18sp"
                     android:onClick="openCreateExchangeActivity"/>
 
@@ -27,6 +26,7 @@
                     android:id="@+id/logoutButton"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="@string/logout"
                     android:textSize="18sp"
                     android:onClick="onLogout"/>
@@ -34,14 +34,17 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:lines="2"
+                    android:layout_marginTop="16dp"
                     android:id="@+id/text2"
                     android:clickable="true"
                     android:text="@string/exchanges"
                     android:autoLink="all"
-                    android:typeface="serif"
-                    android:textSize="20sp" />
+                    android:typeface="sans"
+                    android:textSize="20sp"
+                    android:padding="@dimen/abc_text_size_caption_material"
+                    android:textColor="#FFFFFF"
+                    android:background="#906090"
+                    android:layout_marginBottom="10sp"/>
 
                     <TextView
                         android:id="@+id/ifNoUserExchanges"
@@ -55,20 +58,24 @@
                 <ListView
                     android:id="@+id/userExchangeList"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30sp">
                 </ListView>
 
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:lines="2"
+                    android:layout_marginTop="16dp"
                     android:id="@+id/browse"
                     android:clickable="true"
-                    android:text="@string/browse"
+                    android:text="All Open Exchanges"
                     android:autoLink="all"
-                    android:typeface="serif"
-                    android:textSize="20sp"/>
+                    android:typeface="sans"
+                    android:textSize="20sp"
+                    android:padding="@dimen/abc_text_size_caption_material"
+                    android:textColor="#FFFFFF"
+                    android:background="#906090"
+                    android:layout_marginBottom="10sp"/>
 
                 <TextView
                     android:id="@+id/ifNoOpenExchanges"

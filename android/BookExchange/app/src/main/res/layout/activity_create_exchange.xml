@@ -12,10 +12,9 @@
        android:id="@+id/bookQueryBox"
        android:layout_height="wrap_content"
        android:hint="@string/book_info"
-       android:background="#787878"
+       android:background="#6CB8AA"
        android:padding="5sp"
        android:inputType="textNoSuggestions"
-       android:textColor="#FFFFFF"
        android:imeOptions="actionSearch"
        android:singleLine="true"
        android:layout_width="fill_parent">
@@ -72,8 +71,7 @@
             android:id="@+id/confirmAlertDialog"
             android:layout_marginTop="30sp"
             android:layout_height="wrap_content"
-            android:background="#906090"
-            android:textColor="#FFFFFF"
+            android:background="#6CB8AA"
             android:text="@string/feedback_button"
             android:onClick="confirmAlert"
             android:layout_width="fill_parent">

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,6 +26,7 @@ import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -67,13 +69,14 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
         createBookQueryBox();
 
+        // Set defaults (exchange type defaults to offer)
+        newExchange.exchange_type = Exchange.Type.LOAN;
+        newExchange.loaner_id = Client.userId;
+        newExchange.borrower_id = 0;
+
         createListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                if (newBook.book_title == null || newBook.book_title == "") {
-                    bookQuery = (EditText) findViewById(R.id.bookQueryBox);
-                    bookQuery.setError("You must select a book");
-                }
                 logger.i("CreateExchangeActivity", "Create Exchange button has been clicked");
 
                 try {
@@ -117,6 +120,11 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
 
     public void confirmAlert(View view) {
+        if (newBook.book_title == null || newBook.book_title == "") {
+            bookQuery = (EditText) findViewById(R.id.bookQueryBox);
+            bookQuery.setError("You must select a book");
+            return;
+        }
         DialogFragment confirmDialog = new AlertDialogFragment();
         confirmDialog.show(getFragmentManager(), "confirm_dialog");
     }
@@ -162,7 +170,9 @@ public class CreateExchangeActivity extends ActionBarActivity {
                     try {
                         bookList = (ArrayList<Book>) Client.searchBook(queryText);
 
-                        // TODO if book list is empty show 'no books found'
+                        if (bookList.isEmpty()) {
+                            bookQuery.setError("No books found!");
+                        }
                         ListView booksFound = (ListView) findViewById(R.id.booksFound);
                         booksFound.setAdapter(new BookListAdapter(getApplicationContext(), bookList));
                         booksFound.setVisibility(View.VISIBLE);

@@ -56,9 +56,8 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
         // Sets visibilities correctly based on type and status
         // Pages can show book (always), otherPerson, contactInfo, dueDate, finishButton
-        setVisibilities(myExchange.status);
+       // setVisibilities(myExchange.status);
 
-        // TODO factor out?
         setBookInfo();
 
     }
@@ -95,41 +94,6 @@ public class ViewExchangeActivity extends ActionBarActivity {
     public void confirmAlert(View view) {
         DialogFragment newFragment = new AlertDialogFragment();
         newFragment.show(getFragmentManager(), "alert");
-    }
-
-
-    private void setVisibilities(Exchange.Status exchangeStatus) {
-        View owner = findViewById(R.id.owner);
-        View finishButton = findViewById(R.id.finishButton);
-
-        // TODO add visual feedback for exchange status, e.g. 'your request has been accepted'
-
-        switch (exchangeStatus) {
-
-            case INITIAL:
-                owner.setVisibility(View.GONE);
-                finishButton.setVisibility(View.GONE);
-                break;
-
-            case RESPONSE:   // Same as Initial
-                // TODO MAKE ACCEPT BUTTON
-                //acceptButton.setVisibility(View.VISIBLE);
-                finishButton.setVisibility(View.GONE);
-                break;
-
-            case ACCEPTED:
-                if (!isOwner) {     // only person owning book can end exchange
-                    finishButton.setVisibility(View.GONE);
-                }
-                break;
-
-            case COMPLETED:
-                finishButton.setVisibility(View.GONE);  // already finished
-                break;
-
-            default:
-                break;
-        }
     }
 
     private void setBookInfo() {
@@ -176,42 +140,45 @@ public class ViewExchangeActivity extends ActionBarActivity {
         try {
             borrowerName = Client.getUsernameFromUserID(myExchange.borrower_id);
             ownerName = Client.getUsernameFromUserID(myExchange.loaner_id);
+            logger.i("ViewExchange", "Owner Name: " + ownerName);
         }
         catch (Exception e) {
             logger.e("ViewExchange", "exception", e);
         }
 
+        // Exchanges in this activity should always have an owner
         TextView owner = (TextView) findViewById(R.id.owner);
         owner.setText("Owner: " + ownerName);
 
+        View finishButton = findViewById(R.id.finishButton);        // TODO fixme8
 
         switch (myExchange.status) {
             case INITIAL:
                 if (isOwner) {
-                    status.setText(R.string.initial_offer);
+                    status.setText("You have posted an offer to loan this book.");
                     break;
                 }
-                status.setText(R.string.initial_request);
+                status.setText("You have posted a request to borrow this book.");
                 break;
 
             case RESPONSE:
                 action.setVisibility(View.VISIBLE);
                 if (isOwner) {
-                    status.setText(borrowerName + R.string.requested_loaner);
+                    status.setText(borrowerName + " has requested this book. Would you like to accept the request?");
                 }
-                status.setText(ownerName + R.string.requested_borrower);
+                status.setText(ownerName + " has offered to loan you this book. Would you like to accept the offer?");
                 break;
 
             case ACCEPTED:
                 if (isOwner) {
-                    status.setText(R.string.accepted_loaner + borrowerName);
+                    status.setText("You are lending this book to " + borrowerName);
                     break;
                 }
-                status.setText(ownerName + R.string.accepted_borrower);
+                status.setText(ownerName + " has accepted your request. You may now borrow this book.");
                 break;
 
             case COMPLETED:
-                status.setText(R.string.completed);
+                status.setText("This exchange has been completed.");
         }
 
     }

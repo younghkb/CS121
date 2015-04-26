@@ -39,8 +39,8 @@ public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
         }
 
         Button myView = (Button) convertView;
-        myView.setTextColor(Color.BLACK);
-        myView.setTextSize(16);
+       // myView.setTextColor(Color.BLACK); doesn't seem to help =(
+        //myView.setTextSize(16);
 
         // TODO make this prettier!!
         if (exchange.status == Exchange.Status.INITIAL) {

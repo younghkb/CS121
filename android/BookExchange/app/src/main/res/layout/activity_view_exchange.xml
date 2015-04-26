@@ -13,11 +13,15 @@
 
         <TextView
             android:id="@+id/bookTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="24sp"
-            android:padding="5sp" >
+            android:typeface="sans"
+            android:textSize="20sp"
+            android:padding="@dimen/abc_text_size_caption_material"
+            android:layout_marginBottom="20sp"
+            android:textColor="#FFFFFF"
+            android:background="#906090">
         </TextView>
 
         <ImageView
@@ -61,6 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:orientation="vertical"
             android:padding="10sp">
 
             <TextView
@@ -97,7 +102,8 @@
             android:layout_height="wrap_content"
             android:text="@string/finish_button"
             android:onClick="confirmAlert"
-            android:layout_width="fill_parent">
+            android:layout_width="fill_parent"
+            android:visibility="gone">
         </Button>
 
     </LinearLayout>
