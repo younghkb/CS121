@@ -22,13 +22,15 @@
 
     <ListView
         android:id="@+id/booksFound"
-        android:background="#787878"
-        style="@style/TextAppearance.AppCompat.SearchResult.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:dividerHeight="10sp"
         android:padding="10sp"
         android:visibility="gone">
     </ListView>
+
+    <!--android:background="#787878"-->
+    <!--style="@style/TextAppearance.AppCompat.SearchResult.Title"-->
 <!--
 
     <Spinner

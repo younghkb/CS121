@@ -24,7 +24,6 @@ import client.Book;
 import client.Client;
 import client.Exchange;
 
-// Originally 'Status'
 public class ViewExchangeActivity extends ActionBarActivity {
 
     private static Log logger;
@@ -34,6 +33,9 @@ public class ViewExchangeActivity extends ActionBarActivity {
     private Book myBook;
 
     private boolean isOwner;
+
+    private String borrowerName = "Unknown";
+    private String ownerName = "Unknown";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
         // true if the current user is the owner of this particular book
         isOwner = (Client.userId == myExchange.loaner_id);
 
-        // Sets visibilities correctly based on type and status
-        // Pages can show book (always), otherPerson, contactInfo, dueDate, finishButton
-       // setVisibilities(myExchange.status);
-
         setBookInfo();
-
     }
 
     /* Confirmation for completion or cancellation of an exchange. */
@@ -130,12 +127,6 @@ public class ViewExchangeActivity extends ActionBarActivity {
             pubYear.setText("Publication Year: not available");
         }
 
-        TextView status = (TextView) findViewById(R.id.exchangeStatus);
-
-        RadioGroup action = (RadioGroup) findViewById(R.id.handleRequest);   // Default GONE
-        String borrowerName = "Unknown";
-        String ownerName = "Unknown";
-
         // Note: we will set loaner/borrower id before offer/request has been accepted
         try {
             borrowerName = Client.getUsernameFromUserID(myExchange.borrower_id);
@@ -150,7 +141,17 @@ public class ViewExchangeActivity extends ActionBarActivity {
         TextView owner = (TextView) findViewById(R.id.owner);
         owner.setText("Owner: " + ownerName);
 
-        View finishButton = findViewById(R.id.finishButton);        // TODO fixme8
+        View finishButton = findViewById(R.id.finishButton);        // TODO fixme
+
+        setStatusText();
+    }
+
+    private void setStatusText() {
+
+        TextView status = (TextView) findViewById(R.id.exchangeStatus);
+
+        RadioGroup action = (RadioGroup) findViewById(R.id.handleRequest);   // Default GONE
+        action.setVisibility(View.GONE);
 
         switch (myExchange.status) {
             case INITIAL:
@@ -162,28 +163,68 @@ public class ViewExchangeActivity extends ActionBarActivity {
                 break;
 
             case RESPONSE:
-                action.setVisibility(View.VISIBLE);
                 if (isOwner) {
-                    status.setText(borrowerName + " has requested this book. Would you like to accept the request?");
+                    if (myExchange.exchange_type == Exchange.Type.LOAN) {
+                        status.setText(borrowerName + " has requested this book. Would you like to accept the request?");
+                        action.setVisibility(View.VISIBLE);
+
+                    }
+                    else { // Borrow
+                        status.setText("You have offered to loan this book to " + borrowerName + ".");
+                    }
+                    break;
                 }
-                status.setText(ownerName + " has offered to loan you this book. Would you like to accept the offer?");
-                break;
+                else {  // not owner
+                    if (myExchange.exchange_type == Exchange.Type.LOAN) {
+                        status.setText("You have sent a request to borrow this book from " + ownerName + ".");
+                        break;
+                    }
+                    else { // Borrow
+                        status.setText(ownerName + " has offered to loan you this book. Would you like to accept the offer?");
+                        action.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                }
 
             case ACCEPTED:
                 if (isOwner) {
                     status.setText("You are lending this book to " + borrowerName);
                     break;
                 }
-                status.setText(ownerName + " has accepted your request. You may now borrow this book.");
+                else if (myExchange.exchange_type == Exchange.Type.BORROW) {
+                    status.setText("You may now borrow this book from " + ownerName + ".");
+                }
+                else if (myExchange.exchange_type == Exchange.Type.LOAN) {
+                    status.setText(ownerName + " has accepted your request. You may now borrow this book.");
+                }
                 break;
 
             case COMPLETED:
                 status.setText("This exchange has been completed.");
         }
-
     }
 
     public void onRadioButtonClicked(View view) {
-        // TODO implement FIXME
+        if (view.getId() == R.id.accept) {
+            myExchange.status = Exchange.Status.ACCEPTED;
+            try {
+                Client.updateExchangeStatus(myExchange.exchange_id, Exchange.Status.ACCEPTED);
+            }
+            catch (Exception e) {
+                logger.e("ViewExchangeActivity", "exception", e);
+            }
+        }
+        else if (view.getId() == R.id.reject) {
+            myExchange.status = Exchange.Status.INITIAL;
+            try {
+                Client.updateExchangeStatus(myExchange.exchange_id, Exchange.Status.INITIAL);
+            }
+            catch (Exception e) {
+                logger.e("ViewExchangeActivity", "exception", e);
+            }
+        }
+
+        // Reset to reflect the new status
+        setStatusText();
     }
 }

@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -38,7 +36,6 @@ public class HomeScreen extends ActionBarActivity {
 
         getUserExchanges();
 
-        // TODO differentiate between offer and request!!!! IMPORTANT
         getPublicExchanges();
     }
 
@@ -46,8 +43,17 @@ public class HomeScreen extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        logger.i(TAG, "Updating!");
-        // Refresh the list of available books
+        logger.i(TAG, "Updating on resume.");
+        // Refresh the lists of books
+        getUserExchanges();
+        getPublicExchanges();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        logger.i(TAG, "Updating on start.");
+        // Refresh the lists of books
         getUserExchanges();
         getPublicExchanges();
     }
@@ -58,11 +64,26 @@ public class HomeScreen extends ActionBarActivity {
         startActivity(intent);
     }
 
-    // Go to the ViewExchangeActivity page that displays the state of a particular exchange
-    public void openViewExchangeActivity(View view, int position) {
+    // Get the correct exchange to display. Separate from openViewExchangeActivity so that
+    // openViewExchangeActivity can be called directly with an Exchange.
+    public void onExchangeClicked(View view, int position) {
+        logger.i(TAG, "Exchanged clicked at position " + position);
 
         try {
             Exchange myExchange = userExchanges.get(position);
+
+            openViewExchangeActivity(myExchange);
+        }
+        catch (Exception e) {
+            logger.e(TAG, "exception", e);
+        }
+    }
+
+    // Go to the ViewExchangeActivity page that displays the state of a particular exchange
+    public void openViewExchangeActivity(Exchange currentExchange) {
+
+        try {
+            Exchange myExchange = currentExchange;
 
             Book myBook = Client.getBook(myExchange.book_id);
 
@@ -126,7 +147,7 @@ public class HomeScreen extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 logger.i(TAG, "ExchangeView clicked!");
-                openViewExchangeActivity(view, position);
+                onExchangeClicked(view, position);
             }
         };
 
@@ -137,6 +158,7 @@ public class HomeScreen extends ActionBarActivity {
 
         try {
             availableExchanges = (ArrayList<Exchange>) Client.getPublicExchanges();
+            logger.i(TAG, "Calling get Public Exchanges, found " + availableExchanges.size());
             if (availableExchanges.isEmpty()) {
                 View noExchanges = findViewById(R.id.ifNoOpenExchanges);
                 noExchanges.setVisibility(View.VISIBLE);
@@ -146,6 +168,7 @@ public class HomeScreen extends ActionBarActivity {
             e.printStackTrace();
         }
 
+        // FIXME might have to recreate the adapter every time the list changes?
         ExchangeListAdapter bookAdapter = new ExchangeListAdapter(getApplicationContext(), availableExchanges);
 
         ListView bookList = (ListView) findViewById(R.id.bookList);
@@ -155,7 +178,13 @@ public class HomeScreen extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 logger.i(TAG, "ExchangeView clicked!");
-                openBookDetailsActivity(view, position);
+                Exchange myExchange = availableExchanges.get(position);
+                if (myExchange.borrower_id == Client.userId || myExchange.loaner_id == Client.userId) {
+                    onExchangeClicked(view, position);
+                }
+                else {
+                    openBookDetailsActivity(view, position);
+                }
             }
         };
 

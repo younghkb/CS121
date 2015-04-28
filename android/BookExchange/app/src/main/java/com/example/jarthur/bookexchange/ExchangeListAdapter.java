@@ -39,22 +39,41 @@ public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
         }
 
         Button myView = (Button) convertView;
-       // myView.setTextColor(Color.BLACK); doesn't seem to help =(
-        //myView.setTextSize(16);
 
         // TODO make this prettier!!
         if (exchange.status == Exchange.Status.INITIAL) {
             text += exchange.exchange_type + ": ";
         }
-        else if (exchange.loaner_id == Client.userId) {
-            text += "Loaning: ";
+
+        text += exchange.book_title;
+
+        if (isActionRequired(exchange)) {
+            text += " (response requested)";
+            myView.setTextColor(Color.parseColor("6CB8AA"));
         }
-        else if (exchange.borrower_id == Client.userId) {
-            text += "Borrowing: ";
-        }
-        myView.setText(text + exchange.book_title);
+
+        myView.setText(text);
 
         return myView;
+    }
+
+
+    /** Returns true if the current user should take action on this exchange. */
+    private boolean isActionRequired(Exchange myExchange) {
+
+        boolean isOwner = (Client.userId == myExchange.loaner_id);
+
+
+        if (myExchange.status == Exchange.Status.RESPONSE) {
+            if (isOwner && (myExchange.exchange_type == Exchange.Type.LOAN)) {
+                return true;
+            }
+            else if (myExchange.exchange_type == Exchange.Type.BORROW) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

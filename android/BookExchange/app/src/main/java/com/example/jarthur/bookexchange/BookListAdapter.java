@@ -1,6 +1,7 @@
 package com.example.jarthur.bookexchange;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,12 @@ public class BookListAdapter extends ArrayAdapter<Book> {
 
         TextView myView = (TextView) convertView;
         myView.setText(book.book_title);
+
+
+        myView.setTextColor(Color.BLACK);
+        myView.setTextSize(16);
+        myView.setBackgroundColor(Color.WHITE);
+
 
         return myView;
     }

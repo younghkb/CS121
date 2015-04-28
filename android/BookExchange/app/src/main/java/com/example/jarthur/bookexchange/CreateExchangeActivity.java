@@ -1,42 +1,22 @@
 package com.example.jarthur.bookexchange;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.SearchView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import client.Book;
 import client.Client;
@@ -120,13 +100,19 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
 
     public void confirmAlert(View view) {
+        if (isQueryValid()) {
+            DialogFragment confirmDialog = new AlertDialogFragment();
+            confirmDialog.show(getFragmentManager(), "confirm_dialog");
+        }
+    }
+
+    private boolean isQueryValid() {
         if (newBook.book_title == null || newBook.book_title == "") {
             bookQuery = (EditText) findViewById(R.id.bookQueryBox);
-            bookQuery.setError("You must select a book");
-            return;
+            bookQuery.setError("You must select a book!");
+            return false;
         }
-        DialogFragment confirmDialog = new AlertDialogFragment();
-        confirmDialog.show(getFragmentManager(), "confirm_dialog");
+        return true;
     }
 
     private void createBookQueryBox() {
@@ -134,7 +120,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
         bookQuery = (EditText) findViewById(R.id.bookQueryBox);
         bookQuery.setHint("Search for a book by title, author, or ISBN");
 
-        // Okay to set to final? (required for use in inner class)
+        // setting to final required for use in inner class
         final AdapterView.OnItemClickListener bookSelectedListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -145,6 +131,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
 
                 try {
                     bookQuery.setText(newBook.book_title);
+                    isQueryValid();     // Reset the error notification
                     logger.i("CreateExchangeActivity", "Updating Query Box and book list");
 
                     // A little hacky because we're manually setting the visibility of the
