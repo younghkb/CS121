@@ -47,16 +47,6 @@ public class HomeScreen extends ActionBarActivity {
         getPublicExchanges();
     }
 
-    // Updates exchange data whenever the user returns to the home screen.
-    @Override
-    protected void onResume() {
-        super.onResume();
-        logger.i(TAG, "Updating on resume.");
-        // Refresh the lists of books
-        getUserExchanges();
-        getPublicExchanges();
-    }
-
     @Override
     protected void onStart() {
         super.onStart();

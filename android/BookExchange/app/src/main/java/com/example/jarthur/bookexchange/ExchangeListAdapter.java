@@ -48,7 +48,9 @@ public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
 
         if (isActionRequired(exchange)) {
             text += " (response requested)";
-            //myView.setTextColor(Color.parseColor("#6CB8AA"));
+        }
+        else if (exchange.status == Exchange.Status.COMPLETED) {
+            text += " (complete)";
         }
 
         myView.setText(text);
