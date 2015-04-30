@@ -7,7 +7,7 @@ import android.util.Log;
 import java.io.InputStream;
 import java.net.URL;
 
-/* Private task to get the cover image from the Goodreads url. */
+/* Task to get the cover image from the Goodreads url. */
 public class GetImageTask extends AsyncTask<URL, Integer, Drawable> {
 
     Drawable bookImage;
@@ -23,6 +23,6 @@ public class GetImageTask extends AsyncTask<URL, Integer, Drawable> {
         } catch (Exception e) {
             logger.e("GetImageTask", "exception", e);
         }
-        return null;    // TODO better error handling
+        return null;
     }
 }

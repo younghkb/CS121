@@ -3,6 +3,10 @@ package client;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * This defines the attributes necessary for an exchange. The data is filled in during the
+ * CreateExchangeActivity.
+ */
 public class Exchange implements Serializable {
     // exchange data
     public int exchange_id;

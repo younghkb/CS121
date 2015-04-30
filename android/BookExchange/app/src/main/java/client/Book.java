@@ -5,7 +5,10 @@ import java.io.Serializable;
 import java.io.Serializable;
 import java.util.Date;
 
-
+/**
+ * This class defines the important attributes and data regrading a book. These fields are
+ * filled in by accessing Goodreads.
+ */
 public class Book implements Serializable {
     public int book_id;		// Goodreads ID, primary key in DB
 

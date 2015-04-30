@@ -40,7 +40,6 @@ public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
 
         Button myView = (Button) convertView;
 
-        // TODO make this prettier!!
         if (exchange.status == Exchange.Status.INITIAL) {
             text += exchange.exchange_type + ": ";
         }

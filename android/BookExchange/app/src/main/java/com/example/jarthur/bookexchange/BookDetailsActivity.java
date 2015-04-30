@@ -21,10 +21,18 @@ import client.Book;
 import client.Client;
 import client.Exchange;
 
+/**
+ * This activity displays the details of a book (title, author, cover, etc). This is accessed
+ * when the user is looking at an open exchange that they are not participating in. Through this
+ * activity, the user can request or offer in response to the open exchange, thus making it
+ * exchange in which they are a member (so the book will be viewed through ViewExchangeActivity).
+ */
 public class BookDetailsActivity extends ActionBarActivity {
 
+   // Used for logging messages to LogCat
    private static Log logger;
 
+   // Initializes the book and exchange status
    Book myBook;
    Exchange myExchange;
 
@@ -33,30 +41,13 @@ public class BookDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
+        // TODO explain this
         Intent i = getIntent();
         myExchange = (Exchange) i.getSerializableExtra("exchange");
         myBook = (Book) i.getSerializableExtra("book");
 
-        // Initial, Request, etc.
+        // Sets the exchange status to appropriate type, like Initial, Request, etc.
         Exchange.Status exchangeStatus = myExchange.status;
-
-        // Sets visibilities correctly based on type
-        // hides the request button from the details of a book involved in an exchange
-        if (exchangeStatus == Exchange.Status.ACCEPTED || exchangeStatus == Exchange.Status.COMPLETED) {
-
-            // Does not show request button, owner or possible loan period
-            View requestButton = findViewById(R.id.requestButton);
-            requestButton.setVisibility(View.GONE);
-
-            // Loan period is being deprecated for now.
-            //View c = findViewById(R.id.loanPeriod);
-            //c.setVisibility(View.GONE);
-
-            // Commented out because I don't think this should be hidden - HR 4/20/15
-            //View d = findViewById(R.id.owner);
-            //d.setVisibility(View.GONE);
-        }
-        // Otherwise show everything
 
         // TODO factor out the book details that are also used in ViewExchange
         TextView title = (TextView) findViewById(R.id.bookTitle);
@@ -65,6 +56,7 @@ public class BookDetailsActivity extends ActionBarActivity {
         TextView author = (TextView) findViewById(R.id.author);
         author.setText("Author: " + myBook.author);
 
+        // Grabs the cover of the book from Goodreads
         ImageView cover = (ImageView) findViewById(R.id.cover);
         try {
             GetImageTask task = new GetImageTask();
@@ -76,6 +68,7 @@ public class BookDetailsActivity extends ActionBarActivity {
             logger.e("BookDetails", "exception", e);
         }
 
+        // Grabs the ISBN of the book from Goodreads
         TextView isbn = (TextView) findViewById(R.id.ISBN);
         if (myBook.isbn != null) {
             isbn.setText("ISBN: " + myBook.isbn);
@@ -84,6 +77,7 @@ public class BookDetailsActivity extends ActionBarActivity {
             isbn.setText("ISBN: not available");
         }
 
+        // Grabs the publishing year from Goodreads
         TextView pubYear = (TextView) findViewById(R.id.pubYear);
         if (myBook.pub_year != null) {
             pubYear.setText("Publication Year: " + myBook.pub_year);
@@ -92,6 +86,7 @@ public class BookDetailsActivity extends ActionBarActivity {
             pubYear.setText("Publication Year: not available");
         }
 
+        // Grabs the owner of the open exchange from the database
         TextView owner = (TextView) findViewById(R.id.owner);
         try {
             String ownerName = Client.getUsernameFromUserID(myExchange.loaner_id);
@@ -106,16 +101,13 @@ public class BookDetailsActivity extends ActionBarActivity {
             logger.e("BookDetails", "exception", e);
         }
 
-        // Loan period is being deprecated for now
-        /*TextView loanPeriod = (TextView) findViewById(R.id.loanPeriod);
-        loanPeriod.setText("Loan Period: " + myExchange.start_date.toString()
-                + " to " + myExchange.end_date.toString()); */
-
-        // Users can't request their own book
+        // Ensures that users can't request their own book
         if (myExchange.loaner_id == Client.userId || myExchange.borrower_id == Client.userId) {
             // TODO add cancel button
         }
-        else if (myExchange.exchange_type == Exchange.Type.BORROW) {    // Set up response buttons
+        // If the open exchange is an request, add the appropriate buttons so that the user
+        // can offer the book
+        else if (myExchange.exchange_type == Exchange.Type.BORROW) {
             final Button offerButton = (Button) findViewById(R.id.offerButton);
             offerButton.setVisibility(View.VISIBLE);
             offerButton.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +125,10 @@ public class BookDetailsActivity extends ActionBarActivity {
             });
 
         }
-        else {      // Loan
+
+        // If the open exchange is an offer, sets up the appropriate buttons so that the user
+        // can request the book.
+        else {
             final Button requestButton = (Button) findViewById(R.id.requestButton);
             requestButton.setVisibility(View.VISIBLE);
             requestButton.setOnClickListener(new View.OnClickListener() {
