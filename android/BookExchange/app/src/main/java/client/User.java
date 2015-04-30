@@ -1,6 +1,7 @@
 package client;
 
 /**
+ * //TODO make sure this class can be deleted
  * Created by jarthur on 4/16/15.
  * Code from http://stackoverflow.com/questions/22209046/
  * fix-android-studio-login-activity-template-generated-activity

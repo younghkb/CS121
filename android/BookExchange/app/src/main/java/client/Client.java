@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class handles communication between the app and the server.
+ */
 public class Client {
 
     final static String HOST = "knuth.cs.hmc.edu";
@@ -56,6 +59,8 @@ public class Client {
         return response;
     }
 
+    // Logs the user in. The logic checking to make sure that the username and password are
+    // reasonable is contained in LoginActivity.
     public static int login(String username, String password) throws IOException {
         Request r = new Request(Request.Type.LOGIN);
         r.params.put("username", username);

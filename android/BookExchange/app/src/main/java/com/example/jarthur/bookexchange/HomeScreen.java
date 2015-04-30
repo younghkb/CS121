@@ -15,7 +15,12 @@ import client.Book;
 import client.Client;
 import client.Exchange;
 
-
+/**
+ * This is the homepage for our app. From here, the user can log out (which takes them to a cleared
+ * LoginActivity), or go to CreateExchangeActivity, BookDetailsActivity, or ViewExchangeActivity.
+ * This screen also organizes exchanges by those that the user is a member of and those that are
+ * open and created by other users.
+ */
 public class HomeScreen extends ActionBarActivity {
 
     private Log logger;
@@ -27,6 +32,8 @@ public class HomeScreen extends ActionBarActivity {
     private ArrayList<Exchange> availableExchanges = new ArrayList<Exchange>();
     private ArrayList<Exchange> userExchanges = new ArrayList<Exchange>();
 
+
+    // This function initializes the layout and data present when the HomeScreen is started.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +43,14 @@ public class HomeScreen extends ActionBarActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
+        // Grabs the data regarding current exchanges the user is in
         getUserExchanges();
 
         // TODO differentiate between offer and request!!!! IMPORTANT
         getPublicExchanges();
     }
 
-    // Update when we return to the home screen.
+    // Updates exchange data whenever the user returns to the home screen.
     @Override
     protected void onResume() {
         super.onResume();
@@ -52,7 +60,7 @@ public class HomeScreen extends ActionBarActivity {
         getPublicExchanges();
     }
 
-    // Go createExchangeActivity page where the user can make a new loan or offer
+    // Go to createExchangeActivity page where the user can make a new loan or offer
     public void openCreateExchangeActivity(View view) {
         Intent intent = new Intent(this, CreateExchangeActivity.class);
         startActivity(intent);
@@ -100,8 +108,10 @@ public class HomeScreen extends ActionBarActivity {
 
 
 
-    /** Collects a list of the exchanges the user is participating in. */
+    // Collects a list of the exchanges the user is participating in.
     private void getUserExchanges() {
+        // Grabs and displays the exchanges the user is in, or displays nothing if the user has
+        // no exchanges.
         try {
             userExchanges = (ArrayList<Exchange>) Client.getPrivateExchanges(Client.userId);
             logger.i(TAG, "Calling get Private Exchanges, found " + userExchanges.size());
@@ -118,10 +128,13 @@ public class HomeScreen extends ActionBarActivity {
             e.printStackTrace();
         }
 
+        // TODO explain this in a comment
         ExchangeListAdapter exchangeAdapter = new ExchangeListAdapter(getApplicationContext(), userExchanges);
         ListView userExchangeList = (ListView) findViewById(R.id.userExchangeList);
         userExchangeList.setAdapter(exchangeAdapter);
 
+        // Sets a listener for when an exchange is clicked on, which takes the user to the details
+        // for the associated book.
         exchangeListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -133,6 +146,7 @@ public class HomeScreen extends ActionBarActivity {
         userExchangeList.setOnItemClickListener(exchangeListener);
     }
 
+    // Collects a list of public exchanges, either unaccepted offers or unfulfilled requests
     private void getPublicExchanges() {
 
         try {
@@ -162,6 +176,8 @@ public class HomeScreen extends ActionBarActivity {
         bookList.setOnItemClickListener(bookListener);
     }
 
+    // Returns the user to the login activity when clicking logout. The login activity handles
+    // clearing stored user information.
     public void onLogout(View v) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

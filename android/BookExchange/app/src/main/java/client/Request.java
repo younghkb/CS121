@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * TODO add a comment explaining this class
+ */
 public class Request implements Serializable {
     public Type type;
     public Map<String, Object> params = new HashMap<String, Object>();
