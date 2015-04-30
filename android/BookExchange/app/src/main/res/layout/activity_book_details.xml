@@ -31,7 +31,8 @@
             android:layout_height="200sp"
             android:padding="5sp"
             android:scaleType="fitCenter"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginBottom="30sp"/>
 
         <TextView
             android:id="@+id/author"
