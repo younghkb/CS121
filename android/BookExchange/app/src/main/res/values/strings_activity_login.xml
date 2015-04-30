@@ -1,0 +1,24 @@
+<resources>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password </string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password or username is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="register_account">Register a new account</string>
+
+    <!--Create an account-->
+    <string name="register">Register</string>
+    <string name="register_instructions">Please tap \"Done\" on the keyboard after filling in each field.</string>
+
+    <string name="username">Your email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
+</resources>

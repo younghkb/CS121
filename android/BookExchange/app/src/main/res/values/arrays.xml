@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Options for user to choose whether this is an offer or a request-->
+    <string-array name="offer_or_loan">
+        <item>@string/choose_offer</item>
+        <item>@string/choose_request</item>
+    </string-array>
+</resources>
