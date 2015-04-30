@@ -88,7 +88,7 @@ public class GRFetch {
 		long sleepFor = sleepUntil - System.currentTimeMillis();
 		if (sleepFor > 0) {
 			try {
-				Thread.sleep(sleepFor);
+				Thread.sleep(sleepFor); // TODO don't sleep here?
 			} catch (InterruptedException e) {
 				System.err.println(e);
 			}
