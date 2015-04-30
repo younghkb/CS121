@@ -25,24 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="10sp"
-        android:padding="10sp"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:background="#6CB8AA">
     </ListView>
-
-    <!--android:background="#787878"-->
-    <!--style="@style/TextAppearance.AppCompat.SearchResult.Title"-->
-<!--
-
-    <Spinner
-        android:id="@+id/SpinnerOfferLoan"
-        android:layout_height="@dimen/abc_text_size_display_3_material"
-        android:background="#ababab"
-        android:layout_marginTop="16sp"
-        android:prompt="@string/choose_loan_type"
-        android:layout_width="fill_parent"
-        android:entries="@array/offer_or_loan">
-    </Spinner>
--->
 
     <RadioGroup
         android:id="@+id/pickExchangeType"

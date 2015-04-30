@@ -48,7 +48,7 @@ public class ExchangeListAdapter extends ArrayAdapter<Exchange> {
 
         if (isActionRequired(exchange)) {
             text += " (response requested)";
-            myView.setTextColor(Color.parseColor("6CB8AA"));
+            //myView.setTextColor(Color.parseColor("#6CB8AA"));
         }
 
         myView.setText(text);

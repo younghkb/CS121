@@ -41,9 +41,9 @@ public class BookListAdapter extends ArrayAdapter<Book> {
         myView.setText(book.book_title);
 
 
-        myView.setTextColor(Color.BLACK);
-        myView.setTextSize(16);
-        myView.setBackgroundColor(Color.WHITE);
+//        myView.setTextColor(Color.BLACK);
+//        myView.setTextSize(16);
+//        myView.setBackgroundColor(Color.WHITE);
 
 
         return myView;

@@ -143,6 +143,7 @@ public class ViewExchangeActivity extends ActionBarActivity {
 
         View finishButton = findViewById(R.id.finishButton);        // TODO fixme
 
+
         setStatusText();
     }
 
