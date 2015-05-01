@@ -24,6 +24,9 @@ import client.Book;
 import client.Client;
 import client.Exchange;
 
+/** This class is very similar to BookDetailsActivity, which has more detailed commenting 
+ * regarding its functionality
+ */
 public class ViewExchangeActivity extends ActionBarActivity {
 
     private static Log logger;
