@@ -1,0 +1,90 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.jarthur.bookexchange.BookDetailsActivity">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/bookTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:typeface="sans"
+            android:textSize="20sp"
+            android:padding="@dimen/abc_text_size_caption_material"
+            android:layout_marginBottom="20sp"
+            android:textColor="#FFFFFF"
+            android:background="#906090">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="200sp"
+            android:layout_height="200sp"
+            android:padding="5sp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30sp"/>
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/ISBN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/pubYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/loanPeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp">
+        </TextView>
+
+        <Button
+            android:id="@+id/requestButton"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="Request this book!"
+            android:visibility="gone">
+        </Button>
+
+        <Button
+            android:id="@+id/offerButton"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="Offer to loan this book!"
+            android:visibility="gone">
+        </Button>
+
+    </LinearLayout>
+
+</ScrollView>

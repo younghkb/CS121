@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.example.jarthur.bookexchange.CreateLoan">
+
+   <EditText
+       android:id="@+id/bookQueryBox"
+       android:layout_height="wrap_content"
+       android:hint="@string/book_info"
+       android:background="@drawable/query_border"
+       android:padding="5sp"
+       android:inputType="textNoSuggestions"
+       android:imeOptions="actionSearch"
+       android:singleLine="true"
+       android:layout_width="fill_parent">
+   </EditText>
+
+    <ListView
+        android:id="@+id/booksFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="10sp"
+        android:visibility="gone"
+        android:background="#6CB8AA">
+    </ListView>
+
+    <RadioGroup
+        android:id="@+id/pickExchangeType"
+        android:layout_marginTop="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:textSize="14sp">
+        <RadioButton
+            android:id="@+id/offer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
+            android:checked="true"
+            android:onClick="onRadioButtonClicked"
+            android:text="Offer"/>
+        <RadioButton
+            android:id="@+id/request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:onClick="onRadioButtonClicked"
+            android:text="Request"/>
+    </RadioGroup>
+
+        <Button
+            android:id="@+id/confirmAlertDialog"
+            android:layout_marginTop="30sp"
+            android:layout_height="wrap_content"
+            android:background="#6CB8AA"
+            android:text="@string/feedback_button"
+            android:onClick="confirmAlert"
+            android:layout_width="fill_parent">
+        </Button>
+
+    </LinearLayout>
+
