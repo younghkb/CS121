@@ -37,6 +37,8 @@ public class ViewExchangeActivity extends ActionBarActivity {
     private String borrowerName = "Unknown";
     private String ownerName = "Unknown";
 
+    private static AlertDialog.Builder confirmBuilder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,41 +58,35 @@ public class ViewExchangeActivity extends ActionBarActivity {
         // true if the current user is the owner of this particular book
         isOwner = (Client.userId == myExchange.loaner_id);
 
+        setAlertDialog();
+
         setBookInfo();
     }
 
-    /* Confirmation for completion or cancellation of an exchange. */
-    public static class AlertDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(R.string.alert_message)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
-                            // want to do this
-                            try {
-                                Client.updateExchangeStatus(exchangeId, Exchange.Status.COMPLETED);
+    private void setAlertDialog() {
+        // Initialized here so it can call the non-static method setStatusText()
+        confirmBuilder = new AlertDialog.Builder(this);
+        confirmBuilder.setMessage(R.string.alert_message)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES! Or, you know, confirm that yes, the user does
+                        // want to do this
+                        try {
+                            logger.i("ViewExchangeActivity", "updating exchange status");
+                            myExchange.status = Exchange.Status.COMPLETED;
+                            Client.updateExchangeStatus(exchangeId, Exchange.Status.COMPLETED);
+                            setStatusText();    // Also updates finishButton
 
-                            } catch (Exception e) {
-                                logger.e("ViewExchangeActivity", "exception", e);
-                            }
+                        } catch (Exception e) {
+                            logger.e("ViewExchangeActivity", "exception", e);
                         }
-                    })
-                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
-                        }
-                    });
-            // Create the AlertDialog object and return it
-            return builder.create();
-        }
-    }
-
-    public void confirmAlert(View view) {
-        DialogFragment newFragment = new AlertDialogFragment();
-        newFragment.show(getFragmentManager(), "alert");
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
     }
 
     private void setBookInfo() {
@@ -141,13 +137,12 @@ public class ViewExchangeActivity extends ActionBarActivity {
         TextView owner = (TextView) findViewById(R.id.owner);
         owner.setText("Owner: " + ownerName);
 
-        View finishButton = findViewById(R.id.finishButton);        // TODO fixme
-
-
         setStatusText();
     }
 
     private void setStatusText() {
+
+        logger.i("ViewExchangeActivity", "setting status text");
 
         TextView status = (TextView) findViewById(R.id.exchangeStatus);
 
@@ -201,7 +196,21 @@ public class ViewExchangeActivity extends ActionBarActivity {
                 break;
 
             case COMPLETED:
+                logger.i("SetStatusText", "setting status to completed");
                 status.setText("This exchange has been completed.");
+                break;
+
+            default:
+                break;
+        }
+
+        View finishButton = findViewById(R.id.finishButton);
+        if (myExchange.status == Exchange.Status.ACCEPTED && isOwner) {
+            finishButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            logger.i("SetStatusText", "hiding finish button");
+            finishButton.setVisibility(View.GONE);
         }
     }
 
@@ -228,4 +237,22 @@ public class ViewExchangeActivity extends ActionBarActivity {
         // Reset to reflect the new status
         setStatusText();
     }
+
+
+    /* Confirmation for completion or cancellation of an exchange. */
+    public static class AlertDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = confirmBuilder;
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+
+    public void confirmAlert(View view) {
+        DialogFragment newFragment = new AlertDialogFragment();
+        newFragment.show(getFragmentManager(), "alert");
+    }
+
 }

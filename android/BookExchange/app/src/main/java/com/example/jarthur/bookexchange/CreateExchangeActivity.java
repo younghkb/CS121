@@ -186,6 +186,7 @@ public class CreateExchangeActivity extends ActionBarActivity {
                         logger.i("OnQueryTextSubmit", "setting visibility of book list");
                         booksFound.setOnItemClickListener(bookSelectedListener);
                     } catch (Exception e) {
+                        bookQuery.setError("Connection timeout. Please try again.");
                         logger.e("CreateExchangeActivity", "exception in selectBook()", e);
                     }
                     return true;
